@@ -4,10 +4,30 @@
     <title></title>
 </head>
 <body>
-<div th:insert="nav::nav"></div>
-<h1>Welcome!</h1>
-
-<div th:insert="foot::foot"></div>
-<script th:fragment="script" th:src="@{/bootstrap/bootstrap.bundle.min.js}"></script>
+<div class="container" th:insert="nav::nav"></div>
+<div class="container"><h1>Welcome!</h1></div>
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date</th>
+            <th scope="col">Sport</th>
+            <th scope="col">Distance</th>
+            <th scope="col">Duration</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="activity : ${activities}">
+            <th scope="row" th:text="${activityStat.index}">1</th>
+            <td th:text="${activity.getDateTime()}">Mark</td>
+            <td th:text="${activity.getSport().getName()}">Otto</td>
+            <td th:text="${activity.getDistance()}">Otto</td>
+            <td th:text="${activity.getDuration()}">Otto</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container" th:insert="foot::foot"></div>
 </body>
 </html>

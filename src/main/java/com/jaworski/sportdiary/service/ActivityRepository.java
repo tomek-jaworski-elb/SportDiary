@@ -4,6 +4,9 @@ import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.Distance;
 import com.jaworski.sportdiary.domain.Sport;
 import com.jaworski.sportdiary.domain.Units;
+import com.jaworski.sportdiary.service.gson.GsonCreator;
+import com.jaworski.sportdiary.service.gson.JsonReader;
+import com.jaworski.sportdiary.service.gson.JsonSaver;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -23,7 +26,8 @@ public class ActivityRepository {
     }
 
     public List<Activity> getRepository() {
-        return activities;
+//        return activities;
+        return getActivities();
     }
 
     private void fillRepository() {
@@ -37,5 +41,13 @@ public class ActivityRepository {
 
     public void addActivity(Activity activity) {
         activities.add(activity);
+    }
+
+    private String getJson() {
+        return GsonCreator.getGson().toJson(activities);
+    }
+
+    public List<Activity> getActivities() {
+        return new JsonReader().get(getJson());
     }
 }

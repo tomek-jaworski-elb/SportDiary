@@ -2,7 +2,6 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.service.ActivityRepository;
-import com.jaworski.sportdiary.service.gson.JsonSaver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +17,8 @@ public class IndexController {
 
     @GetMapping(path = {"/", "/index"})
     public String index(Model model) {
-        model.addAttribute("activities", activityRepository.getRepository());
         List<Activity> list = activityRepository.getRepository();
-        new JsonSaver(list);
+        model.addAttribute("activities", list);
         return "index";
     }
 }

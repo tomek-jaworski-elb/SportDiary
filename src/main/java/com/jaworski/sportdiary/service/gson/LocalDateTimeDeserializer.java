@@ -20,7 +20,7 @@ public class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime
     public LocalDateTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         LocalDateTime localDateTime;
         try {
-            localDateTime = LocalDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            localDateTime = LocalDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         } catch (DateTimeException e) {
             localDateTime = LocalDateTime.of(0, 1, 1, 0, 0);
             LOGGER.log(Level.INFO, "DateTimeFormat Exception", e);

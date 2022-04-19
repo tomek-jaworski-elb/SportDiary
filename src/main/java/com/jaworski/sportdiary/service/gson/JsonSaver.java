@@ -2,7 +2,6 @@ package com.jaworski.sportdiary.service.gson;
 
 import com.google.gson.Gson;
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.domain.Person;
 import com.jaworski.sportdiary.service.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,5 +17,6 @@ public class JsonSaver {
         Gson gson = GsonCreator.getGson();
         json = gson.toJson(activities);
         System.out.println(json);
+        new JsonReader().get(json);
     }
 }

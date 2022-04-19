@@ -1,0 +1,29 @@
+[
+  {
+    "dateTime": "2021-01-12T12:00:00",
+    "sport": "CYCLING",
+    "duration": 3600,
+    "distance": {
+      "distanceOf": 20.0,
+      "units": "KM"
+    }
+  },
+  {
+    "dateTime": "2021-02-12T14:00:00",
+    "sport": "RUNNING",
+    "duration": 360,
+    "distance": {
+      "distanceOf": 12.0,
+      "units": "KM"
+    }
+  },
+  {
+    "dateTime": "2021-03-12T12:15:00",
+    "sport": "ULTRA_RUNNING",
+    "duration": 5600,
+    "distance": {
+      "distanceOf": 10.0,
+      "units": "KM"
+    }
+  }
+]

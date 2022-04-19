@@ -9,6 +9,9 @@ import com.jaworski.sportdiary.service.gson.JsonReader;
 import com.jaworski.sportdiary.service.gson.JsonSaver;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,6 +51,15 @@ public class ActivityRepository {
     }
 
     public List<Activity> getActivities() {
-        return new JsonReader().get(getJson());
+        return new JsonReader().get(getFromFile());
+    }
+
+    private String getFromFile() {
+        Path path = Path.of("src","main","resources","db.json");
+        try {
+            return Files.readString(path);
+        } catch (IOException e) {
+            return "";
+        }
     }
 }

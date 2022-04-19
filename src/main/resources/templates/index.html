@@ -23,7 +23,7 @@
             <td th:text="${activity.getDateTime()}">Mark</td>
             <td th:text="${activity.getSport().getName()}">Otto</td>
             <td th:text="${activity.getDistance()}">Otto</td>
-            <td th:text="${activity.getDuration()}">Otto</td>
+            <td th:text="${activity.getDuration().getSeconds()/3600} + ' [H]'">Otto</td>
         </tr>
         </tbody>
     </table>

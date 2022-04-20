@@ -1,9 +1,12 @@
 package com.jaworski.sportdiary.domain;
 
-import lombok.Data;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@ToString
+@NoArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor
 public class Distance {
     private Double distanceOf;
     private Units units;

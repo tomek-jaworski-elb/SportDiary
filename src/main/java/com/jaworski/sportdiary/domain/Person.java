@@ -1,12 +1,11 @@
 package com.jaworski.sportdiary.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Value;
+import lombok.*;
 
-@Getter
+@ToString
+@NoArgsConstructor
 @Setter
-@Value
+@Getter
 public class Person {
 
     private String firstName;

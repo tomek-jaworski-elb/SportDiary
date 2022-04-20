@@ -6,7 +6,6 @@ import com.jaworski.sportdiary.domain.Sport;
 import com.jaworski.sportdiary.domain.Units;
 import com.jaworski.sportdiary.service.gson.GsonCreator;
 import com.jaworski.sportdiary.service.gson.JsonReader;
-import com.jaworski.sportdiary.service.gson.JsonSaver;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.HOURS;
@@ -22,15 +20,16 @@ import static java.time.temporal.ChronoUnit.HOURS;
 @Component
 public class ActivityRepository {
 
-    private List<Activity> activities = new ArrayList<>();
+    private List<Activity> activities = getActivities();
 
     public ActivityRepository() {
-        fillRepository();
+//        getActivities();
+        //     fillRepository();
     }
 
     public List<Activity> getRepository() {
-//        return activities;
-        return getActivities();
+        return activities;
+//        return getActivities();
     }
 
     private void fillRepository() {
@@ -55,7 +54,7 @@ public class ActivityRepository {
     }
 
     private String getFromFile() {
-        Path path = Path.of("src","main","resources","db.json");
+        Path path = Path.of("src", "main", "resources", "db.json");
         try {
             return Files.readString(path);
         } catch (IOException e) {

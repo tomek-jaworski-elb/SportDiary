@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -46,4 +47,13 @@ public class IndexController {
         return "index";
     }
 
+    @GetMapping("/more")
+    public String more(@RequestParam int id, Model model) {
+
+        model.addAttribute("activity", activityRepository.getActivities().stream()
+                .filter(activity -> activity.getId() == id)
+                .findFirst()
+                .orElse(new Activity()));
+        return "more";
+    }
 }

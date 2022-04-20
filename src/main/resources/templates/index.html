@@ -15,15 +15,19 @@
             <th scope="col">Sport</th>
             <th scope="col">Distance</th>
             <th scope="col">Duration</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="activity : ${activities}">
             <th scope="row" th:text="${activityStat.index}">1</th>
-            <td th:text="${activity.getDateTime()}">Mark</td>
+            <td th:text="${#temporals.format(activity.getDateTime(),'dd/MM/yyyy HH:mm')}">Mark</td>
             <td th:text="${activity.getSport().getName()}">Otto</td>
             <td th:text="${activity.getDistance()}">Otto</td>
             <td th:text="${activity.getDuration().getSeconds()/3600} + ' [H]'">Otto</td>
+            <td>
+                <a class="btn btn-primary" href="#" th:href="@{'/more?id=' + ${activity.getId()}}" role="button">Home</a>
+            </td>
         </tr>
         </tbody>
     </table>

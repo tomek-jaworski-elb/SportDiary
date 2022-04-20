@@ -61,4 +61,14 @@ public class ActivityRepository {
             return "";
         }
     }
+
+    public void saveToJson() {
+        Path path = Path.of("src", "main", "resources", "db.json");
+        String json = getJson();
+        try {
+            Files.writeString(path,json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

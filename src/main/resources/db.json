@@ -25,5 +25,23 @@
       "distanceOf": 10.0,
       "units": "KM"
     }
+  },
+  {
+    "dateTime": "2022-04-04T15:26:00",
+    "sport": "RUNNING",
+    "duration": 1234,
+    "distance": {
+      "distanceOf": 11.0,
+      "units": "KM"
+    }
+  },
+  {
+    "dateTime": "2022-04-04T15:27:00",
+    "sport": "CYCLING",
+    "duration": 1233,
+    "distance": {
+      "distanceOf": 33.0,
+      "units": "KM"
+    }
   }
 ]

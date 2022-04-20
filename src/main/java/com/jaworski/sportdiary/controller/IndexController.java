@@ -39,4 +39,11 @@ public class IndexController {
         return "new";
     }
 
+    @GetMapping("/save")
+    public String saveList(Model model) {
+        activityRepository.saveToJson();
+        model.addAttribute("activities", activityRepository.getActivities());
+        return "index";
+    }
+
 }

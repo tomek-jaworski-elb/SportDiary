@@ -23,10 +23,11 @@
             <th scope="row" th:text="${activityStat.index}">1</th>
             <td th:text="${#temporals.format(activity.getDateTime(),'dd/MM/yyyy HH:mm')}">Mark</td>
             <td th:text="${activity.getSport().getName()}">Otto</td>
-            <td th:text="${activity.getDistance()}">Otto</td>
-            <td th:text="${activity.getDuration().getSeconds()/3600} + ' [H]'">Otto</td>
+            <td th:text="${activity.getDistance().distanceOf + ' - ' + activity.getDistance().getUnits()}">Otto</td>
+            <td th:text="${activity.getDuration().getSeconds()/60} + ' [minutes]'">Otto</td>
             <td>
-                <a class="btn btn-primary" href="#" th:href="@{'/more?id=' + ${activity.getId()}}" role="button">Home</a>
+                <a class="btn btn-primary mx-2" href="#" th:href="@{'/more?id=' + ${activity.getId()}}" role="button">More</a>
+                <a class="btn btn-warning mx-2" href="#" th:href="@{'/delete?id=' + ${activity.getId()}}" role="button">Delete</a>
             </td>
         </tr>
         </tbody>

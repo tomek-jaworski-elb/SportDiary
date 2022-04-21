@@ -1,9 +1,6 @@
 package com.jaworski.sportdiary.service;
 
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.domain.Distance;
-import com.jaworski.sportdiary.domain.Sport;
-import com.jaworski.sportdiary.domain.Units;
 import com.jaworski.sportdiary.service.gson.GsonCreator;
 import com.jaworski.sportdiary.service.gson.JsonReader;
 import org.springframework.stereotype.Component;
@@ -11,34 +8,17 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
-
-import static java.time.temporal.ChronoUnit.HOURS;
 
 @Component
 public class ActivityRepository {
 
-    private List<Activity> activities = getActivities();
-
-    public ActivityRepository() {
-//        getActivities();
-        //     fillRepository();
-    }
+    private static final Path PATH_TO_DB_FILE = Path.of("src", "main", "resources", "db.json");
+    private final List<Activity> activities = getActivities();
 
     public List<Activity> getRepository() {
         return activities;
-//        return getActivities();
-    }
-
-    private void fillRepository() {
-//        Activity activity1 = new Activity(LocalDateTime.of(2021, 1, 12, 12, 00), Sport.CYCLING, Duration.of(1, HOURS), new Distance(20d, Units.KM));
-//        Activity activity2 = new Activity(LocalDateTime.of(2021, 2, 12, 14, 00), Sport.RUNNING, Duration.of(1, HOURS), new Distance(12., Units.KM));
-//        Activity activity3 = new Activity(LocalDateTime.of(2021, 3, 12, 12, 15), Sport.ULTRA_RUNNING, Duration.of(1, HOURS), new Distance(10d, Units.KM));
-//        activities.add(activity1);
-//        activities.add(activity2);
-//        activities.add(activity3);
     }
 
     public void addActivity(Activity activity) {
@@ -63,12 +43,31 @@ public class ActivityRepository {
     }
 
     public void saveToJson() {
-        Path path = Path.of("src", "main", "resources", "db.json");
         String json = getJson();
         try {
-            Files.writeString(path,json);
+            Files.writeString(PATH_TO_DB_FILE, json);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void delete(int id) {
+        Iterator<Activity> iterator = getRepository().iterator();
+        Activity activity;
+        while (iterator.hasNext()) {
+            activity = iterator.next();
+            if (activity.getId() == id) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public int maxId() {
+        return getRepository().stream()
+                .min((a1, a2) -> {
+                    return a2.getId() - a1.getId();
+                })
+                .orElse(new Activity())
+                .getId();
     }
 }

@@ -7,7 +7,8 @@
 <div class="container" th:insert="nav::nav"></div>
 <div class="container"><h1>Welcome!</h1></div>
 <div class="container">
-    <form action="#" th:action="@{/add}" th:object="${new_activity}" method="post">
+    <form action="#" th:action="@{/add}" th:object="${activity}" method="post">
+
         <label class="form-label" for="date"></label>
         <input class="date input-group" type="datetime-local" th:field="*{dateTime}" id="date"/>
         <div class="input-group">
@@ -33,6 +34,10 @@
         <div>
             <label class="form-label" for="duration">Duration</label>
             <input class="input-group" type="number" th:field="*{duration}" id="duration"/>
+        </div>
+        <div>
+            <label hidden class="form-label" for="idf"></label>
+            <input hidden class="input-group" type="number" th:value="${activity.getId()}" th:field="*{id}" id="idf"/>
         </div>
         <input class="btn btn-outline-primary" type="submit" value="Submit"/>
         <input class="btn btn-outline-primary" type="reset" value="Reset"/>

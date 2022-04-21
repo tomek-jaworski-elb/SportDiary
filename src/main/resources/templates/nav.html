@@ -4,15 +4,13 @@
 </head>
 <body>
 <div th:fragment="nav">
+    <hr/>
     <div class="container my-5">
     </div>
-    <div class="container text-center">
-        <a class="btn btn-primary" href="#" th:href="@{/}" role="button">Home</a>
-        <a class="btn btn-primary" href="#" th:href="@{/add}" role="button">Add</a>
-        <a class="btn btn-warning" href="#" th:href="@{/save}" role="button">Save</a>
-        <input class="btn btn-primary" type="button" value="Input">
-        <input class="btn btn-primary" type="submit" value="Submit">
-        <input class="btn btn-primary" type="reset" value="Reset">
+    <div class="container text-center ">
+        <a class="btn btn-link mx-5" href="#" th:href="@{/}" role="button">Home</a>
+        <a class="btn link-info" href="#" th:href="@{/add}" role="button">Add</a>
+        <a class="btn btn-warning mx-5" href="#" th:href="@{/save}" role="button">Save</a>
     </div>
 </div>
 </body>

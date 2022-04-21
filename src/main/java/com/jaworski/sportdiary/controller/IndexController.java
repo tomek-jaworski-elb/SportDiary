@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,13 +29,16 @@ public class IndexController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("new_activity", new Activity());
+        Activity activity = new Activity();
+        int nextId = activityRepository.maxId() + 1;
+        activity.setId(nextId);
+        model.addAttribute("activity", activity);
         return "add";
     }
 
 
     @PostMapping("/add")
-    public String newActivity(@Valid @ModelAttribute("activity") Activity activity, Model model) {
+    public String newActivity(@Valid @ModelAttribute Activity activity, Model model) {
         activityRepository.addActivity(activity);
         model.addAttribute("activity", activity.toString());
         return "new";
@@ -55,5 +59,10 @@ public class IndexController {
                 .findFirst()
                 .orElse(new Activity()));
         return "more";
+    }
+    @GetMapping(value = "/delete", params = "id")
+    public RedirectView delete(@RequestParam(required = true, defaultValue = "", name = "id") int id) {
+        activityRepository.delete(id);
+        return new RedirectView("/");
     }
 }

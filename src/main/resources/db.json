@@ -48,5 +48,35 @@
       "distanceOf": 33.0,
       "units": "KM"
     }
+  },
+  {
+    "id": 15,
+    "dateTime": "2022-04-26T17:33:00",
+    "sport": "SWIMMING",
+    "duration": 345,
+    "distance": {
+      "distanceOf": 300.0,
+      "units": "METERS"
+    }
+  },
+  {
+    "id": 11,
+    "dateTime": "2022-04-29T17:44:00",
+    "sport": "CYCLING",
+    "duration": 200,
+    "distance": {
+      "distanceOf": 55.0,
+      "units": "KM"
+    }
+  },
+  {
+    "id": 16,
+    "dateTime": "2022-04-12T18:11:00",
+    "sport": "JOGA",
+    "duration": 88,
+    "distance": {
+      "distanceOf": 0.0,
+      "units": "NM"
+    }
   }
 ]

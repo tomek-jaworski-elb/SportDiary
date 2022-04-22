@@ -5,43 +5,56 @@
 </head>
 <body>
 <div class="container" th:insert="nav::nav"></div>
-<div class="container"><h1>Welcome!</h1></div>
 <div class="container">
-    <form action="#" th:action="@{/add}" th:object="${activity}" method="post">
+    <h1 class="text-center">Welcome!</h1>
+</div>
+<div class="row mb-2 ">
+    <div class="col-4"></div>
+    <div class="col-4 bg-gradient rounded-3 border-1 border border-white">
+        <form action="#" th:action="@{/add}" th:object="${activity}" method="post">
+            <div>
+                <div class="form-group my-2">
+                    <label for="date"></label>
+                    <input class="date form-control" type="datetime-local" th:field="*{dateTime}" id="date"/>
+                </div>
+                <div class="form-group my-2">
+                    <label for="sports">Sport</label>
+                    <select class="form-select" aria-label="Default select example"
+                            id="sports" th:field="*{sport}">
+                        <option th:each="sport : ${T(com.jaworski.sportdiary.domain.Sport).values()}"
+                                th:value="${sport}"
+                                th:text="${sport.getName()}"></option>
+                    </select>
+                </div>
+                <div class="form-group my-2">
+                    <label for="distance">Distance</label>
+                    <input class="form-control" type="number" th:field="*{distance.distanceOf}" id="distance"/>
+                </div>
 
-        <label class="form-label" for="date"></label>
-        <input class="date input-group" type="datetime-local" th:field="*{dateTime}" id="date"/>
-        <div class="input-group">
-            <label class="form-label" for="sports">Sport</label>
-            <select class="form-select" aria-label="Default select example"
-                    id="sports" th:field="*{sport}">
-                <option th:each="sport : ${T(com.jaworski.sportdiary.domain.Sport).values()}" th:value="${sport}"
-                        th:text="${sport.getName()}"></option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label class="form-label" for="distance">Distance</label>
-            <input class="input-group" type="number" th:field="*{distance.distanceOf}" id="distance"/>
-        </div>
-
-        <div class="input-group">
-            <label class="form-label" for="unit">Units</label>
-            <select class="form-select" id="unit" th:field="*{distance.units}">
-                <option th:each="unit : ${T(com.jaworski.sportdiary.domain.Units).values()}" th:value="${unit}"
-                        th:text="${unit.name()}"></option>
-            </select>
-        </div>
-        <div>
-            <label class="form-label" for="duration">Duration</label>
-            <input class="input-group" type="number" th:field="*{duration}" id="duration"/>
-        </div>
-        <div>
-            <label hidden class="form-label" for="idf"></label>
-            <input hidden class="input-group" type="number" th:value="${activity.getId()}" th:field="*{id}" id="idf"/>
-        </div>
-        <input class="btn btn-outline-primary" type="submit" value="Submit"/>
-        <input class="btn btn-outline-primary" type="reset" value="Reset"/>
-    </form>
+                <div class="form-group my-2">
+                    <label for="unit">Units</label>
+                    <select class="form-select" id="unit" th:field="*{distance.units}">
+                        <option th:each="unit : ${T(com.jaworski.sportdiary.domain.Units).values()}" th:value="${unit}"
+                                th:text="${unit.name()}"></option>
+                    </select>
+                </div>
+                <div class="form-group my-2">
+                    <label for="duration">Duration</label>
+                    <input class="form-control" type="number" th:field="*{duration}" id="duration"/>
+                </div>
+                <div class="form-group my-2">
+                    <label hidden for="idf"></label>
+                    <input hidden class="input-group" type="number" th:value="${activity.getId()}" th:field="*{id}"
+                           id="idf"/>
+                </div>
+                <div class="form-group my-4 text-center">
+                    <input class="btn btn-outline-light" type="submit" value="Submit"/>
+                    <input class="btn btn-outline-light" type="reset" value="Reset"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-4"></div>
 </div>
 <div class="container" th:insert="foot::foot"></div>
 </body>

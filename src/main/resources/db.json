@@ -78,5 +78,25 @@
       "distanceOf": 0.0,
       "units": "NM"
     }
+  },
+  {
+    "id": 17,
+    "dateTime": "2022-04-07T13:55:00",
+    "sport": "SWIMMING",
+    "duration": 4565,
+    "distance": {
+      "distanceOf": 300.0,
+      "units": "METERS"
+    }
+  },
+  {
+    "id": 18,
+    "dateTime": "2022-04-05T13:55:00",
+    "sport": "GYM",
+    "duration": 5676,
+    "distance": {
+      "distanceOf": 0.0,
+      "units": "NM"
+    }
   }
 ]

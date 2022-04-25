@@ -36,6 +36,10 @@ public class IndexController {
         return "add";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     @PostMapping("/add")
     public String newActivity(@Valid @ModelAttribute Activity activity, Model model) {

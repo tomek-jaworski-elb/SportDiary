@@ -64,9 +64,14 @@ public class IndexController {
                 .orElse(new Activity()));
         return "more";
     }
+
     @GetMapping(value = "/delete", params = "id")
     public RedirectView delete(@RequestParam(required = true, defaultValue = "", name = "id") int id) {
         activityRepository.delete(id);
         return new RedirectView("/");
     }
+//    @PostMapping("/login_perform")
+//    public RedirectView loginPerform() {
+//        return new RedirectView("/");
+//    }
 }

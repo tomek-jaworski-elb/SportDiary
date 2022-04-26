@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="head::head">
+<head th:insert="head::head(title='more')">
     <title></title>
 </head>
 <body>
 <div class="container" th:insert="nav::nav"></div>
 <div class="container"><h1>Welcome!</h1></div>
 <div class="container">
-<span th:text="${activity}"></span>
+    <span th:text="${activity}"></span>
 </div>
 <div class="container" th:insert="foot::foot"></div>
 </body>

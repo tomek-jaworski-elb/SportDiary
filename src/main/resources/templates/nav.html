@@ -11,9 +11,12 @@
     <div class="container my-5 ">
     </div>
     <div class="container text-center my-2 ">
-        <a class="btn btn-link mx-5 bg-light" href="#" th:href="@{/}" role="button">Home</a>
-        <a class="btn link-info bg-light" href="#" th:href="@{/add}" role="button">Add</a>
-        <a class="btn btn-warning mx-5 my-3" href="#" th:href="@{/save}" role="button">Save</a>
+        <form class="form-control-plaintext" th:action="@{/logout}" method="post">
+        <a class="btn btn-link mx-2 bg-light" href="#" th:href="@{/}" role="button">Home</a>
+        <a class="btn link-info bg-light mx-2" href="#" th:href="@{/add}" role="button">Add</a>
+        <a class="btn btn-warning mx-2" href="#" th:href="@{/save}" role="button">Save</a>
+            <input class="btn btn-warning mx-5 my-3" type="submit" value="Logout">
+        </form>
     </div>
 </div>
 </body>

@@ -5,24 +5,40 @@
     </head>
 </head>
 <body>
+<div class="container"></div>
 <div class="container">
-    <div class="col-5"></div>
-    <div class="col-3 form-control">
-        <h1>Login</h1>
-        <div class="alert-warning" th:if="${param.error}">
-            Invalid username and password.
-        </div>
-        <div class="alert-info" th:if="${param.logout}">
-            You have been logged out.
-        </div>
-        <form class="form-control rounded-2 m-1" th:action="@{/login}" method="post">
-            <div><label> User Name : <input class="input-group m-1" type="text" name="username" placeholder="login"/> </label></div>
-            <div><label> Password: <input class="input-group m-1" type="password" name="password" placeholder="password"/> </label></div>
-            <div><input class="btn btn-primary m-1" type="submit" value="Sign In"/>
-                <input class="btn btn-secondary m-1" type="reset" value="Reset"/>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 my-4 rounded-3 mx-4 p-5"
+             style="background: rgb(2,0,36);background: linear-gradient(0deg, rgba(2,0,36,0) 0%, rgba(0,212,255,1) 100%);">
+            <h1 class="text-center p-3">Login</h1>
+            <div class="alert-warning" th:if="${param.error}">
+                Invalid username and password.
             </div>
-        </form>
+            <div class="alert-info" th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <form class="form-control rounded-2 m-1" th:action="@{/login}" method="post">
+                <div class="text-center">
+                    <label> User Name :
+                        <input class="input-group m-1" type="text" name="username"
+                               placeholder="login"/>
+                    </label>
+                </div>
+                <div class="text-center">
+                    <label> Password: <input class="input-group m-1" type="password" name="password"
+                                             placeholder="password"/> </label>
+                </div>
+                <div class="text-center">
+                    <input class="btn btn-primary m-1" type="submit" value="Sign In"/>
+                    <input class="btn btn-secondary m-1" type="reset" value="Reset"/>
+                </div>
+            </form>
+
+        </div>
+        <div class="col col-4"></div>
     </div>
-    <div class="col-5"></div>
+</div>
+
 </body>
 </html>

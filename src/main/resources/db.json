@@ -98,5 +98,15 @@
       "distanceOf": 0.0,
       "units": "NM"
     }
+  },
+  {
+    "id": 19,
+    "dateTime": "2022-04-14T21:21:00",
+    "sport": "GYM",
+    "duration": 55,
+    "distance": {
+      "distanceOf": 0.0,
+      "units": "NM"
+    }
   }
 ]

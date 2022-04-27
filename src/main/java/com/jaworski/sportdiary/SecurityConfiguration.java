@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         final Properties users = new Properties();
         users.put("user", "{noop}user,ROLE_USER,enabled");
-        users.put("user1", "{noop}user1,ROLE_USER,enabled");
+        users.put("u", "{noop}u,ROLE_PUBLIC,enabled");
         users.put("admin", "{noop}admin,ROLE_ADMIN,enabled");
         return new InMemoryUserDetailsManager(users);
     }
@@ -44,6 +44,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/webjars/**").permitAll()
+                .antMatchers("/anonymous/**").anonymous()
+                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/public/**").hasAnyAuthority("ROLE_ADMIN","ROLE_PUBLIC")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()

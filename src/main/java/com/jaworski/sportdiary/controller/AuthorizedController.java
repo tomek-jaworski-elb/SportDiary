@@ -30,7 +30,7 @@ public class AuthorizedController {
         switch (listParam.getSort()) {
             case "DISTANCE": {
                 comparator = (Activity a1, Activity a2) -> {
-                    return (int) (a1.getDistance().getDistanceOf() - a2.getDistance().getDistanceOf());
+                    return (int) (a1.getDistance().getDistanceKM() - a2.getDistance().getDistanceKM());
                 };
                 break;
             }

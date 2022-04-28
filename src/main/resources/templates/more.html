@@ -5,7 +5,7 @@
 </head>
 <body>
 <div class="container" th:insert="nav::nav"></div>
-<div class="container"><h1 class="text-center">  Details!</h1></div>
+<div class="container"><h1 class="text-center">Details!</h1></div>
 <div class="container">
     <div class="row">
         <div class="col-4">
@@ -15,7 +15,8 @@
             <div th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.Sport).RUNNING}" class="text-center">
                 <img th:src="@{/img/run.svg}" width="200px" height="auto" class="">
             </div>
-            <div th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.Sport).ULTRA_RUNNING}" class="text-center">
+            <div th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.Sport).ULTRA_RUNNING}"
+                 class="text-center">
                 <img th:src="@{/img/ultra.svg}" width="200px" height="auto" class="">
             </div>
             <div th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.Sport).JOGA}" class="text-center">
@@ -30,11 +31,10 @@
 
         </div>
         <div class="col-4">
-            <h2 th:text="${activity.getDateTime()}"></h2>
-            <h2 th:text="${activity.getDistance().getDistanceOf()}"></h2>
-            <h2 th:text="${activity.getDistance().getUnits()}"></h2>
-            <h2 th:text="${activity.getDuration()}"></h2>
-            <h2 th:text="${activity.getSport()}"></h2>
+            <h2 th:text="${'Czas aktywności: '+ #temporals.format(activity.getDateTime(),'dd/MM/yyyy - HH:mm')}"></h2>
+            <h2 th:text="${'Dystans aktywności: '+ activity.getDistance().getDistanceOf() + ' '+ activity.getDistance().getUnits()}"></h2>
+            <h2 th:text="${'Długość aktywności: ' + activity.getDuration().toMinutes() + 'min'}"></h2>
+            <h2 th:text="${'Rodzaj aktywnośi: ' + activity.getSport()}"></h2>
 
         </div>
         <div class="col-4"></div>

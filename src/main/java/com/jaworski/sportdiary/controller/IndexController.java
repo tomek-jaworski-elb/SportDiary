@@ -20,11 +20,11 @@ public class IndexController {
     @Autowired
     private ActivityRepository activityRepository;
 
-    @GetMapping(path = {"/", "/index"})
+    @GetMapping(path = {"/"})
     public String index(Model model) {
         List<Activity> list = activityRepository.getRepository();
         model.addAttribute("activities", list);
-        return "index";
+        return "welcome";
     }
 
     @GetMapping("/add")

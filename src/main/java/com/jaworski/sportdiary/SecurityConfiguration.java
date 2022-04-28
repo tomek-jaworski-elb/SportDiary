@@ -44,17 +44,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/webjars/**").permitAll()
+                .antMatchers("/welcome", "/").permitAll()
                 .antMatchers("/anonymous/**").anonymous()
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers("/public/**").hasAnyAuthority("ROLE_ADMIN","ROLE_PUBLIC")
+                .antMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/index", true)
+                .defaultSuccessUrl("/user/list", true)
                 .and()
-                .logout().permitAll();
+                .logout().permitAll()
+                .logoutSuccessUrl("/");
 
 //        http
 //                .csrf().disable()

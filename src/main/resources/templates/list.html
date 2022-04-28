@@ -56,8 +56,8 @@
             </td>
             <td class="text-center" th:text="${activity.getDuration().getSeconds()/60} + ' [minutes]'">Otto</td>
             <td class="text-center">
-                <a class="btn btn-primary mx-2" href="#" th:href="@{'/more?id=' + ${activity.getId()}}" role="button">More</a>
-                <a class="btn btn-warning mx-2" href="#" th:href="@{'/delete?id=' + ${activity.getId()}}" role="button">Delete</a>
+                <a class="btn btn-primary mx-2" href="#" th:href="@{'/user/more?id=' + ${activity.getId()}}" role="button">More</a>
+                <a class="btn btn-warning mx-2" href="#" th:href="@{'/user/delete?id=' + ${activity.getId()}}" role="button">Delete</a>
             </td>
         </tr>
         </tbody>

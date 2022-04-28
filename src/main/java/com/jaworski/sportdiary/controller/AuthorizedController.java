@@ -1,7 +1,8 @@
 package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.service.ActivityRepository;
+import com.jaworski.sportdiary.domain.ListParam;
+import com.jaworski.sportdiary.service.activity.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -19,9 +21,48 @@ public class AuthorizedController {
     private ActivityRepository activityRepository;
 
     @GetMapping(path = {"/list", "/", ""})
-    public String list(Model model) {
-        List<Activity> list = activityRepository.getRepository();
+    public String list(@ModelAttribute() ListParam listParam, Model model) {
+        System.out.println(listParam.getSort());
+        List<Activity> list;
+        Comparator<Activity> comparator = (activity, t1) -> {
+            return 0;
+        };
+        switch (listParam.getSort()) {
+            case "DISTANCE": {
+                comparator = (Activity a1, Activity a2) -> {
+                    return (int) (a1.getDistance().getDistanceOf() - a2.getDistance().getDistanceOf());
+                };
+                break;
+            }
+            case "ID": {
+                comparator = (Activity a1, Activity a2) -> {
+                    return a1.getId() - a2.getId();
+                };
+                break;
+            }
+            case "DATE": {
+                comparator = (Activity a1, Activity a2) -> {
+                    return a1.getDateTime().compareTo(a2.getDateTime());
+                };
+                break;
+            }
+            case "SPORT": {
+                comparator = (Activity a1, Activity a2) -> {
+                    return a1.getSport().getName().compareTo(a2.getSport().getName());
+                };
+                break;
+            }
+            case "DURATION": {
+                comparator = (Activity a1, Activity a2) -> {
+                    return a1.getDuration().compareTo(a2.getDuration());
+                };
+                break;
+            }
+        }
+        list = activityRepository.sort(comparator);
+        System.out.println(list);
         model.addAttribute("activities", list);
+        model.addAttribute("listParam", new ListParam());
         return "list";
     }
 

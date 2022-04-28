@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.service;
+package com.jaworski.sportdiary.service.activity;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.service.gson.GsonCreator;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -69,5 +70,9 @@ public class ActivityRepository {
                 })
                 .orElse(new Activity())
                 .getId();
+    }
+
+    public List<Activity> sort(Comparator<Activity> comparator) {
+        return getRepository().stream().sorted(comparator).toList();
     }
 }

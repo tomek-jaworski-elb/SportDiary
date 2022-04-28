@@ -12,16 +12,36 @@
         <thead>
         <tr>
             <th scope="col" class="text-center">#</th>
-            <th scope="col" class="text-center">Date</th>
-            <th scope="col" class="text-center">Sport</th>
-            <th scope="col" class="text-center">Distance</th>
-            <th scope="col" class="text-center">Duration</th>
+            <th scope="col" class="text-center">
+                <form th:action="@{/user/list}" method="get" th:object="${listParam}">
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DATE')}">
+                    <input type="submit" value="Date">
+                </form>
+            </th>
+            <th scope="col" class="text-center">
+                <form th:action="@{/user/list}" method="get" th:object="${listParam}">
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('SPORT')}">
+                    <input type="submit" value="Sport">
+                </form>
+            </th>
+            <th scope="col" class="text-center">
+                <form th:action="@{/user/list}" method="get" th:object="${listParam}">
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DISTANCE')}">
+                    <input type="submit" value="DISTANCE">
+                </form>
+            </th>
+            <th scope="col" class="text-center">
+                <form th:action="@{/user/list}" method="get" th:object="${listParam}">
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DURATION')}">
+                    <input type="submit" value="Duration">
+                </form>
+            </th>
             <th scope="col" class="text-center">Action</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="activity : ${activities}">
-            <th scope="row" th:text="${activityStat.index}">1</th>
+            <th  class="text-center" scope="row" th:text="${activityStat.index}">1</th>
             <td class="text-center" th:text="${#temporals.format(activity.getDateTime(),'dd/MM/yyyy HH:mm')}">Mark</td>
             <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.Sport).RUNNING}">
                 <small>Run<br></small>
@@ -56,8 +76,10 @@
             </td>
             <td class="text-center" th:text="${activity.getDuration().getSeconds()/60} + ' [minutes]'">Otto</td>
             <td class="text-center">
-                <a class="btn btn-primary mx-2" href="#" th:href="@{'/user/more?id=' + ${activity.getId()}}" role="button">More</a>
-                <a class="btn btn-warning mx-2" href="#" th:href="@{'/user/delete?id=' + ${activity.getId()}}" role="button">Delete</a>
+                <a class="btn btn-primary mx-2" href="#" th:href="@{'/user/more?id=' + ${activity.getId()}}"
+                   role="button">More</a>
+                <a class="btn btn-warning mx-2" href="#" th:href="@{'/user/delete?id=' + ${activity.getId()}}"
+                   role="button">Delete</a>
             </td>
         </tr>
         </tbody>

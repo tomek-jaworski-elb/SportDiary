@@ -3,6 +3,9 @@ package com.jaworski.sportdiary.domain;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -16,6 +19,8 @@ public class Activity {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
+    @NonNull
+    @Min(value = 0)
     private Integer id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateTime;

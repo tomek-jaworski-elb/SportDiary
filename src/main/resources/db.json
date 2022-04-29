@@ -128,5 +128,15 @@
       "distanceOf": 0.0,
       "units": "NM"
     }
+  },
+  {
+    "id": 22,
+    "dateTime": "2022-04-11T10:01:00",
+    "sport": "CYCLING",
+    "duration": 0,
+    "distance": {
+      "distanceOf": 0.0,
+      "units": "NM"
+    }
   }
 ]

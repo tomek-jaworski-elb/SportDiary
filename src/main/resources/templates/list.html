@@ -5,7 +5,8 @@
 </head>
 <body>
 <div class="container" th:insert="nav::nav"></div>
-<h1 class="container text-center" sec:authorize="isAuthenticated()" th:text="${'Witaj: ' + #authentication.name}">Witaj
+<h1 class="container text-center" sec:authorize="isAuthenticated()"
+    th:text="#{html.list.welcome(${#authentication.name})}"> Witaj
 </h1>
 <div class="container">
     <table class="table table-hover">
@@ -41,7 +42,7 @@
         </thead>
         <tbody>
         <tr th:each="activity : ${activities}">
-            <th  class="text-center" scope="row" th:text="${activityStat.index}">1</th>
+            <th class="text-center" scope="row" th:text="${activityStat.index}">1</th>
             <td class="text-center" th:text="${#temporals.format(activity.getDateTime(),'dd/MM/yyyy HH:mm')}">Mark</td>
             <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.Sport).RUNNING}">
                 <small>Run<br></small>

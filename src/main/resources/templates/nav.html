@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script type="text/javascript" th:src="@{/js/time.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/bootstrap.bundle.min.js}"></script>
 </head>
-<body>
+<body onload="startTime()">
 <div th:fragment="nav"
      style="background: rgb(2,0,36);background: linear-gradient(0deg, rgba(2,0,36,0) 0%, rgba(0,212,255,1) 100%);"
      class="rounded-3">

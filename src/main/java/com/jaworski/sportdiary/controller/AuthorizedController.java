@@ -1,6 +1,7 @@
 package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
+import com.jaworski.sportdiary.domain.Distance;
 import com.jaworski.sportdiary.domain.ListParam;
 import com.jaworski.sportdiary.service.activity.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -61,13 +64,14 @@ public class AuthorizedController {
 
     @PostMapping(path = "/add")
     public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
+        System.out.println(activity);
         if (result.hasErrors()) {
             System.out.println(result.toString());
+//            model.addAttribute("activity", activity);
             return "add";
         } else {
-            System.out.println(activity);
             activityRepository.addActivity(activity);
-            model.addAttribute("activity", activity.toString());
+            model.addAttribute("activity", activity);
             return "new";
         }
     }

@@ -2,10 +2,7 @@ package com.jaworski.sportdiary.domain;
 
 import lombok.*;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @ToString
 @NoArgsConstructor
@@ -14,9 +11,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class Distance {
 
-    @NotNull(message = "pole null")
-    @NotBlank(message = "pole blank")
-    @NotEmpty(message = "empty")
+    @NotNull(message = "{valid.distance.empty}")
+    @PositiveOrZero(message = "{valid.distance.positive}")
     private Double distanceOf;
     private Units units;
     private static final double RATE_KM_TO_MILE = 1.84;

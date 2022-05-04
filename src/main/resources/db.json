@@ -148,5 +148,65 @@
       "distanceOf": 87.0,
       "units": "NM"
     }
+  },
+  {
+    "id": 24,
+    "dateTime": "2022-05-26T18:11:00",
+    "sport": "RUNNING",
+    "duration": 55,
+    "distance": {
+      "distanceOf": 5.0,
+      "units": "NM"
+    }
+  },
+  {
+    "id": 25,
+    "dateTime": "2022-05-12T20:19:00",
+    "sport": "RUNNING",
+    "duration": 100,
+    "distance": {
+      "distanceOf": 66.0,
+      "units": "NM"
+    }
+  },
+  {
+    "id": 26,
+    "dateTime": "2022-05-19T20:20:00",
+    "sport": "ULTRA_RUNNING",
+    "duration": 15,
+    "distance": {
+      "distanceOf": 0.0,
+      "units": "METERS"
+    }
+  },
+  {
+    "id": 26,
+    "dateTime": "2022-05-19T20:20:00",
+    "sport": "ULTRA_RUNNING",
+    "duration": 15,
+    "distance": {
+      "distanceOf": 0.0,
+      "units": "METERS"
+    }
+  },
+  {
+    "id": 27,
+    "dateTime": "2022-05-07T20:21:00",
+    "sport": "ULTRA_RUNNING",
+    "duration": 56,
+    "distance": {
+      "distanceOf": 43.0,
+      "units": "NM"
+    }
+  },
+  {
+    "id": 28,
+    "dateTime": "2022-05-12T21:27:00",
+    "sport": "RUNNING",
+    "duration": 45,
+    "distance": {
+      "distanceOf": 45.0,
+      "units": "NM"
+    }
   }
 ]

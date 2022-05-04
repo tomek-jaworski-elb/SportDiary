@@ -75,7 +75,7 @@
             <td class="text-center"
                 th:text="${activity.getDistance().distanceOf + ' - ' + activity.getDistance().getUnits()}">Otto
             </td>
-            <td class="text-center" th:text="${activity.getDuration().getSeconds()/60} + ' [minutes]'">Otto</td>
+            <td class="text-center" th:text="${activity.getDuration()} + ' [minutes]'">Otto</td>
             <td class="text-center">
                 <a class="btn btn-primary mx-2" href="#" th:href="@{'/user/more?id=' + ${activity.getId()}}"
                    role="button">More</a>

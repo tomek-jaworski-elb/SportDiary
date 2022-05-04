@@ -6,6 +6,7 @@ import com.jaworski.sportdiary.service.activity.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -35,43 +36,40 @@ public class AuthorizedController {
                 break;
             }
             case "ID": {
-                comparator = (Activity a1, Activity a2) -> {
-                    return a1.getId() - a2.getId();
-                };
+                comparator = Comparator.comparingInt(Activity::getId);
                 break;
             }
             case "DATE": {
-                comparator = (Activity a1, Activity a2) -> {
-                    return a1.getDateTime().compareTo(a2.getDateTime());
-                };
+                comparator = Comparator.comparing(Activity::getDateTime);
                 break;
             }
             case "SPORT": {
-                comparator = (Activity a1, Activity a2) -> {
-                    return a1.getSport().getName().compareTo(a2.getSport().getName());
-                };
+                comparator = Comparator.comparing((Activity a) -> a.getSport().getName());
                 break;
             }
             case "DURATION": {
-                comparator = (Activity a1, Activity a2) -> {
-                    return a1.getDuration().compareTo(a2.getDuration());
-                };
+                comparator = Comparator.comparing(Activity::getDuration);
                 break;
             }
         }
         list = activityRepository.sort(comparator);
-        System.out.println(list);
+ //       System.out.println(list);
         model.addAttribute("activities", list);
         model.addAttribute("listParam", new ListParam());
         return "list";
     }
 
     @PostMapping(path = "/add")
-    public String newActivity(@Valid @ModelAttribute Activity activity, Model model) {
-        System.out.println(activity);
-        activityRepository.addActivity(activity);
-        model.addAttribute("activity", activity.toString());
-        return "new";
+    public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            System.out.println(result.toString());
+            return "add";
+        } else {
+            System.out.println(activity);
+            activityRepository.addActivity(activity);
+            model.addAttribute("activity", activity.toString());
+            return "new";
+        }
     }
 
     @GetMapping(value = "/delete", params = "id")

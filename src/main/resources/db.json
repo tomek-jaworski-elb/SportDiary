@@ -138,5 +138,15 @@
       "distanceOf": 0.0,
       "units": "NM"
     }
+  },
+  {
+    "id": 23,
+    "dateTime": "2022-05-17T11:48:00",
+    "sport": "RUNNING",
+    "duration": 56,
+    "distance": {
+      "distanceOf": 87.0,
+      "units": "NM"
+    }
   }
 ]

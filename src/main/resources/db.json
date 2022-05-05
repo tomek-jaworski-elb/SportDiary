@@ -208,5 +208,15 @@
       "distanceOf": 45.0,
       "units": "NM"
     }
+  },
+  {
+    "id": 29,
+    "dateTime": "2022-05-24T11:06:00",
+    "sport": "JOGA",
+    "duration": 45,
+    "distance": {
+      "distanceOf": 0.0,
+      "units": "NM"
+    }
   }
 ]

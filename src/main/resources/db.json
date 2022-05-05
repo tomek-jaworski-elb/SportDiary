@@ -2,7 +2,7 @@
   {
     "id": 1,
     "dateTime": "2021-01-12T12:00:00",
-    "sport": "CYCLING",
+    "sport": "ULTRA_RUNNING",
     "duration": 3600,
     "distance": {
       "distanceOf": 20.0,
@@ -22,8 +22,8 @@
   {
     "id": 3,
     "dateTime": "2021-03-12T12:15:00",
-    "sport": "ULTRA_RUNNING",
-    "duration": 5600,
+    "sport": "CYCLING",
+    "duration": 5,
     "distance": {
       "distanceOf": 10.0,
       "units": "KM"
@@ -133,9 +133,9 @@
     "id": 22,
     "dateTime": "2022-04-11T10:01:00",
     "sport": "CYCLING",
-    "duration": 0,
+    "duration": 15,
     "distance": {
-      "distanceOf": 0.0,
+      "distanceOf": 3.0,
       "units": "NM"
     }
   },
@@ -172,7 +172,7 @@
   {
     "id": 26,
     "dateTime": "2022-05-19T20:20:00",
-    "sport": "ULTRA_RUNNING",
+    "sport": "GYM",
     "duration": 15,
     "distance": {
       "distanceOf": 0.0,

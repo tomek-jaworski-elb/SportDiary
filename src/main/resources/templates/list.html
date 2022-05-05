@@ -16,25 +16,25 @@
             <th scope="col" class="text-center">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}">
                     <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DATE')}">
-                    <input type="submit" value="Date">
+                    <input type="submit" value="Date" class="btn btn-link text-black">
                 </form>
             </th>
             <th scope="col" class="text-center">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}">
                     <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('SPORT')}">
-                    <input type="submit" value="Sport">
+                    <input type="submit" value="Sport" class="btn btn-link text-black">
                 </form>
             </th>
             <th scope="col" class="text-center">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}">
                     <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DISTANCE')}">
-                    <input type="submit" value="DISTANCE">
+                    <input type="submit" value="DISTANCE" class="btn btn-link text-black">
                 </form>
             </th>
             <th scope="col" class="text-center">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}">
                     <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DURATION')}">
-                    <input type="submit" value="Duration">
+                    <input type="submit" value="Duration" class="btn btn-link text-black">
                 </form>
             </th>
             <th scope="col" class="text-center">Action</th>
@@ -79,6 +79,8 @@
             <td class="text-center">
                 <a class="btn btn-primary mx-2" href="#" th:href="@{'/user/more?id=' + ${activity.getId()}}"
                    role="button">More</a>
+                <a class="btn btn-secondary mx-2" href="#" th:href="@{'/user/edit?id=' + ${activity.getId()}}"
+                   role="button">Edit</a>
                 <a class="btn btn-warning mx-2" href="#" th:href="@{'/user/delete?id=' + ${activity.getId()}}"
                    role="button">Delete</a>
             </td>

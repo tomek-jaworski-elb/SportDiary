@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ActivityRepository {
@@ -74,5 +75,19 @@ public class ActivityRepository {
 
     public List<Activity> sort(Comparator<Activity> comparator) {
         return getRepository().stream().sorted(comparator).toList();
+    }
+
+    public Activity getActivity(int id) {
+        return getRepository().stream()
+                .filter(activity -> activity.getId() == id)
+                .findFirst()
+                .orElse(new Activity());
+    }
+
+    public Activity update(int id, Activity activity) {
+        Activity act = getRepository().stream().filter(activity1 -> activity1.getId() == id).findFirst().orElse(new Activity());
+        int i = getRepository().indexOf(act);
+        getRepository().set(i,activity);
+        return activity;
     }
 }

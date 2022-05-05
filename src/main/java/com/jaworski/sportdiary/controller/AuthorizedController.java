@@ -27,15 +27,11 @@ public class AuthorizedController {
 
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute() ListParam listParam, Model model) {
-        logger.info(listParam.toString());
-        Comparator<Activity> comparator = (activity, t1) -> {
-            return 0;
-        };
+        logger.info(listParam);
+        Comparator<Activity> comparator = (activity, t1) -> 0;
         switch (listParam.getSort()) {
             case "DISTANCE": {
-                comparator = (Activity a1, Activity a2) -> {
-                    return (int) (a1.getDistance().getDistanceKM() - a2.getDistance().getDistanceKM());
-                };
+                comparator = Comparator.comparingDouble(activity -> activity.getDistance().getDistanceKM());
                 break;
             }
             case "ID": {
@@ -74,8 +70,30 @@ public class AuthorizedController {
         }
     }
 
+    @GetMapping(value = "/edit", params = "id")
+    public String edit(@RequestParam(required = true, name = "id") int id, Model model) {
+        Activity activity = activityRepository.getActivity(id);
+        logger.info(activity);
+        model.addAttribute("activity", activity);
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String edited(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
+        logger.info(activity);
+        logger.error(result);
+        if (result.hasErrors()) {
+            return "edit";
+        } else {
+            activityRepository.update(activity.getId(), activity);
+            model.addAttribute("activities", activityRepository.getRepository());
+            model.addAttribute("listParam", new ListParam());
+            return new RedirectView("/list").getUrl();
+        }
+    }
+
     @GetMapping(value = "/delete", params = "id")
-    public RedirectView delete(@RequestParam(required = true, defaultValue = "", name = "id") int id) {
+    public RedirectView delete(@RequestParam(required = true, name = "id") int id) {
         activityRepository.delete(id);
         return new RedirectView("/user");
     }

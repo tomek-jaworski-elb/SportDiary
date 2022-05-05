@@ -1,10 +1,11 @@
 package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.domain.Distance;
 import com.jaworski.sportdiary.domain.ListParam;
 import com.jaworski.sportdiary.service.activity.ActivityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,22 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
 @Controller
 @RequestMapping("/user")
+@AllArgsConstructor
 public class AuthorizedController {
 
-    @Autowired
+    static final Logger logger = LogManager.getLogger(AuthorizedController.class);
+
     private ActivityRepository activityRepository;
 
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute() ListParam listParam, Model model) {
-        System.out.println(listParam.getSort());
-        List<Activity> list;
+        logger.info(listParam.toString());
         Comparator<Activity> comparator = (activity, t1) -> {
             return 0;
         };
@@ -55,8 +55,7 @@ public class AuthorizedController {
                 break;
             }
         }
-        list = activityRepository.sort(comparator);
- //       System.out.println(list);
+        List<Activity> list = activityRepository.sort(comparator);
         model.addAttribute("activities", list);
         model.addAttribute("listParam", new ListParam());
         return "list";
@@ -64,10 +63,9 @@ public class AuthorizedController {
 
     @PostMapping(path = "/add")
     public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
-        System.out.println(activity);
+        logger.info(activity);
         if (result.hasErrors()) {
-            System.out.println(result.toString());
-//            model.addAttribute("activity", activity);
+            logger.info(result);
             return "add";
         } else {
             activityRepository.addActivity(activity);
@@ -100,7 +98,6 @@ public class AuthorizedController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        System.out.println("***");
         Activity activity = new Activity();
         int nextId = activityRepository.maxId() + 1;
         activity.setId(nextId);

@@ -11,7 +11,7 @@
     <groupId>com.jaworski</groupId>
     <artifactId>SportDiary</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>SportDiary</name>
     <description>SportDiary</description>
     <properties>

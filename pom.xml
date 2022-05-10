@@ -11,7 +11,7 @@
     <groupId>com.jaworski</groupId>
     <artifactId>SportDiary</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>SportDiary</name>
     <description>SportDiary</description>
     <properties>
@@ -59,10 +59,6 @@
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

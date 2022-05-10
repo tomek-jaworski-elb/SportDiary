@@ -96,7 +96,7 @@ public class AuthorizedController {
             return "edit";
         } else {
             activityService.update(activity.getId(), activity);
-            model.addAttribute("activities", activityService.getActivities());
+            model.addAttribute("activities", activityService.getActivityList());
             model.addAttribute("listParam", new ListParam());
             return new RedirectView("/list").getUrl();
         }

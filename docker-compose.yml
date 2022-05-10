@@ -1,0 +1,18 @@
+version: '2'
+services:
+  maven:
+    image: maven:3-openjdk-17-slim
+    volumes:
+      - ./src:/home/app/src
+      - ./pom.xml:/home/app
+    command:
+      - mvn -f /home/app/pom.xml clean package
+  ubuntu:
+    image: ubuntu:20.04
+    volumes:
+      - ./src/main/resources/db.json:src/main/resources/db.json
+      - ./target/SportDiary-0.0.1-SNAPSHOT.jar:SportDiary-0.0.1.jar
+    command:
+      - pwd /
+      - ls -l /
+      - echo $USER

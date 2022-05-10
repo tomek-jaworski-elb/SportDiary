@@ -36,6 +36,7 @@ public class ActivityRepository {
         try {
             return Files.readString(path);
         } catch (IOException e) {
+            logger.error(path.toString(), e);
             return "";
         }
     }
@@ -45,7 +46,7 @@ public class ActivityRepository {
         try {
             Files.writeString(PATH_TO_DB_FILE, json);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }

@@ -93,11 +93,14 @@
             </td>
             <td class="text-center" th:text="${activity.getDuration()} + ' [minutes]'">Otto</td>
             <td class="text-center">
-                <a class="btn btn-primary mx-2" href="#" th:href="@{'/user/more?id=' + ${activity.getId()}}"
+                <a sec:authorize="isAnonymous() || isAuthenticated()" class="btn btn-primary mx-2" href="#"
+                   th:href="@{'/user/more?id=' + ${activity.getId()}}"
                    role="button">More</a>
-                <a class="btn btn-secondary mx-2" href="#" th:href="@{'/user/edit?id=' + ${activity.getId()}}"
+                <a sec:authorize="isAuthenticated()" class="btn btn-secondary mx-2" href="#"
+                   th:href="@{'/user/edit?id=' + ${activity.getId()}}"
                    role="button">Edit</a>
-                <a class="btn btn-warning mx-2" href="#" th:href="@{'/user/delete?id=' + ${activity.getId()}}"
+                <a sec:authorize="isAuthenticated()" class="btn btn-warning mx-2" href="#"
+                   th:href="@{'/user/delete?id=' + ${activity.getId()}}"
                    role="button">Delete</a>
             </td>
         </tr>

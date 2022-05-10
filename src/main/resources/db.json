@@ -218,5 +218,15 @@
       "distanceOf": 0.0,
       "units": "NM"
     }
+  },
+  {
+    "id": 30,
+    "dateTime": "2022-05-14T13:41:00",
+    "sport": "ULTRA_RUNNING",
+    "duration": 234,
+    "distance": {
+      "distanceOf": 44.0,
+      "units": "NM"
+    }
   }
 ]

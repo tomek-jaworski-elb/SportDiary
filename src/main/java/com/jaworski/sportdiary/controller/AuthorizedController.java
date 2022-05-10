@@ -2,8 +2,9 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
-import com.jaworski.sportdiary.service.activity.ActivityRepository;
-import lombok.AllArgsConstructor;
+import com.jaworski.sportdiary.repository.ActivityRepository;
+import com.jaworski.sportdiary.service.activity.ActivityService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -18,12 +19,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorizedController {
 
     static final Logger logger = LogManager.getLogger(AuthorizedController.class);
 
-    private ActivityRepository activityRepository;
+    private final ActivityRepository activityRepository;
+    private final ActivityService activityService;
 
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute() ListParam listParam, Model model) {
@@ -51,7 +53,7 @@ public class AuthorizedController {
                 break;
             }
         }
-        List<Activity> list = activityRepository.sort(comparator);
+        List<Activity> list = activityService.sort(comparator);
         model.addAttribute("activities", list);
         model.addAttribute("listParam", new ListParam());
         return "list";
@@ -64,7 +66,7 @@ public class AuthorizedController {
             logger.info(result);
             return "add";
         } else {
-            activityRepository.addActivity(activity);
+            activityService.addActivity(activity);
             model.addAttribute("activity", activity);
             return "new";
         }
@@ -72,7 +74,7 @@ public class AuthorizedController {
 
     @GetMapping(value = "/edit", params = "id")
     public String edit(@RequestParam(required = true, name = "id") int id, Model model) {
-        Activity activity = activityRepository.getActivity(id);
+        Activity activity = activityService.getActivity(id);
         logger.info(activity);
         model.addAttribute("activity", activity);
         return "edit";
@@ -85,7 +87,7 @@ public class AuthorizedController {
         if (result.hasErrors()) {
             return "edit";
         } else {
-            activityRepository.update(activity.getId(), activity);
+            activityService.update(activity.getId(), activity);
             model.addAttribute("activities", activityRepository.getRepository());
             model.addAttribute("listParam", new ListParam());
             return new RedirectView("/list").getUrl();
@@ -94,7 +96,7 @@ public class AuthorizedController {
 
     @GetMapping(value = "/delete", params = "id")
     public RedirectView delete(@RequestParam(required = true, name = "id") int id) {
-        activityRepository.delete(id);
+        activityService.delete(id);
         return new RedirectView("/user");
     }
 
@@ -107,7 +109,7 @@ public class AuthorizedController {
     @GetMapping(path = "/more", params = "id")
     public String more(@RequestParam int id, Model model) {
 
-        model.addAttribute("activity", activityRepository.getActivities().stream()
+        model.addAttribute("activity", activityService.getActivityList().stream()
                 .filter(activity -> activity.getId() == id)
                 .findFirst()
                 .orElse(new Activity()));
@@ -117,7 +119,7 @@ public class AuthorizedController {
     @GetMapping("/add")
     public String add(Model model) {
         Activity activity = new Activity();
-        int nextId = activityRepository.maxId() + 1;
+        int nextId = activityService.maxId() + 1;
         activity.setId(nextId);
         model.addAttribute("activity", activity);
         return "add";

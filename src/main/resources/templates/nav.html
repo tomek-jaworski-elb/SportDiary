@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <script type="text/javascript" th:src="@{/js/time.js}"></script>
     <script type="text/javascript" th:src="@{/bootstrap/bootstrap.bundle.min.js}"></script>
@@ -15,9 +15,11 @@
     <div class="container text-center my-2 ">
         <form class="form-control-plaintext" th:action="@{/logout}" method="post">
             <a class="btn btn-link mx-2 bg-light" href="#" th:href="@{/user}" role="button">Home</a>
-            <a class="btn link-info bg-light mx-2" href="#" th:href="@{/user/add}" role="button">Add</a>
-            <a class="btn btn-warning mx-2" href="#" th:href="@{/user/save}" role="button">Save</a>
-            <input class="btn btn-warning mx-5 my-3" type="submit" value="Logout">
+            <a sec:authorize="isAuthenticated()" class="btn link-info bg-light mx-2" href="#" th:href="@{/user/add}" role="button">Add</a>
+            <a sec:authorize="isAuthenticated()" class="btn btn-warning mx-2" href="#" th:href="@{/user/save}" role="button">Save</a>
+            <input sec:authorize="isAuthenticated()" class="btn btn-warning mx-2 my-2" type="submit" value="Logout">
+            <a sec:authorize="isAnonymous()" class="btn btn-link mx-2 bg-light" href="#" th:href="@{/login}"
+               role="button">Login</a>
         </form>
     </div>
 </div>

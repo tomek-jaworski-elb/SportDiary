@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group my-2">
                     <label for="distance">Distance</label>
-                    <input class="form-control" type="number" th:field="*{distance.distanceOf}" id="distance"/>
+                    <input class="form-control" type="number" th:field="*{distance.distanceOf}" id="distance" placeholder="Distance"/>
                     <span class="text-danger" th:if="${#fields.hasErrors('distance.distanceOf')}" th:errors="*{distance.distanceOf}"></span>
                 </div>
 
@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group my-2">
                     <label for="duration">Duration</label>
-                    <input class="form-control" type="number" th:field="*{duration}" id="duration"/>
+                    <input class="form-control" type="number" th:field="*{duration}" id="duration" placeholder="Duration in minutes"/>
                     <span class="text-danger" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></span>
 
                 </div>

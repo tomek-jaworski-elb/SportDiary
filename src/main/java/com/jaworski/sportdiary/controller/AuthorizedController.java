@@ -2,8 +2,9 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
-import com.jaworski.sportdiary.service.activity.ActivityRepository;
-import lombok.AllArgsConstructor;
+import com.jaworski.sportdiary.repository.ActivityRepository;
+import com.jaworski.sportdiary.service.activity.ActivityService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -18,17 +19,18 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorizedController {
 
-    static final Logger logger = LogManager.getLogger(AuthorizedController.class);
+    private static final Logger logger = LogManager.getLogger(AuthorizedController.class);
 
-    private ActivityRepository activityRepository;
+    private final ActivityService activityService;
+    private final ActivityRepository activityRepository;
 
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute() ListParam listParam, Model model) {
         logger.info(listParam);
-        Comparator<Activity> comparator = (activity, t1) -> 0;
+        Comparator<Activity> comparator = (activity1, activity2) -> 0;
         switch (listParam.getSort()) {
             case "DISTANCE": {
                 comparator = Comparator.comparingDouble(activity -> activity.getDistance().getDistanceKM());
@@ -39,10 +41,18 @@ public class AuthorizedController {
                 break;
             }
             case "DATE": {
-                comparator = Comparator.comparing(Activity::getDateTime);
+                if (Boolean.FALSE.equals(listParam.getIsAscending())) {
+                    comparator = Comparator.comparing(Activity::getDateTime).reversed();
+                    break;
+                }
+                    comparator = Comparator.comparing(Activity::getDateTime);
                 break;
             }
             case "SPORT": {
+                if (Boolean.FALSE.equals(listParam.getIsAscending())) {
+                    comparator = Comparator.comparing((Activity a) -> a.getSport().getName()).reversed();
+                    break;
+                }
                 comparator = Comparator.comparing((Activity a) -> a.getSport().getName());
                 break;
             }
@@ -51,9 +61,9 @@ public class AuthorizedController {
                 break;
             }
         }
-        List<Activity> list = activityRepository.sort(comparator);
+        List<Activity> list = activityService.sort(comparator);
         model.addAttribute("activities", list);
-        model.addAttribute("listParam", new ListParam());
+        model.addAttribute("listParam", listParam);
         return "list";
     }
 
@@ -64,7 +74,7 @@ public class AuthorizedController {
             logger.info(result);
             return "add";
         } else {
-            activityRepository.addActivity(activity);
+            activityService.addActivity(activity);
             model.addAttribute("activity", activity);
             return "new";
         }
@@ -72,7 +82,7 @@ public class AuthorizedController {
 
     @GetMapping(value = "/edit", params = "id")
     public String edit(@RequestParam(required = true, name = "id") int id, Model model) {
-        Activity activity = activityRepository.getActivity(id);
+        Activity activity = activityService.getActivity(id);
         logger.info(activity);
         model.addAttribute("activity", activity);
         return "edit";
@@ -85,8 +95,8 @@ public class AuthorizedController {
         if (result.hasErrors()) {
             return "edit";
         } else {
-            activityRepository.update(activity.getId(), activity);
-            model.addAttribute("activities", activityRepository.getRepository());
+            activityService.update(activity.getId(), activity);
+            model.addAttribute("activities", activityService.getActivities());
             model.addAttribute("listParam", new ListParam());
             return new RedirectView("/list").getUrl();
         }
@@ -94,7 +104,7 @@ public class AuthorizedController {
 
     @GetMapping(value = "/delete", params = "id")
     public RedirectView delete(@RequestParam(required = true, name = "id") int id) {
-        activityRepository.delete(id);
+        activityService.delete(id);
         return new RedirectView("/user");
     }
 
@@ -107,17 +117,14 @@ public class AuthorizedController {
     @GetMapping(path = "/more", params = "id")
     public String more(@RequestParam int id, Model model) {
 
-        model.addAttribute("activity", activityRepository.getActivities().stream()
-                .filter(activity -> activity.getId() == id)
-                .findFirst()
-                .orElse(new Activity()));
+        model.addAttribute("activity", activityService.getActivity(id));
         return "more";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
         Activity activity = new Activity();
-        int nextId = activityRepository.maxId() + 1;
+        int nextId = activityService.maxId() + 1;
         activity.setId(nextId);
         model.addAttribute("activity", activity);
         return "add";

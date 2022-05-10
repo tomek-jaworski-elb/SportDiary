@@ -1,8 +1,8 @@
 package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.service.activity.ActivityRepository;
-import lombok.AllArgsConstructor;
+import com.jaworski.sportdiary.service.activity.ActivityService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -11,21 +11,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Controller
 public class IndexController {
 
-    static final Logger logger = LogManager.getLogger(IndexController.class);
+    private static final Logger logger = LogManager.getLogger(IndexController.class);
 
-    private ActivityRepository activityRepository;
+    private final ActivityService activityService;
 
     @GetMapping(path = {"/"})
     public String index(Model model) {
-        List<Activity> list = activityRepository.getRepository();
+        List<Activity> list = activityService.getActivities();
         model.addAttribute("activities", list);
         return "welcome";
     }
-
 
     @GetMapping("/login")
     public String login() {

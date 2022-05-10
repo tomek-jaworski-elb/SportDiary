@@ -45,6 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/webjars/**").permitAll()
                 .antMatchers("/welcome", "/", "/test").permitAll()
+                // TODO: add more routes here
+                .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").anonymous()
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/public/**").permitAll()

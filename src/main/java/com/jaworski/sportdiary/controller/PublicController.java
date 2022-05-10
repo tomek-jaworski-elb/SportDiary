@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/public")
 public class PublicController {
 
-    static final Logger logger = LogManager.getLogger(PublicController.class);
+    private static final Logger logger = LogManager.getLogger(PublicController.class);
 
     @GetMapping("")
     public String main() {

@@ -1,8 +1,8 @@
 package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.service.activity.ActivityRepository;
-import lombok.AllArgsConstructor;
+import com.jaworski.sportdiary.service.activity.ActivityService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/anonymous")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AnonymousController {
 
-    static final Logger logger = LogManager.getLogger(AnonymousController.class);
+    private static final Logger logger = LogManager.getLogger(AnonymousController.class);
 
-    private ActivityRepository activityRepository;
+    private final ActivityService activityService;
 
     @GetMapping("")
     public String main() {
@@ -28,6 +28,6 @@ public class AnonymousController {
             return (int) (a1.getDistance().getDistanceOf() - a2.getDistance().getDistanceOf());
         };
         Function<Activity, String> function = Activity::toString;
-        return activityRepository.sort(comparator).stream().map(function).collect(Collectors.joining());
+        return activityService.sort(comparator).stream().map(function).collect(Collectors.joining());
     }
 }

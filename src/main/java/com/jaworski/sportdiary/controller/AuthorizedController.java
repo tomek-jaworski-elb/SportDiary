@@ -47,7 +47,7 @@ public class AuthorizedController {
                     comparator = Comparator.comparing(Activity::getDateTime).reversed();
                     break;
                 }
-                    comparator = Comparator.comparing(Activity::getDateTime);
+                comparator = Comparator.comparing(Activity::getDateTime);
                 break;
             }
             case "SPORT": {
@@ -71,7 +71,6 @@ public class AuthorizedController {
         model.addAttribute("listParam", listParam);
         return "list";
     }
-
 
 
     @GetMapping(value = "/edit", params = "id")

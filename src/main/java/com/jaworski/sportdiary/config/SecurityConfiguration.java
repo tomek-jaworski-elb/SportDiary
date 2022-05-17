@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary;
+package com.jaworski.sportdiary.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

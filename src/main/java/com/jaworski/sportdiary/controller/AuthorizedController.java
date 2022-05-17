@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -30,7 +31,8 @@ public class AuthorizedController {
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute() ListParam listParam, Model model) {
         logger.info(listParam);
-        Comparator<Activity> comparator = (activity1, activity2) -> 0;
+        Comparator<Activity> comparator;
+        System.out.println(listParam.getIsAscending());
         switch (listParam.getSort()) {
             case "DISTANCE": {
                 comparator = Comparator.comparingDouble(activity -> activity.getDistance().getDistanceKM());
@@ -60,6 +62,9 @@ public class AuthorizedController {
                 comparator = Comparator.comparing(Activity::getDuration);
                 break;
             }
+            default: {
+                comparator = Comparator.comparing(Objects::nonNull);
+            }
         }
         List<Activity> list = activityService.sort(comparator);
         model.addAttribute("activities", list);
@@ -67,18 +72,7 @@ public class AuthorizedController {
         return "list";
     }
 
-    @PostMapping(path = "/add")
-    public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
-        logger.info(activity);
-        if (result.hasErrors()) {
-            logger.info(result);
-            return "add";
-        } else {
-            activityService.addActivity(activity);
-            model.addAttribute("activity", activity);
-            return "new";
-        }
-    }
+
 
     @GetMapping(value = "/edit", params = "id")
     public String edit(@RequestParam(required = true, name = "id") int id, Model model) {
@@ -128,5 +122,18 @@ public class AuthorizedController {
         activity.setId(nextId);
         model.addAttribute("activity", activity);
         return "add";
+    }
+
+    @PostMapping(path = "/add")
+    public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
+        logger.info(activity);
+        if (result.hasErrors()) {
+            logger.info(result);
+            return "add";
+        } else {
+            activityService.addActivity(activity);
+            model.addAttribute("activity", activity);
+            return "new";
+        }
     }
 }

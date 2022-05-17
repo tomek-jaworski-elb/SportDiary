@@ -19,9 +19,6 @@ public class ActivityRepository {
     private static final Path PATH_TO_DB_FILE = Path.of("src", "main", "resources", "db.json");
     private final List<Activity> activities = getActivities();
 
-    public List<Activity> getRepository() {
-        return activities;
-    }
 
     private String getJson() {
         return GsonCreator.getGson().toJson(activities);

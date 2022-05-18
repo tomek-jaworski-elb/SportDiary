@@ -29,10 +29,9 @@ public class AuthorizedController {
     private final ActivityRepository activityRepository;
 
     @GetMapping(path = {"/list", "/", ""})
-    public String list(@ModelAttribute() ListParam listParam, Model model) {
+    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam, Model model) {
         logger.info(listParam);
         Comparator<Activity> comparator;
-        System.out.println(listParam.getIsAscending());
         switch (listParam.getSort()) {
             case "DISTANCE": {
                 comparator = Comparator.comparingDouble(activity -> activity.getDistance().getDistanceKM());
@@ -108,7 +107,7 @@ public class AuthorizedController {
     }
 
     @GetMapping(path = "/more", params = "id")
-    public String more(@RequestParam int id, Model model) {
+    public String more(@RequestParam(required = false) int id, @RequestParam(required = false) String lang, Model model) {
 
         model.addAttribute("activity", activityService.getActivity(id));
         return "more";

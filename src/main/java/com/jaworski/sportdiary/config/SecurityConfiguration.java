@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
@@ -35,22 +34,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-    //this method allows static resources to be neglected by spring security
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/js/**").permitAll()
                 .antMatchers("/welcome", "/", "/test").permitAll()
-                // TODO: add more routes here
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").anonymous()
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/public/**").permitAll()
-                .antMatchers("/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()

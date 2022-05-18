@@ -15,45 +15,49 @@
             <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center" name="date">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}" name="date">
-                    <input type="text" th:field="*{sort}" th:value="${listParam.setSort('DATE')}">
-                    <input th:if="${listParam.getIsAscending()}" type="text" th:field="*{isAscending}"
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DATE')}">
+                    <input hidden th:if="${listParam.isAscending}" type="text" th:field="*{isAscending}"
                            th:value="${listParam.setIsAscending('false')}"/>
-                    <input th:unless="${!listParam.getIsAscending()}" type="text" th:field="*{isAscending}"
+                    <input hidden th:unless="${listParam.isAscending}" type="text" th:field="*{isAscending}"
                            th:value="${listParam.setIsAscending('true')}"/>
                     <input type="submit" value="Date" class="btn btn-link text-black">
                 </form>
             </th>
             <th scope="col" class="text-center" name="sport">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}" name="sport">
-                    <input type="text" th:field="*{sort}" th:value="${listParam.setSort('SPORT')}">
-                    <input th:if="${listParam.isAscending}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('false')}" />
-                    <input th:if="${!listParam.isAscending}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('true')}" />
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('SPORT')}">
+                    <input hidden th:if="${listParam.isAscending}" type="text" th:field="*{isAscending}"
+                           th:value="${listParam.setIsAscending('false')}"/>
+                    <input hidden th:unless="${listParam.isAscending}" type="text" th:field="*{isAscending}"
+                           th:value="${listParam.setIsAscending('true')}"/>
                     <input type="submit" value="Sport" class="btn btn-link text-black">
                 </form>
             </th>
             <th scope="col" class="text-center">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}">
-                    <input type="text" th:field="*{sort}" th:value="${listParam.setSort('DISTANCE')}">
-                    <input th:if="${listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DISTANCE')}">
+                    <input hidden th:if="${listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
                            th:value="${listParam.setIsAscending('false')}"/>
-                    <input th:unless="${!listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
+                    <input hidden th:unless="${!listParam.isAscending.booleanValue()}" type="text"
+                           th:field="*{isAscending}"
                            th:value="${listParam.setIsAscending('true')}"/>
                     <input type="submit" value="DISTANCE" class="btn btn-link text-black">
                 </form>
             </th>
             <th scope="col" class="text-center">
                 <form th:action="@{/user/list}" method="get" th:object="${listParam}">
-                    <input type="text" th:field="*{sort}" th:value="${listParam.setSort('DURATION')}">
-                    <input th:if="${listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
+                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DURATION')}">
+                    <input hidden th:if="${listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
                            th:value="${listParam.setIsAscending('false')}"/>
-                    <input th:unless="${!listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
+                    <input hidden th:unless="${!listParam.isAscending.booleanValue()}" type="text"
+                           th:field="*{isAscending}"
                            th:value="${listParam.setIsAscending('true')}"/>
-                    <input type="submit" value="Duration" class="btn btn-link text-black">
+                    <input type="submit" value="Duration" class="btn btn-link text-black"/>
                 </form>
             </th>
-            <th scope="col" class="text-center">Action</th>
+            <th scope="col" class="text-center">
+                <input type="submit" value="Action" class="btn btn-link text-black"/>
+            </th>
         </tr>
         </thead>
         <tbody>

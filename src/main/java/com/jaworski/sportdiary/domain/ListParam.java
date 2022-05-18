@@ -12,6 +12,6 @@ import lombok.ToString;
 public class ListParam {
 
     private String sort = "";
-    private Boolean isAscending = true;
+    private Boolean isAscending = Boolean.TRUE;
 
 }

@@ -38,12 +38,14 @@ public class ActivityRepository {
         }
     }
 
-    public void saveToJson() {
+    public boolean saveToJson() {
         String json = getJson();
         try {
             Files.writeString(PATH_TO_DB_FILE, json);
         } catch (IOException e) {
             logger.error(e);
+            return false;
         }
+        return true;
     }
 }

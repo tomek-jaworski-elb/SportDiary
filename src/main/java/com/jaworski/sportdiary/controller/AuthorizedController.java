@@ -29,7 +29,9 @@ public class AuthorizedController {
     private final ActivityRepository activityRepository;
 
     @GetMapping(path = {"/list", "/", ""})
-    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam, Model model) {
+    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
+                       @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error,
+                       Model model) {
         logger.info(listParam);
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {
@@ -68,6 +70,8 @@ public class AuthorizedController {
         List<Activity> list = activityService.sort(comparator);
         model.addAttribute("activities", list);
         model.addAttribute("listParam", listParam);
+        model.addAttribute("save", save);
+        model.addAttribute("error", error);
         return "list";
     }
 
@@ -102,8 +106,12 @@ public class AuthorizedController {
 
     @GetMapping("/save")
     public RedirectView saveList(Model model) {
-        activityRepository.saveToJson();
-        return new RedirectView("/user");
+        if (activityRepository.saveToJson()) {
+            return new RedirectView("/user?save=true");
+        } else {
+            return new RedirectView("/user?error=true");
+        }
+
     }
 
     @GetMapping(path = "/more", params = "id")

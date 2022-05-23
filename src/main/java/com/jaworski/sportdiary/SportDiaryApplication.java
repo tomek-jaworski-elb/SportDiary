@@ -2,16 +2,21 @@ package com.jaworski.sportdiary;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-@SpringBootApplication
+import javax.persistence.EntityManager;
+
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class SportDiaryApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SportDiaryApplication.class, args);
+        final EntityManager entityManager = EntityManagerProvider.get();
+        EntityManagerProvider.startTransaction(entityManager);
     }
     @Bean
     public LocalValidatorFactoryBean getValidator() {

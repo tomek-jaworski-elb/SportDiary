@@ -16,7 +16,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.persistence.EntityManager;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication()
 public class SportDiaryApplication {
 
     public static void main(String[] args) {

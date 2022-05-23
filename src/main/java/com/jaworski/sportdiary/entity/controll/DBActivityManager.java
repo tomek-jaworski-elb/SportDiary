@@ -1,7 +1,6 @@
 package com.jaworski.sportdiary.entity.controll;
 
 import com.jaworski.sportdiary.entity.Activity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

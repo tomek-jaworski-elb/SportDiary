@@ -1,5 +1,6 @@
 package com.jaworski.sportdiary.domain;
 
+import com.jaworski.sportdiary.domain.enums.Unit;
 import lombok.*;
 
 import javax.validation.constraints.*;
@@ -14,7 +15,7 @@ public class Distance {
     @NotNull(message = "{valid.distance.empty}")
     @PositiveOrZero(message = "{valid.distance.positive}")
     private Double distanceOf;
-    private Units units;
+    private Unit units;
     private static final double RATE_KM_TO_MILE = 1.84;
 
     public Double getDistanceKM() {

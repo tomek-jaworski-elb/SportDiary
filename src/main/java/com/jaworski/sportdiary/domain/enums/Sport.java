@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.domain;
+package com.jaworski.sportdiary.domain.enums;
 
 public enum Sport {
     RUNNING("Running"),

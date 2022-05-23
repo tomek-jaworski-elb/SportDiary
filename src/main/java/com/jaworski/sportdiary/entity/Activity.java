@@ -1,22 +1,22 @@
 package com.jaworski.sportdiary.entity;
 
-import com.jaworski.sportdiary.domain.Distance;
-import com.jaworski.sportdiary.domain.Sport;
-import com.jaworski.sportdiary.domain.Units;
+import com.jaworski.sportdiary.domain.enums.Sport;
+import com.jaworski.sportdiary.domain.enums.Unit;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 public class Activity {
 
     @Getter(AccessLevel.NONE)
@@ -25,13 +25,14 @@ public class Activity {
     @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @NotNull(message = "{valid.date.empty}")
     private LocalDateTime dateTime;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "{valid.sport.empty}")
     private Sport sport;
 
     @Getter()
@@ -46,5 +47,6 @@ public class Activity {
     private Double distanceOf;
 
     @Enumerated(EnumType.STRING)
-    private Units units;
+    @NotNull(message = "{valid.unit.empty}")
+    private Unit unit;
 }

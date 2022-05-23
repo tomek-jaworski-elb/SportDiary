@@ -37,7 +37,7 @@
                 <div class="form-group my-2">
                     <label for="unit">Units</label>
                     <select class="form-select" id="unit" th:field="*{distance.units}">
-                        <option th:each="unit : ${T(com.jaworski.sportdiary.domain.Units).values()}" th:value="${unit}"
+                        <option th:each="unit : ${T(com.jaworski.sportdiary.domain.Unit).values()}" th:value="${unit}"
                                 th:text="${unit.name()}"></option>
                     </select>
                 </div>

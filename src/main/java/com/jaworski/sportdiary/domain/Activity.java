@@ -1,5 +1,6 @@
 package com.jaworski.sportdiary.domain;
 
+import com.jaworski.sportdiary.domain.enums.Sport;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;

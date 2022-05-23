@@ -1,11 +1,15 @@
 package com.jaworski.sportdiary;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class EntityManagerProvider {
+
+
 
     public static EntityManager get(){
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory("test");

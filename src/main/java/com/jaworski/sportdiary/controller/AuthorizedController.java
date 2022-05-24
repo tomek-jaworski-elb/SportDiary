@@ -2,6 +2,7 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
+import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.controll.DBActivityManager;
 import com.jaworski.sportdiary.repository.ActivityRepository;
 import com.jaworski.sportdiary.service.DBActivity.DBActivityLoader;
@@ -39,9 +40,9 @@ public class AuthorizedController {
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam, @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
         logger.info(listParam);
 
-//        dbActivityLoader.loadDB();
-//        List<ActivityEntity> all = dbActivityManager.findAll();
-//        all.forEach(System.out::println);
+        dbActivityLoader.loadDB();
+        List<ActivityEntity> all = dbActivityManager.findAll();
+        all.forEach(System.out::println);
 
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {

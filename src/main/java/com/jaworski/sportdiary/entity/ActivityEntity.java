@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @EqualsAndHashCode
+@Table(name = "activity")
 public class ActivityEntity {
 
     //    @Getter(AccessLevel.NONE)

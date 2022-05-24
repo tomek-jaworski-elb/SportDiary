@@ -40,9 +40,9 @@ public class AuthorizedController {
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam, @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
         logger.info(listParam);
 
-        dbActivityLoader.loadDB();
-        List<ActivityEntity> all = dbActivityManager.findAll();
-        all.forEach(System.out::println);
+//        dbActivityLoader.loadDB();
+//        List<ActivityEntity> all = dbActivityManager.findAll();
+//        all.forEach(System.out::println);
 
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {

@@ -41,4 +41,12 @@ public class ActivityConverter {
         }
         return dbActivityList;
     }
+
+    public List<Activity> EntityListToActivityList(List<ActivityEntity> dbActivityList) {
+        List<Activity> activityList = new ArrayList<>();
+        for (ActivityEntity dbActivity : dbActivityList) {
+            activityList.add(EntityToActivity(dbActivity));
+        }
+        return activityList;
+    }
 }

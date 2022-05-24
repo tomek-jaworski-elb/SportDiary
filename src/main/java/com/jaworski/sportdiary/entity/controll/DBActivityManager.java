@@ -40,5 +40,11 @@ public class DBActivityManager implements ActivityManager {
     public List<Activity> findAll() {
         return entityManager.createQuery("SELECT a FROM Activity a", Activity.class).getResultList();
     }
+
+    public void saveAll(List<Activity> activitiesDB) {
+        for (Activity activity : activitiesDB) {
+            entityManager.persist(activity);
+        }
+    }
 }
 

@@ -2,7 +2,9 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
+import com.jaworski.sportdiary.entity.controll.DBActivityManager;
 import com.jaworski.sportdiary.repository.ActivityRepository;
+import com.jaworski.sportdiary.service.DBActivity.DBActivityLoader;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -28,11 +30,21 @@ public class AuthorizedController {
     private final ActivityService activityService;
     private final ActivityRepository activityRepository;
 
+    private final DBActivityManager dbActivityManager;
+
+    private final DBActivityLoader dbActivityLoader;
+
+
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
                        @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error,
                        Model model) {
         logger.info(listParam);
+
+//              dbActivityLoader.loadDB();
+        List<com.jaworski.sportdiary.entity.Activity> all = dbActivityManager.findAll();
+        all.forEach(System.out::println);
+
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {
             case "DISTANCE": {
@@ -40,7 +52,7 @@ public class AuthorizedController {
                 break;
             }
             case "ID": {
-                comparator = Comparator.comparingInt(Activity::getId);
+                comparator = Comparator.comparingLong(Activity::getId);
                 break;
             }
             case "DATE": {
@@ -124,7 +136,7 @@ public class AuthorizedController {
     @GetMapping("/add")
     public String add(Model model) {
         Activity activity = new Activity();
-        int nextId = activityService.maxId() + 1;
+        Long nextId = activityService.maxId() + 1;
         activity.setId(nextId);
         model.addAttribute("activity", activity);
         return "add";

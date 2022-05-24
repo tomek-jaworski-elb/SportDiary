@@ -39,11 +39,9 @@ public class ActivityService {
         activityList.add(activity);
     }
 
-    public int maxId() {
+    public Long maxId() {
         return activityList.stream()
-                .min((a1, a2) -> {
-                    return a2.getId() - a1.getId();
-                })
+                .min(Comparator.comparing(Activity::getId))
                 .orElse(new Activity())
                 .getId();
     }
@@ -61,7 +59,7 @@ public class ActivityService {
                 .orElse(new Activity());
     }
 
-    public Activity update(int id, Activity activity) {
+    public Activity update(Long id, Activity activity) {
         Activity act = activityList.stream()
                 .filter(activity1 -> activity1.getId() == id)
                 .findFirst()

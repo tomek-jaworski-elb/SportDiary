@@ -2,10 +2,7 @@ package com.jaworski.sportdiary.entity;
 
 import com.jaworski.sportdiary.domain.enums.Sport;
 import com.jaworski.sportdiary.domain.enums.Unit;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -17,12 +14,15 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Activity {
 
-    @Getter(AccessLevel.NONE)
+    //    @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @Min(value = 0)
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

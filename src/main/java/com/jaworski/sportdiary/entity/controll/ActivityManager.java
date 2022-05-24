@@ -1,18 +1,18 @@
 package com.jaworski.sportdiary.entity.controll;
 
-import com.jaworski.sportdiary.entity.Activity;
+import com.jaworski.sportdiary.entity.ActivityEntity;
 
 import java.util.List;
 
 public interface ActivityManager {
 
-    Activity find(Long id);
+    ActivityEntity find(Long id);
 
-    void save(Activity activity);
+    void save(ActivityEntity activity);
 
-    void delete(Activity activity);
+    void delete(ActivityEntity activity);
 
-    Activity update(Activity activity);
+    ActivityEntity update(ActivityEntity activity);
 
-    List<Activity> findAll();
+    List<ActivityEntity> findAll();
 }

@@ -2,6 +2,7 @@ package com.jaworski.sportdiary.service.DBActivity;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.Distance;
+import com.jaworski.sportdiary.entity.ActivityEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.List;
 @Service
 public class ActivityConverter {
 
-    public com.jaworski.sportdiary.entity.Activity ActivityToEntity(Activity activity) {
-        com.jaworski.sportdiary.entity.Activity dbActivity = new com.jaworski.sportdiary.entity.Activity();
+    public ActivityEntity ActivityToEntity(Activity activity) {
+        ActivityEntity dbActivity = new ActivityEntity();
         dbActivity.setUnit(activity.getDistance().getUnits());
         dbActivity.setDistanceOf(activity.getDistance().getDistanceOf());
         dbActivity.setDuration(activity.getDuration());
@@ -20,7 +21,7 @@ public class ActivityConverter {
         return dbActivity;
     }
 
-    public Activity EntityToActivity(com.jaworski.sportdiary.entity.Activity dbActivity) {
+    public Activity EntityToActivity(ActivityEntity dbActivity) {
         Activity activity = new Activity();
         Distance distance = new Distance();
         distance.setDistanceOf(dbActivity.getDistanceOf());
@@ -33,8 +34,8 @@ public class ActivityConverter {
         return activity;
     }
 
-    public List<com.jaworski.sportdiary.entity.Activity> ActivityListToEntityList(List<Activity> activityList) {
-        List<com.jaworski.sportdiary.entity.Activity> dbActivityList = new ArrayList<>();
+    public List<ActivityEntity> ActivityListToEntityList(List<Activity> activityList) {
+        List<ActivityEntity> dbActivityList = new ArrayList<>();
         for (Activity activity : activityList) {
             dbActivityList.add(ActivityToEntity(activity));
         }

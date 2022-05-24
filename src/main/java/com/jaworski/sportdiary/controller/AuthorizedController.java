@@ -36,14 +36,12 @@ public class AuthorizedController {
 
 
     @GetMapping(path = {"/list", "/", ""})
-    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
-                       @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error,
-                       Model model) {
+    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam, @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
         logger.info(listParam);
 
-//              dbActivityLoader.loadDB();
-        List<com.jaworski.sportdiary.entity.Activity> all = dbActivityManager.findAll();
-        all.forEach(System.out::println);
+//        dbActivityLoader.loadDB();
+//        List<ActivityEntity> all = dbActivityManager.findAll();
+//        all.forEach(System.out::println);
 
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {

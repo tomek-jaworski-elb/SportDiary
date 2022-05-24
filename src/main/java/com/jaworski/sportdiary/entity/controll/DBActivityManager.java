@@ -1,6 +1,6 @@
 package com.jaworski.sportdiary.entity.controll;
 
-import com.jaworski.sportdiary.entity.Activity;
+import com.jaworski.sportdiary.entity.ActivityEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,33 +16,33 @@ public class DBActivityManager implements ActivityManager {
     private EntityManager entityManager;
 
     @Override
-    public Activity find(Long id) {
-        return entityManager.find(Activity.class, id);
+    public ActivityEntity find(Long id) {
+        return entityManager.find(ActivityEntity.class, id);
     }
 
     @Override
-    public void save(Activity activity) {
+    public void save(ActivityEntity activity) {
         entityManager.persist(activity);
     }
 
     @Override
-    public void delete(Activity activity) {
+    public void delete(ActivityEntity activity) {
         entityManager.remove(activity);
     }
 
     @Override
-    public Activity update(Activity activity) {
+    public ActivityEntity update(ActivityEntity activity) {
         entityManager.merge(activity);
         return activity;
     }
 
     @Override
-    public List<Activity> findAll() {
-        return entityManager.createQuery("SELECT a FROM Activity a", Activity.class).getResultList();
+    public List<ActivityEntity> findAll() {
+        return entityManager.createQuery("SELECT a FROM ActivityEntity a", ActivityEntity.class).getResultList();
     }
 
-    public void saveAll(List<Activity> activitiesDB) {
-        for (Activity activity : activitiesDB) {
+    public void saveAll(List<ActivityEntity> activitiesDB) {
+        for (ActivityEntity activity : activitiesDB) {
             entityManager.persist(activity);
         }
     }

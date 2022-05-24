@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping(value = "/user")
 @RequiredArgsConstructor
 public class AuthorizedController {
 

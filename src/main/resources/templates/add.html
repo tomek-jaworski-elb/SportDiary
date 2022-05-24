@@ -23,7 +23,7 @@
                     <label for="sports">Sport</label>
                     <select class="form-select" aria-label="Default select example"
                             id="sports" th:field="*{sport}">
-                        <option th:each="sport : ${T(com.jaworski.sportdiary.domain.Sport).values()}"
+                        <option th:each="sport : ${T(com.jaworski.sportdiary.domain.enums.Sport).values()}"
                                 th:value="${sport}"
                                 th:text="${sport.getName()}"></option>
                     </select>
@@ -37,7 +37,7 @@
                 <div class="form-group my-2">
                     <label for="unit">Units</label>
                     <select class="form-select" id="unit" th:field="*{distance.units}">
-                        <option th:each="unit : ${T(com.jaworski.sportdiary.domain.Unit).values()}" th:value="${unit}"
+                        <option th:each="unit : ${T(com.jaworski.sportdiary.domain.enums.Unit).values()}" th:value="${unit}"
                                 th:text="${unit.name()}"></option>
                     </select>
                 </div>

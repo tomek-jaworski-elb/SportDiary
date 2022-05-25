@@ -10,6 +10,7 @@ import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -88,6 +89,7 @@ public class AuthorizedController {
 
 
     @GetMapping(value = "/edit", params = "id")
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public String edit(@RequestParam(required = true, name = "id") int id, Model model) {
         Activity activity = activityService.getActivity(id);
         logger.info(activity);
@@ -96,6 +98,7 @@ public class AuthorizedController {
     }
 
     @PostMapping("/edit")
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public String edited(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
         logger.info(activity);
         logger.error(result);
@@ -109,12 +112,14 @@ public class AuthorizedController {
         }
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping(value = "/delete", params = "id")
     public RedirectView delete(@RequestParam(required = true, name = "id") int id) {
         activityService.delete(id);
         return new RedirectView("/user");
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping("/save")
     public RedirectView saveList(Model model) {
         if (activityRepository.saveToJson()) {
@@ -132,6 +137,7 @@ public class AuthorizedController {
         return "more";
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping("/add")
     public String add(Model model) {
         Activity activity = new Activity();
@@ -141,6 +147,7 @@ public class AuthorizedController {
         return "add";
     }
 
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(path = "/add")
     public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
         logger.info(activity);

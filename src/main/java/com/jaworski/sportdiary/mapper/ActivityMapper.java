@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.service.DBActivity;
+package com.jaworski.sportdiary.mapper;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.Distance;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ActivityConverter {
+public class ActivityMapper {
 
     public ActivityEntity ActivityToEntity(Activity activity) {
         ActivityEntity dbActivity = new ActivityEntity();

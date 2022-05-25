@@ -37,6 +37,11 @@ public class AuthorizedController {
     private final DBActivityLoader dbActivityLoader;
 
 
+    @GetMapping("/**")
+    public String handle() {
+        return "404";
+    }
+
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam, @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
         logger.info(listParam);

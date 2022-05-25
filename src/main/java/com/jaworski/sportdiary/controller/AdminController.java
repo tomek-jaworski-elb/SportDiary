@@ -18,4 +18,9 @@ public class AdminController {
     public String main() {
         return "admin";
     }
+
+    @GetMapping("/**")
+    public String handle() {
+        return "404";
+    }
 }

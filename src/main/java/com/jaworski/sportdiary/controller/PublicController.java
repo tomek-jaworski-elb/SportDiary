@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/public")
 public class PublicController {
 
+    @GetMapping("/**")
+    public String handle() {
+        return "404";
+    }
+
     private static final Logger logger = LogManager.getLogger(PublicController.class);
 
     @GetMapping("")

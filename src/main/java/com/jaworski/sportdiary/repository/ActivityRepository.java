@@ -1,23 +1,35 @@
 package com.jaworski.sportdiary.repository;
 
 import com.jaworski.sportdiary.domain.Activity;
+import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.controll.DBActivityManager;
+import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.gson.GsonCreator;
 import com.jaworski.sportdiary.service.gson.JsonReader;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class ActivityRepository {
     private static final Logger logger = LogManager.getLogger(ActivityRepository.class);
 
     private static final Path PATH_TO_DB_FILE = Path.of("src", "main", "resources", "db.json");
     private final List<Activity> activities = getActivities();
+
+    private final DBActivityManager dbActivityManager;
+    private final ActivityMapper activityMapper;
+
 
 
     private String getJson() {
@@ -47,5 +59,11 @@ public class ActivityRepository {
             return false;
         }
         return true;
+    }
+
+    public List<Activity> getAllFromDB() {
+        List<ActivityEntity> all = dbActivityManager.findAll();
+        List<Activity> activityList = activityMapper.EntityListToActivityList(all);
+        return Optional.ofNullable(activityList).orElse(new ArrayList<>());
     }
 }

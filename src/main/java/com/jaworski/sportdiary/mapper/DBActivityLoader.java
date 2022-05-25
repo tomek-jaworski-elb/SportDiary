@@ -1,8 +1,7 @@
-package com.jaworski.sportdiary.service.DBActivity;
+package com.jaworski.sportdiary.mapper;
 
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.controll.DBActivityManager;
-import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -17,7 +17,7 @@ public class ActivityService {
     private final List<Activity> activityList;
 
     public ActivityService(ActivityRepository activityRepository) {
-        this.activityList = activityRepository.getActivities();
+        this.activityList = activityRepository.getAllFromDB();
     }
 
     public List<Activity> getActivityList() {

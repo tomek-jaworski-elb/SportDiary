@@ -2,10 +2,9 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
-import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.controll.DBActivityManager;
+import com.jaworski.sportdiary.mapper.DBActivityLoader;
 import com.jaworski.sportdiary.repository.ActivityRepository;
-import com.jaworski.sportdiary.service.DBActivity.DBActivityLoader;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;

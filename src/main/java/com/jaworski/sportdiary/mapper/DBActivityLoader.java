@@ -20,7 +20,6 @@ public class DBActivityLoader {
     public void loadDB() {
         List<Activity> activityList = activityService.getActivityList();
         List<ActivityEntity> activitiesDB = activityMapper.ActivityListToEntityList(activityList);
-
         dbActivityManager.saveAll(activitiesDB);
     }
 }

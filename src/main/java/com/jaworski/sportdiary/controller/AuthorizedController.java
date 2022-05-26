@@ -47,8 +47,8 @@ public class AuthorizedController {
         logger.info(listParam);
 
 //        dbActivityLoader.loadDB();
-//        List<ActivityEntity> all = dbActivityManager.findAll();
-//        all.forEach(System.out::println);
+        List<ActivityEntity> all = dbActivityManager.findAll();
+        all.forEach(System.out::println);
 
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {

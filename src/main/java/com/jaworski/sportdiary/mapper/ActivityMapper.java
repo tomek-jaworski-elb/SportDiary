@@ -3,18 +3,20 @@ package com.jaworski.sportdiary.mapper;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.Distance;
 import com.jaworski.sportdiary.entity.ActivityEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ActivityMapper {
 
     public ActivityEntity ActivityToEntity(Activity activity) {
         ActivityEntity dbActivity = new ActivityEntity();
         // TODO: map Units
-//        dbActivity.setUnit(activity.getDistance().getUnits());
+        //        dbActivity.setUnit(activity.getDistance().getUnits());
         dbActivity.setDistanceOf(activity.getDistance().getDistanceOf());
         dbActivity.setDuration(activity.getDuration());
         //TODO: map sport
@@ -28,7 +30,7 @@ public class ActivityMapper {
         Distance distance = new Distance();
         distance.setDistanceOf(dbActivity.getDistanceOf());
         // TODO: map Units
-//        distance.setUnits(dbActivity.getUnit());
+        //        distance.setUnits(dbActivity.getUnit());
         activity.setDistance(distance);
         activity.setDuration(dbActivity.getDuration());
         //TODO: map sport

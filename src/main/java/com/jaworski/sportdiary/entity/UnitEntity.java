@@ -24,4 +24,13 @@ public class UnitEntity {
 
     @OneToMany(mappedBy = "unit")
     private Set<ActivityEntity> activitySet;
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("UnitEntity{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -19,7 +19,7 @@ public class IndexController {
 
     private final ActivityService activityService;
 
-    @GetMapping(path = {"/"})
+    @GetMapping(path = {"/","welcome","index"})
     public String index(Model model) {
         List<Activity> list = activityService.getActivityList();
         model.addAttribute("activities", list);

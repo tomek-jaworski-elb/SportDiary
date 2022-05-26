@@ -13,10 +13,12 @@ public class ActivityMapper {
 
     public ActivityEntity ActivityToEntity(Activity activity) {
         ActivityEntity dbActivity = new ActivityEntity();
-        dbActivity.setUnit(activity.getDistance().getUnits());
+        // TODO: map Units
+//        dbActivity.setUnit(activity.getDistance().getUnits());
         dbActivity.setDistanceOf(activity.getDistance().getDistanceOf());
         dbActivity.setDuration(activity.getDuration());
-        dbActivity.setSport(activity.getSport());
+        //TODO: map sport
+        //        dbActivity.setSport(activity.getSport());
         dbActivity.setDateTime(activity.getDateTime());
         return dbActivity;
     }
@@ -25,10 +27,12 @@ public class ActivityMapper {
         Activity activity = new Activity();
         Distance distance = new Distance();
         distance.setDistanceOf(dbActivity.getDistanceOf());
-        distance.setUnits(dbActivity.getUnit());
+        // TODO: map Units
+//        distance.setUnits(dbActivity.getUnit());
         activity.setDistance(distance);
         activity.setDuration(dbActivity.getDuration());
-        activity.setSport(dbActivity.getSport());
+        //TODO: map sport
+        //        activity.setSport(dbActivity.getSport());
         activity.setDateTime(dbActivity.getDateTime());
         activity.setId(dbActivity.getId());
         return activity;

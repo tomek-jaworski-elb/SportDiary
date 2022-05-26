@@ -2,7 +2,9 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
+import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.controll.DBActivityManager;
+import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.mapper.DBActivityLoader;
 import com.jaworski.sportdiary.repository.ActivityRepository;
 import com.jaworski.sportdiary.service.activity.ActivityService;
@@ -30,10 +32,9 @@ public class AuthorizedController {
 
     private final ActivityService activityService;
     private final ActivityRepository activityRepository;
-
     private final DBActivityManager dbActivityManager;
-
     private final DBActivityLoader dbActivityLoader;
+    private final ActivityMapper activityMapper;
 
 
     @GetMapping("/**")
@@ -160,6 +161,8 @@ public class AuthorizedController {
             return "add";
         } else {
             activityService.addActivity(activity);
+            ActivityEntity activityEntity = activityMapper.ActivityToEntity(activity);
+            dbActivityManager.save(activityEntity);
             model.addAttribute("activity", activity);
             return "new";
         }

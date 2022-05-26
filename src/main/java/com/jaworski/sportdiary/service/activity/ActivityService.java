@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ActivityService {
@@ -61,7 +62,7 @@ public class ActivityService {
 
     public Activity update(Long id, Activity activity) {
         Activity act = activityList.stream()
-                .filter(activity1 -> activity1.getId() == id)
+                .filter(a -> Objects.equals(a.getId(), id))
                 .findFirst()
                 .orElse(new Activity());
         int i = activityList.indexOf(act);

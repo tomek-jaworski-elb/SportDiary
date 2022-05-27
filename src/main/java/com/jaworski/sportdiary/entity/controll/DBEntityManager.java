@@ -6,17 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Repository
-public class DBEntityManager <T> implements DBManager<T> {
+public class DBEntityManager<T> implements DBManager<T> {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public <T> T find(Class<T> clazz, Long id) {
-        return entityManager.find(clazz, id);
+        return (T) entityManager.find(clazz, id);
     }
 
     @Override

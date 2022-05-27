@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.config;
+package com.jaworski.sportdiary.config.schedule;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;

@@ -2,7 +2,7 @@ package com.jaworski.sportdiary.repository;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.entity.controll.DBActivityManager;
+import com.jaworski.sportdiary.entity.controll.tmp.DBActivityManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.gson.GsonCreator;
 import com.jaworski.sportdiary.service.gson.JsonReader;
@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="head::head (title='new')">
+    <title></title>
+</head>
+<body>
+<div class="container" th:insert="nav::nav"></div>
+<div class="container text-center"><h1>Test DB!</h1></div>
+<div class="container text-center">
+    <span th:text="${'test'}"></span>
+</div>
+<div class="container text-center">
+    <form class="form-control" action="#" method="get">
+        <label class="form-label" for="name">Name:</label>
+        <input class="input-group" type="text" id="name" name="test" value="">
+        <label class="form-label" for="lastname">Lastname:</label>
+        <input class="input-group" type="text" id="lastname" name="test" value="">
+        <label class="form-label" for="distance">Distance:</label>
+        <input class="input-group" type="number" id="distance" name="test" value="">
+        <label class="form-label" for="sport">Sport:</label>
+        <select class="form-select" type="" id="sport" name="test">
+            <option value="1">Running</option>
+            <option value="2">Cycling</option>
+            <option value="3">Swimming</option>
+        </select>
+        <label class="form-label" for="sport">Date/Time:</label>
+        <input class="input-group" type="datetime-local" name="test" value="">
+        <input class="btn btn-primary my-2" type="submit" value="Submit">
+        <input class="btn btn-outline-primary" type="reset" value="Reset">
+    </form>
+</div>
+<div class="container" th:insert="foot::foot"></div>
+</body>
+</html>

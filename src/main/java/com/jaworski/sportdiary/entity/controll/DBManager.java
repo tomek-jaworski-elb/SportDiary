@@ -1,6 +1,7 @@
 package com.jaworski.sportdiary.entity.controll;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DBManager<T> {
 

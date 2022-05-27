@@ -6,10 +6,7 @@ import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.SportEntity;
 import com.jaworski.sportdiary.entity.UnitEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.controll.DBActivityManager;
 import com.jaworski.sportdiary.entity.controll.DBEntityManager;
-import com.jaworski.sportdiary.entity.controll.DBUnitManager;
-import com.jaworski.sportdiary.entity.controll.DBUserManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.mapper.DBActivityLoader;
 import com.jaworski.sportdiary.repository.ActivityRepository;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +47,8 @@ public class AuthorizedController {
     }
 
     @GetMapping(path = {"/list", "/", ""})
-    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam, @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
+    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
+                       @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
         logger.info(listParam);
 
 //        dbActivityLoader.loadDB();
@@ -59,6 +56,20 @@ public class AuthorizedController {
         dbEntityManager.findAll(UnitEntity.class).forEach(System.out::println);
         dbEntityManager.findAll(SportEntity.class).forEach(System.out::println);
         dbEntityManager.findAll(ActivityEntity.class).forEach(System.out::println);
+        ActivityEntity activityEntity = (ActivityEntity) dbEntityManager.find(ActivityEntity.class, 2L);
+        dbEntityManager.find(ActivityEntity.class, 2L);
+        System.out.println("******");
+        if (activityEntity != null) {
+            System.out.println("******");
+            StringBuilder sb = new StringBuilder();
+            sb.append(activityEntity.getId()).append(", ")
+                    .append(activityEntity.getDistanceOf()).append(", ")
+                    .append(activityEntity.getUser().getFirstName()).append(", ")
+                    .append(activityEntity.getSport().getName()).append(", ")
+                    .append(activityEntity.getSport().getName()).append(", ")
+                    .append(activityEntity.getUnit().getName());
+            System.out.println(sb);
+        }
 //        UserEntity user = new UserEntity();
 //        user.setEmail("234@wp.pl");
 //        user.setPassword("234");

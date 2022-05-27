@@ -1,15 +1,18 @@
-package com.jaworski.sportdiary.entity.controll;
+package com.jaworski.sportdiary.entity.controll.tmp;
 
+import com.jaworski.sportdiary.entity.UnitEntity;
+import com.jaworski.sportdiary.entity.controll.DBManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Repository
-public class DBUserManager<T> implements DBManager<T> {
+public class DBUnitManager implements DBManager<UnitEntity> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -32,7 +35,8 @@ public class DBUserManager<T> implements DBManager<T> {
 
     @Override
     public <T> T update(T entity) {
-        return entityManager.merge(entity);
+        entityManager.merge(entity);
+        return entity;
     }
 
     @Override

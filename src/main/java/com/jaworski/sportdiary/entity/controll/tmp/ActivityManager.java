@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.entity.controll;
+package com.jaworski.sportdiary.entity.controll.tmp;
 
 import com.jaworski.sportdiary.entity.ActivityEntity;
 

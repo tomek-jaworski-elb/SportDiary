@@ -1,20 +1,21 @@
-package com.jaworski.sportdiary.entity.controll;
+package com.jaworski.sportdiary.entity.controll.tmp;
 
-import com.jaworski.sportdiary.entity.SportEntity;
+import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.controll.DBManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Repository
-public class DBSportManager implements DBManager<SportEntity> {
+public class DBActivityManager implements DBManager<ActivityEntity> {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public <T> T find(Class<T> clazz, Long id) {
@@ -38,7 +39,7 @@ public class DBSportManager implements DBManager<SportEntity> {
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        return entityManager.createQuery("SELECT e FROM " + clazz.getSimpleName() + " e", clazz).getResultList();
+        return entityManager.createQuery("SELECT a FROM " + clazz.getSimpleName() + " a", clazz).getResultList();
     }
 
     @Override
@@ -48,3 +49,4 @@ public class DBSportManager implements DBManager<SportEntity> {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.config;
+package com.jaworski.sportdiary.config.language;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

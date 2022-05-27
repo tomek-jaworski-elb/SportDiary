@@ -23,6 +23,11 @@ public class DBUserManager<T> implements DBManager<T> {
     }
 
     @Override
+    public <T1> T1 find(Long id) {
+        return null;
+    }
+
+    @Override
     public <T> void save(T entity) {
         entityManager.persist(entity);
     }

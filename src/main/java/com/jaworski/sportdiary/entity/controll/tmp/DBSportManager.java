@@ -24,6 +24,11 @@ public class DBSportManager implements DBManager<SportEntity> {
     }
 
     @Override
+    public <T> T find(Long id) {
+        return null;
+    }
+
+    @Override
     public <T> void save(T entity) {
         entityManager.persist(entity);
     }

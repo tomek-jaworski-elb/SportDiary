@@ -7,6 +7,8 @@ public interface DBManager<T> {
 
     public <T> T find(Class<T> clazz, Long id);
 
+    public <T> T find(Long id);
+
     public <T> void save(T entity);
 
     public <T> void delete(T entity);

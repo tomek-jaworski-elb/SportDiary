@@ -62,7 +62,7 @@ public class ActivityRepository {
     }
 
     public List<Activity> getAllFromDB() {
-        List<ActivityEntity> all = dbActivityManager.findAll();
+        List<ActivityEntity> all = dbActivityManager.findAll(ActivityEntity.class);
         List<Activity> activityList = activityMapper.EntityListToActivityList(all);
         return Optional.ofNullable(activityList).orElse(new ArrayList<>());
     }

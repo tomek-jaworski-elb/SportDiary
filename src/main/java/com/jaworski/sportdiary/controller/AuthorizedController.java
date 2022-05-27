@@ -3,7 +3,12 @@ package com.jaworski.sportdiary.controller;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
 import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.SportEntity;
+import com.jaworski.sportdiary.entity.UnitEntity;
+import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.controll.DBActivityManager;
+import com.jaworski.sportdiary.entity.controll.DBUnitManager;
+import com.jaworski.sportdiary.entity.controll.DBUserManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.mapper.DBActivityLoader;
 import com.jaworski.sportdiary.repository.ActivityRepository;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +39,8 @@ public class AuthorizedController {
     private final ActivityService activityService;
     private final ActivityRepository activityRepository;
     private final DBActivityManager dbActivityManager;
+    private final DBUserManager dbUserManager;
+    private final DBUnitManager dbUnitManager;
     private final DBActivityLoader dbActivityLoader;
     private final ActivityMapper activityMapper;
 
@@ -47,8 +55,10 @@ public class AuthorizedController {
         logger.info(listParam);
 
 //        dbActivityLoader.loadDB();
-        List<ActivityEntity> all = dbActivityManager.findAll();
+        List<ActivityEntity> all = dbActivityManager.findAll(ActivityEntity.class);
         all.forEach(System.out::println);
+        dbUserManager.findAll(UserEntity.class).forEach(System.out::println);
+        dbUnitManager.findAll(UnitEntity.class).forEach(System.out::println);
 
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {

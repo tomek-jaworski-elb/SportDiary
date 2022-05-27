@@ -1,6 +1,6 @@
 package com.jaworski.sportdiary.entity.controll;
 
-import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.UnitEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,10 +10,11 @@ import java.util.List;
 
 @Transactional
 @Repository
-public class DBActivityManager implements DBManager<ActivityEntity> {
+public class DBUnitManager implements DBManager<UnitEntity> {
 
     @PersistenceContext
     private EntityManager entityManager;
+
 
     @Override
     public <T> T find(Class<T> clazz, Long id) {
@@ -32,12 +33,13 @@ public class DBActivityManager implements DBManager<ActivityEntity> {
 
     @Override
     public <T> T update(T entity) {
-        return entityManager.merge(entity);
+        entityManager.merge(entity);
+        return entity;
     }
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        return entityManager.createQuery("SELECT a FROM " + clazz.getSimpleName() + " a", clazz).getResultList();
+        return entityManager.createQuery("SELECT e FROM " + clazz.getSimpleName() + " e", clazz).getResultList();
     }
 
     @Override
@@ -47,4 +49,3 @@ public class DBActivityManager implements DBManager<ActivityEntity> {
         }
     }
 }
-

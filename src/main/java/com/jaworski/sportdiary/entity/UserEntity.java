@@ -41,7 +41,7 @@ public class UserEntity {
     @NotNull(message = "{valid.username.empty}")
     private String role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private Set<ActivityEntity> entitySet;
 
     @Override

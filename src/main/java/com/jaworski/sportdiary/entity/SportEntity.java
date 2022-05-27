@@ -23,7 +23,7 @@ public class SportEntity {
     @NotNull(message = "{valid.sport.empty}")
     private String name;
 
-    @OneToMany(mappedBy = "sport")
+    @OneToMany(mappedBy = "sport",fetch = FetchType.LAZY)
     private Set<ActivityEntity> activitySet;
 
     @Override

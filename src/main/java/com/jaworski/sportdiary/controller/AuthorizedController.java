@@ -7,6 +7,7 @@ import com.jaworski.sportdiary.entity.SportEntity;
 import com.jaworski.sportdiary.entity.UnitEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.controll.DBActivityManager;
+import com.jaworski.sportdiary.entity.controll.DBEntityManager;
 import com.jaworski.sportdiary.entity.controll.DBUnitManager;
 import com.jaworski.sportdiary.entity.controll.DBUserManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
@@ -38,11 +39,10 @@ public class AuthorizedController {
 
     private final ActivityService activityService;
     private final ActivityRepository activityRepository;
-    private final DBActivityManager dbActivityManager;
-    private final DBUserManager dbUserManager;
-    private final DBUnitManager dbUnitManager;
     private final DBActivityLoader dbActivityLoader;
     private final ActivityMapper activityMapper;
+
+    private final DBEntityManager dbEntityManager;
 
 
     @GetMapping("/**")
@@ -55,10 +55,20 @@ public class AuthorizedController {
         logger.info(listParam);
 
 //        dbActivityLoader.loadDB();
-        List<ActivityEntity> all = dbActivityManager.findAll(ActivityEntity.class);
-        all.forEach(System.out::println);
-        dbUserManager.findAll(UserEntity.class).forEach(System.out::println);
-        dbUnitManager.findAll(UnitEntity.class).forEach(System.out::println);
+        dbEntityManager.findAll(UserEntity.class).forEach(System.out::println);
+        dbEntityManager.findAll(UnitEntity.class).forEach(System.out::println);
+        dbEntityManager.findAll(SportEntity.class).forEach(System.out::println);
+        dbEntityManager.findAll(ActivityEntity.class).forEach(System.out::println);
+//        UserEntity user = new UserEntity();
+//        user.setEmail("234@wp.pl");
+//        user.setPassword("234");
+//        user.setFirstName("firstName");
+//        user.setLastName("234");
+//        user.setRole("user");
+//        dbEntityManager.save(user);
+//        UnitEntity unit = new UnitEntity();
+//        unit.setName("NM");
+//        dbEntityManager.save(unit);
 
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {
@@ -172,7 +182,7 @@ public class AuthorizedController {
         } else {
             activityService.addActivity(activity);
             ActivityEntity activityEntity = activityMapper.ActivityToEntity(activity);
-            dbActivityManager.save(activityEntity);
+            dbEntityManager.save(activityEntity);
             model.addAttribute("activity", activity);
             return "new";
         }

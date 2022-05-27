@@ -9,11 +9,10 @@ import java.util.List;
 
 @Transactional
 @Repository
-public class DBUserManager<T> implements DBManager<T> {
+public class DBEntityManager <T> implements DBManager<T> {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public <T> T find(Class<T> clazz, Long id) {
@@ -32,12 +31,12 @@ public class DBUserManager<T> implements DBManager<T> {
 
     @Override
     public <T> T update(T entity) {
-        return entityManager.merge(entity);
+        return (T) entityManager.merge(entity);
     }
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        return entityManager.createQuery("SELECT e FROM " + clazz.getSimpleName() + " e", clazz).getResultList();
+        return (List<T>) entityManager.createQuery("SELECT e FROM " + clazz.getSimpleName() + " e", clazz).getResultList();
     }
 
     @Override
@@ -46,4 +45,6 @@ public class DBUserManager<T> implements DBManager<T> {
             save(entity);
         }
     }
+
 }
+

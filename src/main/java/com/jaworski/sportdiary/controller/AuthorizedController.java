@@ -3,15 +3,11 @@ package com.jaworski.sportdiary.controller;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
 import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.entity.SportEntity;
-import com.jaworski.sportdiary.entity.UnitEntity;
-import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.controll.DBEntityManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
-import com.jaworski.sportdiary.mapper.DBActivityLoader;
 import com.jaworski.sportdiary.repository.ActivityRepository;
 import com.jaworski.sportdiary.service.activity.ActivityService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.annotation.Secured;
@@ -28,17 +24,15 @@ import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/user")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthorizedController {
 
     private static final Logger logger = LogManager.getLogger(AuthorizedController.class);
 
-    private final ActivityService activityService;
-    private final ActivityRepository activityRepository;
-    private final DBActivityLoader dbActivityLoader;
-    private final ActivityMapper activityMapper;
-
-    private final DBEntityManager dbEntityManager;
+    private ActivityService activityService;
+    private ActivityRepository activityRepository;
+    private ActivityMapper activityMapper;
+    private DBEntityManager<ActivityEntity> dbActivityEntityManager;
 
 
     @GetMapping("/**")
@@ -50,36 +44,6 @@ public class AuthorizedController {
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
                        @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
         logger.info(listParam);
-
-//        dbActivityLoader.loadDB();
-        dbEntityManager.findAll(UserEntity.class).forEach(System.out::println);
-        dbEntityManager.findAll(UnitEntity.class).forEach(System.out::println);
-        dbEntityManager.findAll(SportEntity.class).forEach(System.out::println);
-        dbEntityManager.findAll(ActivityEntity.class).forEach(System.out::println);
-        ActivityEntity activityEntity = (ActivityEntity) dbEntityManager.find(ActivityEntity.class, 2L);
-        dbEntityManager.find(ActivityEntity.class, 2L);
-        System.out.println("******");
-        if (activityEntity != null) {
-            System.out.println("******");
-            StringBuilder sb = new StringBuilder();
-            sb.append(activityEntity.getId()).append(", ")
-                    .append(activityEntity.getDistanceOf()).append(", ")
-                    .append(activityEntity.getUser().getFirstName()).append(", ")
-                    .append(activityEntity.getSport().getName()).append(", ")
-                    .append(activityEntity.getSport().getName()).append(", ")
-                    .append(activityEntity.getUnit().getName());
-            System.out.println(sb);
-        }
-//        UserEntity user = new UserEntity();
-//        user.setEmail("234@wp.pl");
-//        user.setPassword("234");
-//        user.setFirstName("firstName");
-//        user.setLastName("234");
-//        user.setRole("user");
-//        dbEntityManager.save(user);
-//        UnitEntity unit = new UnitEntity();
-//        unit.setName("NM");
-//        dbEntityManager.save(unit);
 
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {
@@ -176,9 +140,8 @@ public class AuthorizedController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping("/add")
     public String add(Model model) {
+        // TODO: 12.05.2020  add sport list
         Activity activity = new Activity();
-        Long nextId = activityService.maxId() + 1;
-        activity.setId(nextId);
         model.addAttribute("activity", activity);
         return "add";
     }
@@ -186,14 +149,14 @@ public class AuthorizedController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(path = "/add")
     public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
+        // TODO: 12.05.2020  add sport list
         logger.info(activity);
         if (result.hasErrors()) {
             logger.info(result);
             return "add";
         } else {
-            activityService.addActivity(activity);
-            ActivityEntity activityEntity = activityMapper.ActivityToEntity(activity);
-            dbEntityManager.save(activityEntity);
+//            activityService.addActivity(activity);
+            dbActivityEntityManager.save(activityMapper.ActivityToEntity(activity));
             model.addAttribute("activity", activity);
             return "new";
         }

@@ -9,6 +9,8 @@ import com.jaworski.sportdiary.service.gson.JsonReader;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -28,7 +30,6 @@ public class ActivityRepository {
 
     private final DBActivityManager dbActivityManager;
     private final ActivityMapper activityMapper;
-
 
 
     private String getJson() {
@@ -60,6 +61,8 @@ public class ActivityRepository {
         return true;
     }
 
+    @Bean
+    @Scope("prototype")
     public List<Activity> getAllFromDB() {
         List<ActivityEntity> all = dbActivityManager.findAll(ActivityEntity.class);
         List<Activity> activityList = activityMapper.EntityListToActivityList(all);

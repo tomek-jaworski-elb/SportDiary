@@ -1,5 +1,7 @@
 package com.jaworski.sportdiary.entity;
 
+import com.jaworski.sportdiary.domain.enums.Sport;
+import com.jaworski.sportdiary.domain.enums.Unit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,17 +46,13 @@ public class ActivityEntity {
     @Min(value = 0)
     private Double distanceOf;
 
-    @ManyToOne
-    @JoinColumn(name = "unit_id", nullable = false)
-    private UnitEntity unit;
+    @Enumerated(EnumType.STRING)
+    private Unit unit;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private String user;
 
-    @ManyToOne
-    @JoinColumn(name = "sport_id", nullable = false)
-    private SportEntity sport;
+    @Enumerated(EnumType.STRING)
+    private Sport sport;
 
 //    @Enumerated(EnumType.STRING)
 //    @Column(name = "unit_of")

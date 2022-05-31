@@ -2,10 +2,11 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
+import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.SportEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.controll.DBEntityManager;
-import com.jaworski.sportdiary.mapper.UserMapper;
+import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +28,8 @@ public class IndexController {
     private final ActivityService activityService;
     private final DBEntityManager<SportEntity> dbSportEntityManager;
     private final DBEntityManager<UserEntity> dbUserEntityManager;
-    private final UserMapper userMapper;
+    private final DBEntityManager<ActivityEntity> dbActivityEntityManager;
+    private final ActivityMapper activityMapper;
 
 
     @GetMapping(path = {"/", "welcome", "index"})
@@ -56,11 +58,24 @@ public class IndexController {
     @PostMapping("/test")
     public String addUser(@ModelAttribute User user) {
         System.out.println(user);
-        UserEntity userEntity = userMapper.mapToUserEntity(user);
-        System.out.println(userEntity);
-        dbUserEntityManager.save(userEntity);
         return "redirect:/test";
     }
+
+    @GetMapping("/add")
+    public String addActivity(Model model) {
+        model.addAttribute("activity", new Activity());
+        return "add_activity";
+    }
+
+    @PostMapping("/add")
+    public String add_Activity(@ModelAttribute Activity activity) {
+        System.out.println(activity);
+        ActivityEntity activityEntity = activityMapper.ActivityToEntity(activity);
+        System.out.println(activityEntity);
+        dbActivityEntityManager.save(activityEntity);
+        return "redirect:/add";
+    }
+
 
     @GetMapping("/403")
     public String error403() {

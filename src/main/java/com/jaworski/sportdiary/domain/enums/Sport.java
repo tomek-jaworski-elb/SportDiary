@@ -6,7 +6,9 @@ public enum Sport {
     CYCLING("Cycling"),
     GYM("Gym"),
     JOGA("Joga"),
-    SWIMMING("Swimming");
+    HIKING("Hiking"),
+    SWIMMING("Swimming"),
+    OTHER("Other");
 
     private final String name;
 

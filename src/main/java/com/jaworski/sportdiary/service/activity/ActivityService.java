@@ -1,7 +1,9 @@
 package com.jaworski.sportdiary.service.activity;
 
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.repository.ActivityRepository;
+import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.controll.DBEntityManager;
+import com.jaworski.sportdiary.mapper.ActivityMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -12,13 +14,18 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+
 public class ActivityService {
 
     private static final Logger LOGGER = LogManager.getLogger(ActivityService.class);
-    private final List<Activity> activityList;
+    private  List<Activity> activityList;
+    private DBEntityManager<ActivityEntity> dbActivityEntityManager;
+    private ActivityMapper activityMapper;
 
-    public ActivityService(ActivityRepository activityRepository) {
-        this.activityList = activityRepository.getAllFromDB();
+    public ActivityService(List<Activity> activityList, DBEntityManager<ActivityEntity> dbActivityEntityManager, ActivityMapper activityMapper) {
+        this.dbActivityEntityManager = dbActivityEntityManager;
+        this.activityList = activityMapper.EntityListToActivityList(dbActivityEntityManager.findAll(ActivityEntity.class));
+        this.activityMapper = activityMapper;
     }
 
     public List<Activity> getActivityList() {

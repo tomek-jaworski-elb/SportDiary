@@ -1,11 +1,15 @@
 package com.jaworski.sportdiary.config.websecurity;
 
+import com.jaworski.sportdiary.config.security.UserEntityPrincipalDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.Properties;
@@ -14,15 +18,22 @@ import java.util.Properties;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(inMemoryUserDetailsManager());
+    private final UserEntityPrincipalDetailService userEntityPrincipalDetailService;
+
+    public SecurityConfiguration(UserEntityPrincipalDetailService userEntityPrincipalDetailService) {
+        this.userEntityPrincipalDetailService = userEntityPrincipalDetailService;
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+//        auth.userDetailsService(inMemoryUserDetailsManager());
+        auth.authenticationProvider(authenticationProvider());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
@@ -33,6 +44,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new InMemoryUserDetailsManager(users);
     }
 
+    @Bean
+    DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setUserDetailsService(userEntityPrincipalDetailService);
+        return authProvider;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -40,19 +58,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/img/**", "/bootstrap/**", "/js/**").permitAll()
                 .antMatchers("/welcome", "/", "/test").permitAll()
                 .antMatchers("/user/**").permitAll()
-                .antMatchers("/anonymous/**").anonymous()
+                .antMatchers("/anonymous/**").permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/test").permitAll()
+                .antMatchers("/users").permitAll()
+                .antMatchers("/add").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/user/list", false)
+                .failureUrl("/login?error=true")
                 .and()
                 .logout().permitAll()
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/user")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
 

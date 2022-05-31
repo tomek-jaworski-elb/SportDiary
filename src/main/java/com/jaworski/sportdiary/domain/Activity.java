@@ -22,7 +22,6 @@ public class Activity {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @Min(value = 0)
-    @NotNull
     private Long id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @NotNull(message = "{valid.date.empty}")

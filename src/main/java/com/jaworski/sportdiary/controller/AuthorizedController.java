@@ -44,7 +44,7 @@ public class AuthorizedController {
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
                        @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
         logger.info(listParam);
-
+        activityService.setActivityList();
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {
             case "DISTANCE": {

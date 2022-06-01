@@ -54,6 +54,10 @@ public class ActivityEntity {
     @Enumerated(EnumType.STRING)
     private Sport sport;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private UserEntity userEntity;
+
 //    @Enumerated(EnumType.STRING)
 //    @Column(name = "unit_of")
 //    @NotNull(message = "{valid.unit.empty}")

@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.config.security;
+package com.jaworski.sportdiary.entity.repository;
 
 import com.jaworski.sportdiary.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

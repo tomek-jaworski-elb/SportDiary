@@ -59,6 +59,9 @@ public class UserEntity {
         return Arrays.asList(authorities.split(","));
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private Set<ActivityEntity> activity;
+
     public UserEntity(String firstName, String password, String roles, String authorities) {
         this.firstName = firstName;
         this.password = password;

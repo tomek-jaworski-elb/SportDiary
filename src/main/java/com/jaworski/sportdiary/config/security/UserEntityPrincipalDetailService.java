@@ -1,6 +1,7 @@
 package com.jaworski.sportdiary.config.security;
 
 import com.jaworski.sportdiary.entity.UserEntity;
+import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

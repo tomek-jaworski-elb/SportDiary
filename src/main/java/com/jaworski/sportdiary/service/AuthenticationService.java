@@ -1,6 +1,8 @@
 package com.jaworski.sportdiary.service;
 
 import com.jaworski.sportdiary.domain.User;
+import com.jaworski.sportdiary.entity.UserEntity;
+import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -8,9 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
+    private UserEntityRepository userEntityRepository;
+
+    public AuthenticationService(UserEntityRepository userEntityRepository) {
+        this.userEntityRepository = userEntityRepository;
+    }
+
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
+    }
+
+    public Long getCurrentUserId() {
+        return userEntityRepository.findByFirstName(getCurrentUser().getFirstName()).getId();
     }
 
     public String getPrincipal() {

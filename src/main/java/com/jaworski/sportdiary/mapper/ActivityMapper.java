@@ -3,18 +3,28 @@ package com.jaworski.sportdiary.mapper;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.Distance;
 import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.UserEntity;
+import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
 import com.jaworski.sportdiary.service.AuthenticationService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ActivityMapper {
 
     private final AuthenticationService authenticationService;
+    private UserEntityRepository userEntityRepository;
+
+    public ActivityMapper(AuthenticationService authenticationService, UserEntityRepository userEntityRepository) {
+        this.authenticationService = authenticationService;
+        this.userEntityRepository = userEntityRepository;
+    }
+
+    private UserEntity getCurrentUser() {
+        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName());
+    }
 
     public ActivityEntity ActivityToEntity(Activity activity) {
         ActivityEntity result = new ActivityEntity();
@@ -24,6 +34,7 @@ public class ActivityMapper {
         result.setUser(authenticationService.getCurrentUserName());
         result.setUnit(activity.getDistance().getUnits());
         result.setDistanceOf(activity.getDistance().getDistanceOf());
+        result.setUserEntity(getCurrentUser());
         return result;
     }
 

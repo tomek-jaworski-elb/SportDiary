@@ -3,6 +3,7 @@ package com.jaworski.sportdiary.service.activity;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.controll.DBEntityManager;
+import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,18 +15,21 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-
 public class ActivityService {
 
     private static final Logger LOGGER = LogManager.getLogger(ActivityService.class);
     private  List<Activity> activityList;
     private DBEntityManager<ActivityEntity> dbActivityEntityManager;
     private ActivityMapper activityMapper;
+    private ActivityEntityRepository activityEntityRepository;
 
-    public ActivityService(List<Activity> activityList, DBEntityManager<ActivityEntity> dbActivityEntityManager, ActivityMapper activityMapper) {
+    public ActivityService(List<Activity> activityList, DBEntityManager<ActivityEntity> dbActivityEntityManager,
+                           ActivityMapper activityMapper, ActivityEntityRepository activityEntityRepository) {
+        this.activityList = activityList;
         this.dbActivityEntityManager = dbActivityEntityManager;
-        this.activityList = activityMapper.EntityListToActivityList(dbActivityEntityManager.findAll(ActivityEntity.class));
         this.activityMapper = activityMapper;
+        this.activityEntityRepository = activityEntityRepository;
+        setActivityList();
     }
 
     public List<Activity> getActivityList() {
@@ -41,6 +45,11 @@ public class ActivityService {
                 iterator.remove();
             }
         }
+    }
+
+    public void setActivityList() {
+        activityList.clear();
+        activityEntityRepository.findAll().forEach(activityEntity -> activityList.add(activityMapper.EntityToActivity(activityEntity)));
     }
 
     public void addActivity(Activity activity) {

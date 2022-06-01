@@ -1,6 +1,6 @@
 package com.jaworski.sportdiary;
 
-import com.jaworski.sportdiary.config.security.UserEntityRepository;
+import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
 import com.jaworski.sportdiary.entity.UserEntity;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,14 +22,14 @@ public class DBInit implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        userEntityRepository.deleteAll();
-
-        UserEntity dan = new UserEntity("u", passwordEncoder.encode("u"), "USER", "");
-        UserEntity admin = new UserEntity("admin", passwordEncoder.encode("admin"), "ADMIN,USER", "");
-        UserEntity user = new UserEntity("user", passwordEncoder.encode("user"), "ADMIN", "");
-
-        List<UserEntity> userEntities = List.of(dan, admin, user);
-        userEntityRepository.saveAll(userEntities);
+//        userEntityRepository.deleteAll();
+//
+//        UserEntity dan = new UserEntity("u", passwordEncoder.encode("u"), "USER", "");
+//        UserEntity admin = new UserEntity("admin", passwordEncoder.encode("admin"), "ADMIN,USER", "");
+//        UserEntity user = new UserEntity("user", passwordEncoder.encode("user"), "ADMIN", "");
+//
+//        List<UserEntity> userEntities = List.of(dan, admin, user);
+//        userEntityRepository.saveAll(userEntities);
 
     }
 }

@@ -109,6 +109,18 @@
                                              th:src="@{/img/pool.svg}"
                                              th:alt="${'Swim'}">
             </td>
+            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).OTHER}">
+                <small>Other<br/></small><img width="24px"
+                                             height="24px"
+                                             th:src="@{/img/question.svg}"
+                                             th:alt="${'other'}">
+            </td>
+            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).HIKING}">
+                <small>Hiking<br/></small><img width="24px"
+                                             height="24px"
+                                             th:src="@{/img/question.svg}"
+                                             th:alt="${'hikinig'}">
+            </td>
             <td class="text-center"
                 th:text="${activity.getDistance().distanceOf + ' - ' + activity.getDistance().getUnits()}">Otto
             </td>

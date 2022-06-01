@@ -28,8 +28,6 @@ public class Activity {
     private LocalDateTime dateTime;
     private Sport sport;
 
-    @Getter()
-    @Setter()
     @NotNull(message = "{valid.duration.empty}")
     @Positive(message = "{valid.duration.positive}")
     @NumberFormat()
@@ -37,6 +35,8 @@ public class Activity {
 
     @Valid
     private Distance distance;
+
+    private String owner;
 
 
     public Long getId() {

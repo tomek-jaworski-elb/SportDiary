@@ -47,14 +47,16 @@ public class ActivityEntity {
     private Double distanceOf;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Unit unit;
 
-    private String user;
+//    private String user;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Sport sport;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 

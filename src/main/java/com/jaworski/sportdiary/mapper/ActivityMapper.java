@@ -31,7 +31,7 @@ public class ActivityMapper {
         result.setDateTime(activity.getDateTime());
         result.setSport(activity.getSport());
         result.setDuration(activity.getDuration());
-        result.setUser(authenticationService.getCurrentUserName());
+//        result.setUser(authenticationService.getCurrentUserName());
         result.setUnit(activity.getDistance().getUnits());
         result.setDistanceOf(activity.getDistance().getDistanceOf());
         result.setUserEntity(getCurrentUser());
@@ -45,6 +45,8 @@ public class ActivityMapper {
         result.setSport(activityEntity.getSport());
         result.setDuration(activityEntity.getDuration());
         result.setDistance(new Distance(activityEntity.getDistanceOf(), activityEntity.getUnit()));
+        UserEntity userEntity = activityEntity.getUserEntity();
+        result.setOwner(userEntity.getFirstName());
         return result;
     }
 

@@ -6,6 +6,7 @@ import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.controll.DBEntityManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.repository.ActivityRepository;
+import com.jaworski.sportdiary.service.AuthenticationService;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +34,7 @@ public class AuthorizedController {
     private ActivityRepository activityRepository;
     private ActivityMapper activityMapper;
     private DBEntityManager<ActivityEntity> dbActivityEntityManager;
+    private AuthenticationService authenticationService;
 
 
     @GetMapping("/**")

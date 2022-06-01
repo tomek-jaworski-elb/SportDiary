@@ -48,8 +48,8 @@ public class UserEntity {
     @NotNull(message = "{valid.username.empty}")
     private String authorities = "";
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<ActivityEntity> entitySet;
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+//    private Set<ActivityEntity> entitySet;
 
     public List<String> getRoles() {
         return Arrays.asList(roles.split(","));
@@ -59,8 +59,8 @@ public class UserEntity {
         return Arrays.asList(authorities.split(","));
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
-    private Set<ActivityEntity> activity;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+//    private Set<ActivityEntity> activity;
 
     public UserEntity(String firstName, String password, String roles, String authorities) {
         this.firstName = firstName;

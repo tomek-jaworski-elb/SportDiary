@@ -1,13 +1,11 @@
 package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
-import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.entity.SportEntity;
-import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.controll.DBEntityManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.activity.ActivityService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,17 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Controller
 public class IndexController {
 
-    private static final Logger logger = LogManager.getLogger(IndexController.class);
+    private static final Logger LOGGER = LogManager.getLogger(IndexController.class);
 
-    private final ActivityService activityService;
-    private final DBEntityManager<SportEntity> dbSportEntityManager;
-    private final DBEntityManager<UserEntity> dbUserEntityManager;
-    private final DBEntityManager<ActivityEntity> dbActivityEntityManager;
-    private final ActivityMapper activityMapper;
+    private ActivityService activityService;
+//    private final DBEntityManager<SportEntity> dbSportEntityManager;
+//    private final DBEntityManager<UserEntity> dbUserEntityManager;
+    private  DBEntityManager<ActivityEntity> dbActivityEntityManager;
+    private  ActivityMapper activityMapper;
 
 
     @GetMapping(path = {"/", "welcome", "index"})
@@ -44,22 +42,22 @@ public class IndexController {
         return "login";
     }
 
-    @GetMapping("/test")
-    public String test(Model model) {
-        SportEntity sportEntity = dbSportEntityManager.find(SportEntity.class, 1L);
-//        System.out.println(sportEntity);
-        // TODO: 2020-04-24
-        sportEntity = dbSportEntityManager.find(1L);
-//        System.out.println(sportEntity);
-        model.addAttribute("User", new User());
-        return "test";
-    }
-
-    @PostMapping("/test")
-    public String addUser(@ModelAttribute User user) {
-        System.out.println(user);
-        return "redirect:/test";
-    }
+//    @GetMapping("/test")
+//    public String test(Model model) {
+//        SportEntity sportEntity = dbSportEntityManager.find(SportEntity.class, 1L);
+////        System.out.println(sportEntity);
+//        // TODO: 2020-04-24
+//        sportEntity = dbSportEntityManager.find(SportEntity.class, 1L);
+////        System.out.println(sportEntity);
+//        model.addAttribute("User", new User());
+//        return "test";
+//    }
+//
+//    @PostMapping("/test")
+//    public String addUser(@ModelAttribute User user) {
+//        System.out.println(user);
+//        return "redirect:/test";
+//    }
 
     @GetMapping("/add")
     public String addActivity(Model model) {

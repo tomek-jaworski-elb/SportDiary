@@ -1,5 +1,6 @@
 package com.jaworski.sportdiary.controller;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
@@ -26,7 +27,7 @@ public class IndexRestController {
 
     @GetMapping("/users")
     public List<UserEntity> getUserEntityList() {
-        return userEntityRepository.findAll();
+        return (List<UserEntity>) userEntityRepository.findAll();
     }
 
     @GetMapping("/user/log")
@@ -36,6 +37,7 @@ public class IndexRestController {
 
     @GetMapping("/user/activities")
     public List<ActivityEntity> getActivityEntityList() {
-        return (List<ActivityEntity>) activityEntityRepository.findAll();
+        List<ActivityEntity> all = (List<ActivityEntity>) activityEntityRepository.findAll();
+        return all;
     }
 }

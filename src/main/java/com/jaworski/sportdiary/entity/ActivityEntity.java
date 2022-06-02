@@ -1,11 +1,11 @@
 package com.jaworski.sportdiary.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jaworski.sportdiary.domain.enums.Sport;
 import com.jaworski.sportdiary.domain.enums.Unit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "activities")
-@ToString
+@JsonIgnoreProperties(value = {"password"}, allowGetters = true)
 public class ActivityEntity {
 
     @Min(value = 0)
@@ -50,18 +50,12 @@ public class ActivityEntity {
     @NotNull
     private Unit unit;
 
-//    private String user;
-
     @Enumerated(EnumType.STRING)
     @NotNull
     private Sport sport;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private UserEntity userEntity;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "unit_of")
-//    @NotNull(message = "{valid.unit.empty}")
-//    private Unit unitOf;
 }

@@ -1,10 +1,31 @@
-<Configuration status="debug" name="baeldung" packages="">
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
     <Appenders>
-        <Console name="stdout" target="SYSTEM_OUT">
+        <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %p %m%n"/>
         </Console>
+        <File name="XMLFileAppender" fileName="logs/log.log"
+                     filePattern="logs/log.%d{yyyy-MM-dd}.%i.log"
+                     append="true"
+                     bufferSize="8192"
+                     maxFileSize="10MB"
+                     maxBackupIndex="10"
+                     ignoreExceptions="true"
+                     immediateFlush="true"
+                     createOnDemand="true"
+                     encoding="UTF-8"
+                     target="SYSTEM_OUT">
+            <PatternLayout pattern="JSON Configuration: %d{yyyy-MM-dd HH:mm:ss} %p %m%n"/>
+        </File>
+        <Async name="Async" flushInterval="1000" async="true"
+                     flushOnShutdown="true"
+                     shutdownTimeout="10000"
+                     target="SYSTEM_OUT">
+            <PatternLayout pattern="Async Configuration: %d{yyyy-MM-dd HH:mm:ss} %p %m%n"/>
+        </Async>
     </Appenders>
-    <Root level="error">
-        <AppenderRef ref="STDOUT"/>
+    <Root level="info">
+        <AppenderRef ref="Console"/>
+        <AppenderRef ref="ASync"/>
     </Root>
 </Configuration>

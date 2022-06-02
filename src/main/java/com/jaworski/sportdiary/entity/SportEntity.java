@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class SportEntity {
     private String name;
 
     @OneToMany(mappedBy = "sport",fetch = FetchType.LAZY)
-    private Set<ActivityEntity> activitySet;
+    private Set<ActivityEntity> activitySet = new HashSet<>();
 
     @Override
     public String toString() {

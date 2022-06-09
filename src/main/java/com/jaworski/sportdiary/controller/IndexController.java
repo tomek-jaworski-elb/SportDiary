@@ -43,7 +43,6 @@ public class IndexController {
     @GetMapping("/test")
     public String test(Model model) {
 //        System.out.println(sportEntity);
-        // TODO: 2020-04-24
 //        System.out.println(sportEntity);
         model.addAttribute("User", new User());
         return "test";

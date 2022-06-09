@@ -42,6 +42,11 @@ public class ActivityEntity {
     @Column(name = COLUMN_PREFIX + "added_at")
     private LocalDateTime addedAt;
 
+    @NotNull(message = "{valid.distance.empty}")
+    @PastOrPresent(message = "{valid.distance.future}")
+    @Column(name = COLUMN_PREFIX + "modified_at")
+    private LocalDateTime lastModifiedAt;
+
     @NotNull(message = "{valid.duration.empty}")
     @Positive(message = "{valid.duration.positive}")
     @NumberFormat()

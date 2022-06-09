@@ -88,7 +88,6 @@ public class AuthorizedController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public String edit(@RequestParam(required = true, name = "id") UUID id, Model model) {
         Activity activity = activityService.getActivity(id);
-        logger.info(activity);
         model.addAttribute("activity", activity);
         return "edit";
     }

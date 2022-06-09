@@ -1,5 +1,7 @@
 package com.jaworski.sportdiary.exceptions;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,9 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalDefaultExceptionHandler {
 
     public static final String DEFAULT_ERROR_VIEW = "404";
+    private static final Logger LOGGER = LogManager.getLogger(GlobalDefaultExceptionHandler.class);
+
 
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+        LOGGER.error("Exception: " + e.getClass().getName());
         System.out.println("Exception: " + e.getMessage());
         // If the exception is annotated with @ResponseStatus rethrow it and let
         // the framework handle it - like the OrderNotFoundException example

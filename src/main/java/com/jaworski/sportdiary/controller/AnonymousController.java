@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AnonymousController {
 
-    private static final Logger logger = LogManager.getLogger(AnonymousController.class);
+    private static final Logger LOGGER = LogManager.getLogger(AnonymousController.class);
 
     private final ActivityService activityService;
 

@@ -59,7 +59,17 @@ public class ActivityService {
     }
 
     public Activity update(Activity activity) {
-        //TODO: update
-        return activity;
+        return activityEntityRepository.findById(UUID.fromString(activity.getId()))
+                .map(activityEntity -> {
+                    activityEntity.setDistanceOf(activity.getDistance().getDistanceOf());
+                    activityEntity.setUnit(activity.getDistance().getUnits());
+                    activityEntity.setDateTime(activity.getDateTime());
+                    activityEntity.setDuration(activity.getDuration());
+                    activityEntity.setSport(activity.getSport());
+                    activityEntity.setAddedAt(activity.getAddedAt());
+                    activityEntityRepository.save(activityEntity);
+                    return activityMapper.EntityToActivity(activityEntity);
+                })
+                .orElse(new Activity());
     }
 }

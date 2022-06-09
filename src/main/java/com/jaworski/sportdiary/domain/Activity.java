@@ -36,6 +36,7 @@ public class Activity {
 
     private String owner;
 
+    private LocalDateTime lastModifiedAt;
     private LocalDateTime addedAt;
 
 

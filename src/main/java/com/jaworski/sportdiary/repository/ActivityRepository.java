@@ -2,7 +2,6 @@ package com.jaworski.sportdiary.repository;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.entity.controll.tmp.DBActivityManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.gson.GsonCreator;
 import com.jaworski.sportdiary.service.gson.JsonReader;
@@ -28,7 +27,6 @@ public class ActivityRepository {
     private static final Path PATH_TO_DB_FILE = Path.of("src", "main", "resources", "db.json");
     private final List<Activity> activities = getActivities();
 
-    private final DBActivityManager dbActivityManager;
     private final ActivityMapper activityMapper;
 
 
@@ -59,13 +57,5 @@ public class ActivityRepository {
             return false;
         }
         return true;
-    }
-
-    @Bean
-    @Scope("prototype")
-    public List<Activity> getAllFromDB() {
-        List<ActivityEntity> all = dbActivityManager.findAll(ActivityEntity.class);
-        List<Activity> activityList = activityMapper.EntityListToActivityList(all);
-        return Optional.ofNullable(activityList).orElse(new ArrayList<>());
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
@@ -21,8 +20,7 @@ public class Activity {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    @Min(value = 0)
-    private Long id;
+    private String id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @NotNull(message = "{valid.date.empty}")
     private LocalDateTime dateTime;
@@ -38,12 +36,14 @@ public class Activity {
 
     private String owner;
 
+    private LocalDateTime addedAt;
 
-    public Long getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

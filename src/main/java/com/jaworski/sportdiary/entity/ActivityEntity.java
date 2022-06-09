@@ -6,62 +6,63 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "activities")
+@Table(name = ActivityEntity.TABLE_NAME)
 @ToString
 public class ActivityEntity {
 
-    @Min(value = 0)
+    public static final String TABLE_NAME = "activity";
+    public static final String COLUMN_PREFIX = "a_";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @GeneratedValue
+    @Type(type = "uuid-char")
+    @Column(name = COLUMN_PREFIX + "id")
+    private UUID id;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @NotNull(message = "{valid.date.empty}")
+    @Column(name = COLUMN_PREFIX + "date_time_at")
     private LocalDateTime dateTime;
 
-//    @Enumerated(EnumType.STRING)
-//    @NotNull(message = "{valid.sport.empty}")
-//    private Sport sport;
+    @NotNull(message = "{valid.distance.empty}")
+    @PastOrPresent(message = "{valid.distance.future}")
+    @Column(name = COLUMN_PREFIX + "added_at")
+    private LocalDateTime addedAt;
 
     @NotNull(message = "{valid.duration.empty}")
     @Positive(message = "{valid.duration.positive}")
     @NumberFormat()
+    @Column(name = COLUMN_PREFIX + "duration")
     private Long duration;
 
     @NotNull
     @Min(value = 0)
+    @Column(name = COLUMN_PREFIX + "distance")
     private Double distanceOf;
 
     @Enumerated(EnumType.STRING)
     @NotNull
     private Unit unit;
 
-//    private String user;
-
     @Enumerated(EnumType.STRING)
     @NotNull
+    @Column(name = COLUMN_PREFIX + "sport")
     private Sport sport;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_id")
+    @ManyToOne
+    @JoinColumn(name = UserEntity.COLUMN_PREFIX + "id")
     private UserEntity userEntity;
-
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "unit_of")
-//    @NotNull(message = "{valid.unit.empty}")
-//    private Unit unitOf;
 }

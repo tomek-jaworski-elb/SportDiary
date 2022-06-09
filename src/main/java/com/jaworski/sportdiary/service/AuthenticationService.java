@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AuthenticationService {
 
@@ -21,7 +23,7 @@ public class AuthenticationService {
         return (User) authentication.getPrincipal();
     }
 
-    public Long getCurrentUserId() {
+    public UUID getCurrentUserId() {
         return userEntityRepository.findByFirstName(getCurrentUser().getFirstName()).getId();
     }
 
@@ -53,5 +55,9 @@ public class AuthenticationService {
     public boolean isCurrentUserAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.isAuthenticated();
+    }
+
+    public boolean isAuthenticated() {
+        return isCurrentUserAuthenticated();
     }
 }

@@ -3,12 +3,12 @@ package com.jaworski.sportdiary.controller;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
 import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.entity.controll.DBEntityManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.repository.ActivityRepository;
 import com.jaworski.sportdiary.service.AuthenticationService;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.annotation.Secured;
@@ -22,19 +22,17 @@ import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "/user")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorizedController {
 
     private static final Logger logger = LogManager.getLogger(AuthorizedController.class);
 
-    private ActivityService activityService;
-    private ActivityRepository activityRepository;
-    private ActivityMapper activityMapper;
-    private DBEntityManager<ActivityEntity> dbActivityEntityManager;
-    private AuthenticationService authenticationService;
+    private final ActivityService activityService;
+    private final ActivityRepository activityRepository;
 
 
     @GetMapping("/**")
@@ -51,10 +49,6 @@ public class AuthorizedController {
         switch (listParam.getSort()) {
             case "DISTANCE": {
                 comparator = Comparator.comparingDouble(activity -> activity.getDistance().getDistanceKM());
-                break;
-            }
-            case "ID": {
-                comparator = Comparator.comparingLong(Activity::getId);
                 break;
             }
             case "DATE": {
@@ -92,7 +86,7 @@ public class AuthorizedController {
 
     @GetMapping(value = "/edit", params = "id")
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
-    public String edit(@RequestParam(required = true, name = "id") int id, Model model) {
+    public String edit(@RequestParam(required = true, name = "id") UUID id, Model model) {
         Activity activity = activityService.getActivity(id);
         logger.info(activity);
         model.addAttribute("activity", activity);
@@ -107,7 +101,7 @@ public class AuthorizedController {
         if (result.hasErrors()) {
             return "edit";
         } else {
-            activityService.update(activity.getId(), activity);
+            activityService.update(activity);
             model.addAttribute("activities", activityService.getActivityList());
             model.addAttribute("listParam", new ListParam());
             return new RedirectView("/list").getUrl();
@@ -116,7 +110,7 @@ public class AuthorizedController {
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping(value = "/delete", params = "id")
-    public RedirectView delete(@RequestParam(required = true, name = "id") int id) {
+    public RedirectView delete(@RequestParam(required = true, name = "id") UUID id) {
         activityService.delete(id);
         return new RedirectView("/user");
     }
@@ -133,8 +127,7 @@ public class AuthorizedController {
     }
 
     @GetMapping(path = "/more", params = "id")
-    public String more(@RequestParam(required = false) int id, @RequestParam(required = false) String lang, Model model) {
-
+    public String more(@RequestParam(required = false) UUID id, @RequestParam(required = false) String lang, Model model) {
         model.addAttribute("activity", activityService.getActivity(id));
         return "more";
     }
@@ -142,7 +135,6 @@ public class AuthorizedController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping("/add")
     public String add(Model model) {
-        // TODO: 12.05.2020  add sport list
         Activity activity = new Activity();
         model.addAttribute("activity", activity);
         return "add";
@@ -151,14 +143,12 @@ public class AuthorizedController {
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(path = "/add")
     public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
-        // TODO: 12.05.2020  add sport list
         logger.info(activity);
         if (result.hasErrors()) {
             logger.info(result);
             return "add";
         } else {
-//            activityService.addActivity(activity);
-            dbActivityEntityManager.save(activityMapper.ActivityToEntity(activity));
+            activityService.addActivity(activity);
             model.addAttribute("activity", activity);
             return "new";
         }

@@ -2,49 +2,38 @@ package com.jaworski.sportdiary.service.activity;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.entity.controll.DBEntityManager;
 import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class ActivityService {
 
     private static final Logger LOGGER = LogManager.getLogger(ActivityService.class);
-    private  List<Activity> activityList;
-    private DBEntityManager<ActivityEntity> dbActivityEntityManager;
-    private ActivityMapper activityMapper;
-    private ActivityEntityRepository activityEntityRepository;
+    private final List<Activity> activityList;
+    private final ActivityMapper activityMapper;
+    private final ActivityEntityRepository activityEntityRepository;
 
-    public ActivityService(List<Activity> activityList, DBEntityManager<ActivityEntity> dbActivityEntityManager,
-                           ActivityMapper activityMapper, ActivityEntityRepository activityEntityRepository) {
-        this.activityList = activityList;
-        this.dbActivityEntityManager = dbActivityEntityManager;
-        this.activityMapper = activityMapper;
-        this.activityEntityRepository = activityEntityRepository;
-        setActivityList();
-    }
 
     public List<Activity> getActivityList() {
-        return activityList;
+        List<Activity> result = new ArrayList<>();
+        Iterable<ActivityEntity> all = activityEntityRepository.findAll();
+        all.forEach(activityEntity -> result.add(activityMapper.EntityToActivity(activityEntity)));
+        return result;
     }
 
-    public void delete(int id) {
-        Iterator<Activity> iterator = activityList.iterator();
-        Activity activity;
-        while (iterator.hasNext()) {
-            activity = iterator.next();
-            if (activity.getId() == id) {
-                iterator.remove();
-            }
-        }
+    public void delete(UUID id) {
+        activityEntityRepository.findById(id).ifPresent(activityEntity -> {
+            activityEntityRepository.delete(activityEntity);
+            LOGGER.info("Deleted activity with id: " + id);
+        });
     }
 
     public void setActivityList() {
@@ -53,15 +42,10 @@ public class ActivityService {
     }
 
     public void addActivity(Activity activity) {
-        activityList.add(activity);
+        activity.setAddedAt(LocalDateTime.now());
+        activityEntityRepository.save(activityMapper.ActivityToEntity(activity));
     }
 
-    public Long maxId() {
-        return activityList.stream()
-                .min(Comparator.comparing(Activity::getId))
-                .orElse(new Activity())
-                .getId();
-    }
 
     public List<Activity> sort(Comparator<Activity> comparator) {
         return activityList.stream()
@@ -69,20 +53,13 @@ public class ActivityService {
                 .toList();
     }
 
-    public Activity getActivity(int id) {
-        return activityList.stream()
-                .filter(activity -> activity.getId() == id)
-                .findFirst()
-                .orElse(new Activity());
+    public Activity getActivity(UUID id) {
+        Optional<ActivityEntity> byId = activityEntityRepository.findById(id);
+        return byId.map(activityMapper::EntityToActivity).orElse(new Activity());
     }
 
-    public Activity update(Long id, Activity activity) {
-        Activity act = activityList.stream()
-                .filter(a -> Objects.equals(a.getId(), id))
-                .findFirst()
-                .orElse(new Activity());
-        int i = activityList.indexOf(act);
-        activityList.set(i, activity);
+    public Activity update(Activity activity) {
+        //TODO: update
         return activity;
     }
 }

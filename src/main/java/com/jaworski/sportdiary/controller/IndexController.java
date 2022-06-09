@@ -5,7 +5,6 @@ import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.SportEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.controll.DBEntityManager;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,6 @@ public class IndexController {
     private static final Logger logger = LogManager.getLogger(IndexController.class);
 
     private final ActivityService activityService;
-    private final DBEntityManager<SportEntity> dbSportEntityManager;
-    private final DBEntityManager<UserEntity> dbUserEntityManager;
-    private final DBEntityManager<ActivityEntity> dbActivityEntityManager;
     private final ActivityMapper activityMapper;
 
 
@@ -46,10 +42,8 @@ public class IndexController {
 
     @GetMapping("/test")
     public String test(Model model) {
-        SportEntity sportEntity = dbSportEntityManager.find(SportEntity.class, 1L);
 //        System.out.println(sportEntity);
         // TODO: 2020-04-24
-        sportEntity = dbSportEntityManager.find(1L);
 //        System.out.println(sportEntity);
         model.addAttribute("User", new User());
         return "test";
@@ -72,7 +66,6 @@ public class IndexController {
         System.out.println(activity);
         ActivityEntity activityEntity = activityMapper.ActivityToEntity(activity);
         System.out.println(activityEntity);
-        dbActivityEntityManager.save(activityEntity);
         return "redirect:/add";
     }
 

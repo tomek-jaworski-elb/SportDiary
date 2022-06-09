@@ -1,35 +1,52 @@
 package com.jaworski.sportdiary;
 
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.domain.Activity;
+import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
+import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
+import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.mapper.ActivityMapper;
+import com.jaworski.sportdiary.repository.ActivityRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class DBInit implements CommandLineRunner {
 
-    private PasswordEncoder passwordEncoder;
-    private UserEntityRepository userEntityRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserEntityRepository userEntityRepository;
+    private final ActivityRepository activityRepository;
+    private final ActivityEntityRepository activityEntityRepository;
+    private final ActivityMapper activityMapper;
 
-    public DBInit(PasswordEncoder passwordEncoder, UserEntityRepository userEntityRepository) {
+    public DBInit(PasswordEncoder passwordEncoder, UserEntityRepository userEntityRepository, ActivityRepository activityRepository, ActivityEntityRepository activityEntityRepository, ActivityMapper activityMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userEntityRepository = userEntityRepository;
+        this.activityRepository = activityRepository;
+        this.activityEntityRepository = activityEntityRepository;
+        this.activityMapper = activityMapper;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-//        userEntityRepository.deleteAll();
-//
-//        UserEntity dan = new UserEntity("u", passwordEncoder.encode("u"), "USER", "");
-//        UserEntity admin = new UserEntity("admin", passwordEncoder.encode("admin"), "ADMIN,USER", "");
-//        UserEntity user = new UserEntity("user", passwordEncoder.encode("user"), "ADMIN", "");
-//
-//        List<UserEntity> userEntities = List.of(dan, admin, user);
-//        userEntityRepository.saveAll(userEntities);
+        UserEntity dan = new UserEntity("u", passwordEncoder.encode("u"), "USER", "");
+        UserEntity admin = new UserEntity("admin", passwordEncoder.encode("admin"), "ADMIN", "");
+        UserEntity user = new UserEntity("user", passwordEncoder.encode("user"), "USER", "");
 
+        List<UserEntity> userEntities = List.of(dan, admin, user);
+        userEntityRepository.saveAll(userEntities);
+
+        List<Activity> activities = activityRepository.getActivities();
+        System.out.println(activities);
+        for (Activity act : activities) {
+            act.setAddedAt(LocalDateTime.now());
+            ActivityEntity activityEntity = activityMapper.ActivityToEntity(act);
+            activityEntityRepository.save(activityEntity);
+        }
     }
 }

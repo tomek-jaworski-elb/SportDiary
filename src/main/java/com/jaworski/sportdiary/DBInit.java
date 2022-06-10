@@ -7,6 +7,7 @@ import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.repository.ActivityRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DBInit implements CommandLineRunner {
 
     private final PasswordEncoder passwordEncoder;
@@ -22,14 +24,6 @@ public class DBInit implements CommandLineRunner {
     private final ActivityRepository activityRepository;
     private final ActivityEntityRepository activityEntityRepository;
     private final ActivityMapper activityMapper;
-
-    public DBInit(PasswordEncoder passwordEncoder, UserEntityRepository userEntityRepository, ActivityRepository activityRepository, ActivityEntityRepository activityEntityRepository, ActivityMapper activityMapper) {
-        this.passwordEncoder = passwordEncoder;
-        this.userEntityRepository = userEntityRepository;
-        this.activityRepository = activityRepository;
-        this.activityEntityRepository = activityEntityRepository;
-        this.activityMapper = activityMapper;
-    }
 
     @Override
     public void run(String... args) throws Exception {

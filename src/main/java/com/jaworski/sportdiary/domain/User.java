@@ -8,12 +8,16 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @ToString
 @NoArgsConstructor
 @Setter
 @Getter
 public class User {
+
+    private UUID id;
+
     @NotNull(message = "{valid.username.empty}")
     @Length(min = 3, max = 20, message = "{valid.username.length}")
     private String firstName;

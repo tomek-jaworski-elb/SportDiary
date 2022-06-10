@@ -7,10 +7,12 @@ import com.jaworski.sportdiary.mapper.ActivityMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,9 +69,17 @@ public class ActivityService {
                     activityEntity.setDuration(activity.getDuration());
                     activityEntity.setSport(activity.getSport());
                     activityEntity.setAddedAt(activity.getAddedAt());
+                    activityEntity.setLastModifiedAt(LocalDateTime.now());
                     activityEntityRepository.save(activityEntity);
                     return activityMapper.EntityToActivity(activityEntity);
                 })
                 .orElse(new Activity());
+    }
+
+    public List<Activity> getActivitiesByDate(LocalDateTime date) {
+        return activityEntityRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).stream()
+                .filter(activityEntity -> activityEntity.getDateTime().toLocalDate().isEqual(date.toLocalDate()))
+                .map(activityMapper::EntityToActivity)
+                .collect(Collectors.toList());
     }
 }

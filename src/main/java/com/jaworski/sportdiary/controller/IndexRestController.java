@@ -4,26 +4,21 @@ import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
-import com.jaworski.sportdiary.service.AuthenticationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 public class IndexRestController {
 
     private final UserEntityRepository userEntityRepository;
-    private final AuthenticationService authenticationService;
     private final ActivityEntityRepository activityEntityRepository;
-
-    public IndexRestController(UserEntityRepository userEntityRepository, AuthenticationService authenticationService, ActivityEntityRepository activityEntityRepository) {
-        this.userEntityRepository = userEntityRepository;
-        this.authenticationService = authenticationService;
-        this.activityEntityRepository = activityEntityRepository;
-    }
 
     @GetMapping("/users")
     public List<UserEntity> getUserEntityList() {
@@ -32,14 +27,12 @@ public class IndexRestController {
 
     @GetMapping("/acts")
     public List<ActivityEntity> users() {
-        List<ActivityEntity> activityEntities = new ArrayList<>();
-        Iterable<ActivityEntity> all = activityEntityRepository.findAll();
-        all.forEach(activityEntities::add);
-        return activityEntities;
+        return activityEntityRepository.findAll();
     }
 
-    @GetMapping("/user/activities")
-    public List<ActivityEntity> getActivityEntityList() {
-        return (List<ActivityEntity>) activityEntityRepository.findAll();
+    @GetMapping("/acts/{id}")
+    public ActivityEntity getActivity(@PathVariable UUID id) {
+        Optional<ActivityEntity> byId = activityEntityRepository.findById(id);
+        return byId.orElse(new ActivityEntity());
     }
 }

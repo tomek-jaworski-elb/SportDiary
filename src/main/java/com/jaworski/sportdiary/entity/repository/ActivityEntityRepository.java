@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
-public interface ActivityEntityRepository extends JpaRepository<ActivityEntity, Long> {
+public interface ActivityEntityRepository extends JpaRepository<ActivityEntity, UUID> {
 
     Optional<ActivityEntity> findById(UUID activityId);
 

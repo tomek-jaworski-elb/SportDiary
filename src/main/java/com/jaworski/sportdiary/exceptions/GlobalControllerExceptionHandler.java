@@ -16,7 +16,6 @@ class GlobalControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     public void handleConflict() {
         LOGGER.error("Exception: " + Exception.class);
-        System.out.println("DataIntegrityViolationException");
         // Nothing to do
     }
 }

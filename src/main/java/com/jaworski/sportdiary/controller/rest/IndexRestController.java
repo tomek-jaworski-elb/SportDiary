@@ -58,8 +58,14 @@ public class IndexRestController {
     }
 
     @GetMapping("/users/{id}/acts")
-    public ResponseEntity<List<ActivityEntity>> getUserActivities(@PathVariable UUID id) {
-        return ResponseEntity.ok(activityEntityRepository.findByUserId(id));
+    public ResponseEntity<List<Activity>> getUserActivities(@PathVariable UUID id) {
+        List<ActivityEntity> activitiesByUserId = activityEntityRepository.findActivitiesByUserId(id);
+        List<Activity> activities = new ArrayList<>();
+        activitiesByUserId.forEach(activityEntity -> {
+            Activity activity = activityMapper.EntityToActivity(activityEntity);
+            activities.add(activity);
+        });
+        return ResponseEntity.ok(activities);
     }
 
 }

@@ -12,6 +12,6 @@ public interface ActivityEntityRepository extends JpaRepository<ActivityEntity, 
 
     Optional<ActivityEntity> findById(UUID activityId);
 
-    @Query(value = "SELECT a FROM ActivityEntity a WHERE a.userEntity = :id")
-    List<ActivityEntity> findByUserId(UUID id);
+    @Query(value = "SELECT a FROM ActivityEntity a WHERE a.userEntity.id = :id")
+    List<ActivityEntity> findActivitiesByUserId(UUID id);
 }

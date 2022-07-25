@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <head th:insert="head::head (title='login')">
+    <head th:insert="head::head (title='signup')">
     </head>
 </head>
 <body>
@@ -11,32 +11,31 @@
         <div class="col-4"></div>
         <div class="col-4 my-4 rounded-3 mx-4 p-5"
              style="background: rgb(2,0,36);background: linear-gradient(0deg, rgba(2,0,36,0) 0%, rgba(0,212,255,1) 100%);">
-            <h1 class="text-center p-3">Login</h1>
-            <div class="alert-warning" th:if="${param.error}">
-                Invalid username and password.
-            </div>
-            <div class="alert-info" th:if="${param.logout}">
-                You have been logged out.
-            </div>
-            <form class="form-control rounded-2 m-1" th:action="@{/login}" method="post">
+            <h1 class="text-center p-3">Signup</h1>
+            <form class="form-control rounded-2 m-1" th:action="@{/signup}" method="post" th:object="${user}">
                 <div class="text-center">
                     <label> User Name :
-                        <input class="input-group m-1" type="text" name="username"
-                               placeholder="login"/>
+                        <input class="input-group m-1" type="text" name="firstName" th:text="*{firstName}"
+                               placeholder="first name"/>
                     </label>
                 </div>
                 <div class="text-center">
-                    <label> Password: <input class="input-group m-1" type="password" name="password"
-                                             placeholder="password"/> </label>
+                    <label> User e-mail :
+                        <input class="input-group m-1" type="email" name="email" th:text="*{email}"
+                               placeholder="e-mail"/>
+                    </label>
+                </div>
+                <div class="text-center">
+                    <label> User Name :
+                        <input class="input-group m-1" type="password" name="password" th:text="*{password}"
+                               placeholder="password"/>
+                    </label>
                 </div>
                 <div class="text-center">
                     <input class="btn btn-primary m-1" type="submit" value="Sign In"/>
                     <input class="btn btn-secondary m-1" type="reset" value="Reset"/>
                 </div>
             </form>
-            <div class=" text-center">
-                <a th:href="@{/signup}" th:text="#{'Załóż nowe konto'}">Załóż konto</a>
-            </div>
         </div>
         <div class="col col-4"></div>
     </div>

@@ -53,7 +53,7 @@ public class ActivityMapper {
         result.setLastModifiedAt(activityEntity.getLastModifiedAt());
         result.setDistance(new Distance(activityEntity.getDistanceOf(), activityEntity.getUnit()));
         UserEntity userEntity = activityEntity.getUserEntity();
-        result.setOwner(userEntity.getFirstName());
+        result.setOwnerId(userEntity.getId());
         return result;
     }
 

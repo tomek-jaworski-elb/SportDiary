@@ -1,38 +1,65 @@
-package com.jaworski.sportdiary.controller;
+package com.jaworski.sportdiary.controller.rest;
 
+import com.jaworski.sportdiary.domain.Activity;
+import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.mapper.ActivityMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-@RestController
+@RestController()
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class IndexRestController {
 
     private final UserEntityRepository userEntityRepository;
     private final ActivityEntityRepository activityEntityRepository;
+    private final ActivityMapper activityMapper;
 
-    @GetMapping("/users")
-    public List<UserEntity> getUserEntityList() {
-        return userEntityRepository.findAll();
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<User>> getUserEntityList() {
+        List<UserEntity> all = userEntityRepository.findAll();
+        List<User> users = all.stream().map(userEntity -> {
+            User user = new User();
+            user.setEmail(userEntity.getEmail());
+            user.setId(userEntity.getId());
+            user.setFirstName(userEntity.getFirstName());
+            return user;
+        }).toList();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/acts")
-    public List<ActivityEntity> users() {
-        return activityEntityRepository.findAll();
+    public ResponseEntity<List<Activity>> users() {
+        List<ActivityEntity> all = activityEntityRepository.findAll();
+        List<Activity> activities = new ArrayList<>();
+        all.forEach(activityEntity -> {
+            Activity activity = activityMapper.EntityToActivity(activityEntity);
+            activities.add(activity);
+        });
+        return ResponseEntity.ok(activities);
     }
 
     @GetMapping("/acts/{id}")
-    public ActivityEntity getActivity(@PathVariable UUID id) {
-        Optional<ActivityEntity> byId = activityEntityRepository.findById(id);
-        return byId.orElse(new ActivityEntity());
+    public ResponseEntity<ActivityEntity> getActivity(@PathVariable UUID id) {
+        return ResponseEntity.of(activityEntityRepository.findById(id));
     }
+
+    @GetMapping("/users/{id}/acts")
+    public ResponseEntity<List<ActivityEntity>> getUserActivities(@PathVariable UUID id) {
+        return ResponseEntity.ok(activityEntityRepository.findByUserId(id));
+    }
+
 }

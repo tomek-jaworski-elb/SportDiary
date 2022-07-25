@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @ToString
 @NoArgsConstructor
@@ -34,7 +35,7 @@ public class Activity {
     @Valid
     private Distance distance;
 
-    private String owner;
+    private UUID ownerId;
 
     private LocalDateTime lastModifiedAt;
     private LocalDateTime addedAt;

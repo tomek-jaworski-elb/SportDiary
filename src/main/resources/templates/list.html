@@ -128,7 +128,7 @@
                 th:text="${activity.getDistance().distanceOf + ' - ' + activity.getDistance().getUnits()}">Otto
             </td>
             <td class="text-center" th:text="${activity.getDuration()} + ' [minutes]'">Otto</td>
-            <td class="text-center" th:text="${activity.getOwner()}">Otto</td>
+            <td class="text-center" th:text="${activity.getUser().getFirstName()}">Otto</td>
             <td class="text-center">
                 <a sec:authorize="isAnonymous() || isAuthenticated()" class="btn btn-primary mx-2" href="#"
                    th:href="@{'/user/more?id=' + ${activity.getId()}}"

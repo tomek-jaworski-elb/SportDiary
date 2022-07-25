@@ -35,7 +35,7 @@ public class Activity {
     @Valid
     private Distance distance;
 
-    private UUID ownerId;
+    private User user;
 
     private LocalDateTime lastModifiedAt;
     private LocalDateTime addedAt;

@@ -32,7 +32,7 @@ public class UserEntity {
 
     @NotNull(message = "{valid.username.empty}")
     @Length(min = 1, max = 20, message = "{valid.username.length}")
-    @Column(name = COLUMN_PREFIX + "first_name")
+    @Column(name = COLUMN_PREFIX + "first_name", unique = true)
     private String firstName;
 
 //    @NotNull(message = "{valid.username.empty}")

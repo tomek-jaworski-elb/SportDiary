@@ -61,7 +61,8 @@ public class IndexController {
                     .map(error -> error.getDefaultMessage()).reduce("", (a, b) -> a + ", " + b));
             return "signup";
         } else {
-            UserEntity userEntity = new UserEntity(user.getFirstName(), passwordEncoder.encode(user.getPassword()), Role.ROLE_USER.name(), "");
+            UserEntity userEntity = new UserEntity(user.getFirstName(), passwordEncoder.encode(user.getPassword()), Role.ROLE_USER.toString(), "");
+            userEntity.setEmail(user.getEmail());
             userEntityRepository.save(userEntity);
             return "redirect:/login?registration=success";
         }

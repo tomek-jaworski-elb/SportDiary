@@ -39,13 +39,13 @@ public class User {
 
     //    @NotNull(message = "{valid.username.empty}")
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private String roles;
 
-    public User(UUID id, String firstName, String lastName, String email, Role role) {
+    public User(UUID id, String firstName, String lastName, String email, String roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.role = role;
+        this.roles = roles;
     }
 }

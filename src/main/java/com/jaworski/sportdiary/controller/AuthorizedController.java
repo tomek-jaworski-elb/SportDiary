@@ -1,5 +1,6 @@
 package com.jaworski.sportdiary.controller;
 
+import com.jaworski.sportdiary.config.security.UserPrincipal;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
 import com.jaworski.sportdiary.repository.ActivityRepository;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -135,17 +137,17 @@ public class AuthorizedController {
         return "add";
     }
 
-//    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(path = "/add")
-    public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
+    public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model,
+                              @AuthenticationPrincipal UserPrincipal userPrincipal) {
         LOGGER.info(activity);
-        System.out.println(activity);
         if (result.hasErrors()) {
             LOGGER.info(result);
             return "add";
         } else {
-            Activity activity1 = activityService.addActivity(activity);
-            System.out.println(activity1);
+            activity.setUser(userPrincipal.getUser());
+            activityService.addActivity(activity);
             model.addAttribute("activity", activity);
             return "new";
         }

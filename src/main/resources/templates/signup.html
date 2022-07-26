@@ -14,22 +14,26 @@
             <h1 class="text-center p-3">Signup</h1>
             <form class="form-control rounded-2 m-1" th:action="@{/signup}" method="post" th:object="${user}">
                 <div class="text-center">
-                    <label> User Name :
-                        <input class="input-group m-1" type="text" name="firstName" th:text="*{firstName}"
-                               placeholder="first name"/>
-                    </label>
+                    <label for="firstName" th:text="#{'First name'}"> </label>
+                    <input class="input-group m-1" type="text" id="firstName" name="firstName" th:field="*{firstName}"
+                           placeholder="first name"/>
+                    <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                 </div>
                 <div class="text-center">
                     <label> User e-mail :
-                        <input class="input-group m-1" type="email" name="email" th:text="*{email}"
+                        <input class="input-group m-1" type="email" name="email" th:field="*{email}"
                                placeholder="e-mail"/>
                     </label>
+                    <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+
                 </div>
                 <div class="text-center">
                     <label> User Name :
-                        <input class="input-group m-1" type="password" name="password" th:text="*{password}"
+                        <input class="input-group m-1" type="password" name="password" th:field="*{password}"
                                placeholder="password"/>
                     </label>
+                    <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+
                 </div>
                 <div class="text-center">
                     <input class="btn btn-primary m-1" type="submit" value="Sign In"/>

@@ -1,12 +1,16 @@
 package com.jaworski.sportdiary.domain;
 
 import com.jaworski.sportdiary.domain.enums.Role;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -22,11 +26,10 @@ public class User {
     @Length(min = 3, max = 20, message = "{valid.username.length}")
     private String firstName;
 
-    @NotNull(message = "{valid.username.empty}")
-    @Length(min = 3, max = 20, message = "{valid.username.length}")
+    @Length(max = 20, message = "{valid.username.length}")
     private String lastName;
 
-    @NotNull(message = "{valid.username.empty}")
+    @NotBlank(message = "{valid.username.empty}")
     @Email(message = "{valid.email.empty}")
     private String email;
 
@@ -34,7 +37,7 @@ public class User {
     @Length(min = 3, message = "{valid.username.length}")
     private String password;
 
-    @NotNull(message = "{valid.username.empty}")
+    //    @NotNull(message = "{valid.username.empty}")
     @Enumerated(EnumType.STRING)
     private Role role;
 

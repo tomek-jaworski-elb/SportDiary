@@ -1,5 +1,6 @@
 package com.jaworski.sportdiary.service.activity;
 
+import com.jaworski.sportdiary.config.security.UserPrincipal;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -98,6 +98,20 @@ public class ActivityService {
         return activityEntityRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).stream()
                 .filter(activityEntity -> activityEntity.getDateTime().toLocalDate().isEqual(date.toLocalDate()))
                 .map(activityMapper::EntityToActivity)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<Activity> getUserActivityList(UserPrincipal userPrincipal) {
+        return activityEntityRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).stream()
+                .filter(activityEntity -> {
+                    if (userPrincipal == null) {
+                        return true;
+                    } else {
+                        return activityEntity.getUserEntity().getId().equals(userPrincipal.getId());
+                    }
+                })
+                .filter(activityEntity -> !activityEntity.isDeleted())
+                .map(activityMapper::EntityToActivity)
+                .toList();
     }
 }

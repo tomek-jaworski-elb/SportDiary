@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(path = "/user")
 @RequiredArgsConstructor
 public class AuthorizedController {
 
@@ -32,7 +32,6 @@ public class AuthorizedController {
     private final ActivityService activityService;
     private final ActivityRepository activityRepository;
 
-
     @GetMapping("/**")
     public String handle() {
         return "404";
@@ -40,7 +39,10 @@ public class AuthorizedController {
 
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
-                       @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
+                       @RequestParam(required = false) boolean save,
+                       @RequestParam(required = false) boolean error,
+                       @AuthenticationPrincipal UserPrincipal userPrincipal,
+                       Model model) {
         LOGGER.info(listParam);
         activityService.setActivityList();
         Comparator<Activity> comparator;
@@ -73,7 +75,7 @@ public class AuthorizedController {
                 comparator = Comparator.comparing(Objects::nonNull);
             }
         }
-        List<Activity> list = activityService.sort(comparator);
+        List<Activity> list = activityService.getUserActivityList(userPrincipal);
         model.addAttribute("activities", list);
         model.addAttribute("listParam", listParam);
         model.addAttribute("save", save);
@@ -120,7 +122,6 @@ public class AuthorizedController {
         } else {
             return new RedirectView("/user?error=true");
         }
-
     }
 
     @GetMapping(path = "/more", params = "id")

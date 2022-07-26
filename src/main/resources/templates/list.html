@@ -75,6 +75,9 @@
             <th scope="col" class="text-center">
                 <input type="submit" value="Owner" class="btn btn-link text-black"/>
             </th>
+            <th sec:authorize="hasRole('ADMIN')" scope="col" class="text-center">
+                <input type="submit" value="isDeleted" class="btn btn-link text-black"/>
+            </th>
             <th scope="col" class="text-center">
                 <input type="submit" value="Action" class="btn btn-link text-black"/>
             </th>
@@ -84,7 +87,8 @@
         <tr th:each="activity : ${activities}">
             <th class="text-center" scope="row" th:text="${activityStat.index}">1</th>
             <td class="text-center" th:text="${#temporals.format(activity.getDateTime(),'dd/MM/yyyy HH:mm')}">Mark</td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).RUNNING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).RUNNING}">
                 <small>Run<br></small>
                 <img width="24px" height="24px" th:src="@{/img/run.svg}" th:alt="${'Run'}"></td>
             <td class="text-center"
@@ -92,10 +96,12 @@
                 <small>Ultra<br/></small><img
                     width="24px" height="24px"
                     th:src="@{/img/ultra.svg}" th:alt="${'Run'}"></td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).JOGA}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).JOGA}">
                 <small>Joga<br/></small><img width="24px" height="24px" th:src="@{/img/joga.svg}" th:alt="${'Joga'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).CYCLING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).CYCLING}">
                 <small>Cycling<br></small><img
                     width="24px" height="24px"
                     th:src="@{/img/bicycle.svg}" th:alt="${'Bicycle'}"></td>
@@ -106,29 +112,33 @@
                     th:src="@{/img/gym.svg}"
                     th:alt="${'Gym'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).SWIMMING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).SWIMMING}">
                 <small>Pool<br/></small><img width="24px"
                                              height="24px"
                                              th:src="@{/img/pool.svg}"
                                              th:alt="${'Swim'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).OTHER}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).OTHER}">
                 <small>Other<br/></small><img width="24px"
-                                             height="24px"
-                                             th:src="@{/img/question.svg}"
-                                             th:alt="${'other'}">
+                                              height="24px"
+                                              th:src="@{/img/question.svg}"
+                                              th:alt="${'other'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).HIKING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).HIKING}">
                 <small>Hiking<br/></small><img width="24px"
-                                             height="24px"
-                                             th:src="@{/img/question.svg}"
-                                             th:alt="${'hikinig'}">
+                                               height="24px"
+                                               th:src="@{/img/question.svg}"
+                                               th:alt="${'hikinig'}">
             </td>
             <td class="text-center"
                 th:text="${activity.getDistance().distanceOf + ' - ' + activity.getDistance().getUnits()}">Otto
             </td>
             <td class="text-center" th:text="${activity.getDuration()} + ' [minutes]'">Otto</td>
             <td class="text-center" th:text="${activity.getUser().getFirstName()}">Otto</td>
+            <td sec:authorize="hasRole('ADMIN')" class="text-center" th:text="${activity.isDeleted()}">Otto</td>
             <td class="text-center">
                 <a sec:authorize="isAnonymous() || isAuthenticated()" class="btn btn-primary mx-2" href="#"
                    th:href="@{'/user/more?id=' + ${activity.getId()}}"

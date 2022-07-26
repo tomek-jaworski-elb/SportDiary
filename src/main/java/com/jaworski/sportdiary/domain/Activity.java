@@ -40,6 +40,7 @@ public class Activity {
     private LocalDateTime lastModifiedAt;
     private LocalDateTime addedAt;
 
+    private boolean isDeleted;
 
     public String getId() {
         return id;

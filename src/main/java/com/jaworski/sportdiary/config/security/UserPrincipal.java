@@ -9,10 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public class UserPrincipal implements UserDetails {
 
-    private UserEntity userEntity;
+    private final UserEntity userEntity;
 
     public UserPrincipal(UserEntity userEntity) {
         this.userEntity = userEntity;
@@ -68,12 +69,15 @@ public class UserPrincipal implements UserDetails {
         sb.append(userEntity.getFirstName()).append(System.lineSeparator());
         sb.append(userEntity.getRoles().toString()).append(System.lineSeparator());
         sb.append(userEntity.getAuthorities().toString());
-
         return sb.toString();
     }
 
     public User getUser() {
         return new User(userEntity.getId(), userEntity.getFirstName(), userEntity.getFirstName(), userEntity.getEmail(),
                 userEntity.getRoles().stream().reduce("", (a, b) -> a + "," + b));
+    }
+
+    public UUID getId() {
+        return userEntity.getId();
     }
 }

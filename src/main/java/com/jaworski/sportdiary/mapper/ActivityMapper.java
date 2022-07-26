@@ -2,6 +2,7 @@ package com.jaworski.sportdiary.mapper;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.Distance;
+import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
@@ -53,7 +54,11 @@ public class ActivityMapper {
         result.setLastModifiedAt(activityEntity.getLastModifiedAt());
         result.setDistance(new Distance(activityEntity.getDistanceOf(), activityEntity.getUnit()));
         UserEntity userEntity = activityEntity.getUserEntity();
-        result.setOwner(userEntity.getFirstName());
+        User user = new User();
+        user.setId(userEntity.getId());
+        user.setFirstName(userEntity.getFirstName());
+        user.setEmail(userEntity.getEmail());
+        result.setUser(user);
         return result;
     }
 

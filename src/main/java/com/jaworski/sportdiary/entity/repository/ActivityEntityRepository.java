@@ -2,8 +2,9 @@ package com.jaworski.sportdiary.entity.repository;
 
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,4 +12,6 @@ public interface ActivityEntityRepository extends JpaRepository<ActivityEntity, 
 
     Optional<ActivityEntity> findById(UUID activityId);
 
+    @Query(value = "SELECT a FROM ActivityEntity a WHERE a.userEntity.id = :id")
+    List<ActivityEntity> findActivitiesByUserId(UUID id);
 }

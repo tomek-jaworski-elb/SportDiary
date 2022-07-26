@@ -29,7 +29,7 @@ public class ActivityEntity {
     @Id
     @GeneratedValue
     @Type(type = "uuid-char")
-    @Column(name = COLUMN_PREFIX + "id")
+    @Column(name = COLUMN_PREFIX + "id",unique = true, nullable = false)
     private UUID id;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

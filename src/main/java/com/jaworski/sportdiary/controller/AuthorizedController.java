@@ -2,12 +2,8 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.ListParam;
-import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.repository.ActivityRepository;
-import com.jaworski.sportdiary.service.AuthenticationService;
 import com.jaworski.sportdiary.service.activity.ActivityService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthorizedController {
 
-    private static final Logger logger = LogManager.getLogger(AuthorizedController.class);
+    private static final Logger LOGGER = LogManager.getLogger(AuthorizedController.class);
 
     private final ActivityService activityService;
     private final ActivityRepository activityRepository;
@@ -43,7 +39,7 @@ public class AuthorizedController {
     @GetMapping(path = {"/list", "/", ""})
     public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
                        @RequestParam(required = false) boolean save, @RequestParam(required = false) boolean error, Model model) {
-        logger.info(listParam);
+        LOGGER.info(listParam);
         activityService.setActivityList();
         Comparator<Activity> comparator;
         switch (listParam.getSort()) {
@@ -95,8 +91,8 @@ public class AuthorizedController {
     @PostMapping("/edit")
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     public String edited(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
-        logger.info(activity);
-        logger.error(result);
+        LOGGER.info(activity);
+        LOGGER.error(result);
         if (result.hasErrors()) {
             return "edit";
         } else {
@@ -139,15 +135,17 @@ public class AuthorizedController {
         return "add";
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+//    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(path = "/add")
     public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model) {
-        logger.info(activity);
+        LOGGER.info(activity);
+        System.out.println(activity);
         if (result.hasErrors()) {
-            logger.info(result);
+            LOGGER.info(result);
             return "add";
         } else {
-            activityService.addActivity(activity);
+            Activity activity1 = activityService.addActivity(activity);
+            System.out.println(activity1);
             model.addAttribute("activity", activity);
             return "new";
         }

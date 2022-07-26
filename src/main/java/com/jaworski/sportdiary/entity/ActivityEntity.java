@@ -70,4 +70,17 @@ public class ActivityEntity {
     @ManyToOne
     @JoinColumn(name = UserEntity.COLUMN_PREFIX + "id")
     private UserEntity userEntity;
+
+    public ActivityEntity(LocalDateTime dateTime, LocalDateTime addedAt, LocalDateTime lastModifiedAt,
+                          Long duration, Double distanceOf, Unit unit, Sport sport, UserEntity userEntity) {
+        this.id = id;
+        this.dateTime = dateTime;
+        this.addedAt = addedAt;
+        this.lastModifiedAt = lastModifiedAt;
+        this.duration = duration;
+        this.distanceOf = distanceOf;
+        this.unit = unit;
+        this.sport = sport;
+        this.userEntity = userEntity;
+    }
 }

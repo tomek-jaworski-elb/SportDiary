@@ -2,13 +2,17 @@ package com.jaworski.sportdiary.service.activity;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
+import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
+import com.jaworski.sportdiary.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,13 +20,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ActivityService {
 
     private static final Logger LOGGER = LogManager.getLogger(ActivityService.class);
     private final List<Activity> activityList;
     private final ActivityMapper activityMapper;
+    private final UserEntityRepository userEntityRepository;
+    private final AuthenticationService authenticationService;
+
     private final ActivityEntityRepository activityEntityRepository;
 
+    private UserEntity getCurrentUser() {
+        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName());
+    }
 
     public List<Activity> getActivityList() {
         List<Activity> result = new ArrayList<>();
@@ -43,9 +54,14 @@ public class ActivityService {
         activityEntityRepository.findAll().forEach(activityEntity -> activityList.add(activityMapper.EntityToActivity(activityEntity)));
     }
 
-    public void addActivity(Activity activity) {
+    public Activity addActivity(Activity activity) {
         activity.setAddedAt(LocalDateTime.now());
-        activityEntityRepository.save(activityMapper.ActivityToEntity(activity));
+        activity.setLastModifiedAt(LocalDateTime.now());
+        ActivityEntity entity = new ActivityEntity(activity.getDateTime(), activity.getAddedAt(), activity.getLastModifiedAt(),
+                activity.getDuration(), activity.getDistance().getDistanceOf(), activity.getDistance().getUnits(),
+                activity.getSport(), getCurrentUser());
+        ActivityEntity save = activityEntityRepository.save(entity);
+        return activityMapper.EntityToActivity(save);
     }
 
 

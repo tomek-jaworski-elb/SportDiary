@@ -44,7 +44,9 @@ public class ActivityService {
 
     public void delete(UUID id) {
         activityEntityRepository.findById(id).ifPresent(activityEntity -> {
-            activityEntityRepository.delete(activityEntity);
+            activityEntity.setDeleted(true);
+            activityEntity.setLastModifiedAt(LocalDateTime.now());
+            activityEntityRepository.save(activityEntity);
             LOGGER.info("Deleted activity with id: " + id);
         });
     }

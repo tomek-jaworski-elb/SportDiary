@@ -11,7 +11,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -29,7 +32,7 @@ public class ActivityEntity {
     @Id
     @GeneratedValue
     @Type(type = "uuid-char")
-    @Column(name = COLUMN_PREFIX + "id",unique = true, nullable = false)
+    @Column(name = COLUMN_PREFIX + "id", unique = true, nullable = false)
     private UUID id;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -70,6 +73,10 @@ public class ActivityEntity {
     @ManyToOne
     @JoinColumn(name = UserEntity.COLUMN_PREFIX + "id")
     private UserEntity userEntity;
+
+    @Column(name = COLUMN_PREFIX + "is_deleted")
+    private boolean isDeleted;
+
 
     public ActivityEntity(LocalDateTime dateTime, LocalDateTime addedAt, LocalDateTime lastModifiedAt,
                           Long duration, Double distanceOf, Unit unit, Sport sport, UserEntity userEntity) {

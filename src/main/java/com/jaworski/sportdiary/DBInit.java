@@ -33,7 +33,7 @@ public class DBInit implements CommandLineRunner {
         UserEntity user = new UserEntity("user", passwordEncoder.encode("user"), "USER", "");
 
         List<UserEntity> userEntities = List.of(dan, admin, user);
-        userEntityRepository.saveAll(userEntities);
+//        userEntityRepository.saveAll(userEntities);
 
         List<Activity> activities = activityRepository.getActivities();
         System.out.println(activities);
@@ -41,7 +41,7 @@ public class DBInit implements CommandLineRunner {
             act.setAddedAt(LocalDateTime.now());
             act.setLastModifiedAt(LocalDateTime.now());
             ActivityEntity activityEntity = activityMapper.ActivityToEntity(act);
-            activityEntityRepository.save(activityEntity);
+//            activityEntityRepository.save(activityEntity);
         }
     }
 }

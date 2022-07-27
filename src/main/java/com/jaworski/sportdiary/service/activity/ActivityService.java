@@ -120,4 +120,13 @@ public class ActivityService {
                 .map(activityMapper::EntityToActivity)
                 .toList();
     }
+
+    public void restore(UUID id) {
+        activityEntityRepository.findById(id).ifPresent(activityEntity -> {
+            activityEntity.setDeleted(false);
+            activityEntity.setLastModifiedAt(LocalDateTime.now());
+            activityEntityRepository.save(activityEntity);
+            LOGGER.info("Deleted activity with id: " + id);
+        });
+    }
 }

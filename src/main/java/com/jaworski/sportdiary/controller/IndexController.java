@@ -2,7 +2,6 @@ package com.jaworski.sportdiary.controller;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
-import com.jaworski.sportdiary.domain.enums.Role;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
@@ -18,6 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -41,8 +42,11 @@ public class IndexController {
         return "welcome";
     }
 
-    @GetMapping("/login")
-    public String login() {
+    @GetMapping(path = "/login")
+    public String login(Model model,
+                        @RequestParam(required = false, name = "registration", defaultValue = "false") boolean registration) {
+        System.out.println("reg: " + registration);
+        model.addAttribute("registration", registration);
         return "login";
     }
 
@@ -54,17 +58,17 @@ public class IndexController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model) {
+    public RedirectView signup(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model) {
         LOGGER.info("Signup: " + user);
         if (bindingResult.hasErrors()) {
             LOGGER.info("Signup: " + bindingResult.getAllErrors().stream()
                     .map(error -> error.getDefaultMessage()).reduce("", (a, b) -> a + ", " + b));
-            return "signup";
+            return new RedirectView("/signup");
         } else {
             UserEntity userEntity = new UserEntity(user.getFirstName(), passwordEncoder.encode(user.getPassword()), "USER", "");
             userEntity.setEmail(user.getEmail());
             userEntityRepository.save(userEntity);
-            return "redirect:/login?registration=success";
+            return new RedirectView("/login?registration=true");
         }
     }
 
@@ -94,11 +98,8 @@ public class IndexController {
         return "redirect:/add";
     }
 
-
     @GetMapping("/403")
     public String error403() {
         return "403";
     }
-
-
 }

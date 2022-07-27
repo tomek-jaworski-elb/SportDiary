@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.reactive.result.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.Comparator;
@@ -113,15 +113,22 @@ public class AuthorizedController {
             activityService.update(activity);
             model.addAttribute("activities", activityService.getActivityList());
             model.addAttribute("listParam", new ListParam());
-            return new RedirectView("/list").getUrl();
+            return "redirect:/user/list";
         }
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping(value = "/delete", params = "id")
-    public RedirectView delete(@RequestParam(required = true, name = "id") UUID id) {
+    public String delete(@RequestParam(required = true, name = "id") UUID id) {
         activityService.delete(id);
-        return new RedirectView("/user");
+        return "redirect:/user/list";
+    }
+
+    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @GetMapping(value = "/restore", params = "id")
+    public String restore(@RequestParam(required = true, name = "id") UUID id) {
+        activityService.restore(id);
+        return "redirect:/user/list";
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
@@ -135,7 +142,9 @@ public class AuthorizedController {
     }
 
     @GetMapping(path = "/more", params = "id")
-    public String more(@RequestParam(required = false) UUID id, @RequestParam(required = false) String lang, Model model) {
+    public String more(@RequestParam(required = false) UUID id,
+                       @RequestParam(required = false) String lang,
+                       Model model) {
         model.addAttribute("activity", activityService.getActivity(id));
         return "more";
     }
@@ -150,7 +159,9 @@ public class AuthorizedController {
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping(path = "/add")
-    public String newActivity(@Valid @ModelAttribute Activity activity, BindingResult result, Model model,
+    public String newActivity(@Valid @ModelAttribute Activity activity,
+                              BindingResult result,
+                              Model model,
                               @AuthenticationPrincipal UserPrincipal userPrincipal) {
         LOGGER.info(activity);
         if (result.hasErrors()) {

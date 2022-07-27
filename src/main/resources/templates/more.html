@@ -28,7 +28,9 @@
             <div th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).SWIMMING}" class="text-center">
                 <img th:src="@{/img/pool.svg}" width="200px" height="auto" class="">
             </div>
-
+            <div th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).OTHER}" class="text-center">
+                <img th:src="@{/img/question.svg}" width="200px" height="auto" class="">
+            </div>
         </div>
         <div class="col-4">
             <h2 th:text="${'Czas aktywności: '+ #temporals.format(activity.getDateTime(),'dd/MM/yyyy - HH:mm')}"></h2>

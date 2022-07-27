@@ -26,7 +26,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
-//        auth.userDetailsService(inMemoryUserDetailsManager());
         auth.authenticationProvider(authenticationProvider());
     }
 
@@ -56,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/js/**").permitAll()
-                .antMatchers("/welcome", "/", "/test","/signup").permitAll()
+                .antMatchers("/welcome", "/", "/test", "/signup", "/login").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").permitAll()
                 .antMatchers("/api/**").permitAll()
@@ -64,41 +63,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/test").permitAll()
                 .antMatchers("/users").permitAll()
-                .antMatchers("/acts","/acts/**").permitAll()
+                .antMatchers("/acts", "/acts/**").permitAll()
                 .antMatchers("/add").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/user/list", false)
+                .defaultSuccessUrl("/user/list", true)
                 .failureUrl("/login?error=true")
                 .and()
                 .logout().permitAll()
-                .logoutSuccessUrl("/user")
+                .logoutSuccessUrl("/login?logout=true")
+                .and()
+                .csrf()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
-
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-//                .antMatchers("/index", "/", "/login*").permitAll()
-//                .antMatchers("/img/**", "/bootstrap/**", "/webjars/**").permitAll()
-//                .antMatchers("/anonymous*").anonymous()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/index", true)
-//                .failureUrl("/login?error=true")
-////                .failureHandler(authenticationFailureHandler())
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .logoutUrl("/logout")
-//                .deleteCookies("JSESSIONID");
-////                .getLogoutSuccessHandler(logoutSuccessHandler());
     }
 }

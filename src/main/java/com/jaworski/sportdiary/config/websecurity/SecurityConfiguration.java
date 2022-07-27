@@ -1,6 +1,8 @@
 package com.jaworski.sportdiary.config.websecurity;
 
 import com.jaworski.sportdiary.config.security.UserEntityPrincipalDetailService;
+import com.jaworski.sportdiary.service.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,13 +18,10 @@ import java.util.Properties;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserEntityPrincipalDetailService userEntityPrincipalDetailService;
-
-    public SecurityConfiguration(UserEntityPrincipalDetailService userEntityPrincipalDetailService) {
-        this.userEntityPrincipalDetailService = userEntityPrincipalDetailService;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {

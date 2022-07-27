@@ -7,6 +7,7 @@ import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.activity.ActivityService;
+import com.jaworski.sportdiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,11 +29,11 @@ import java.util.List;
 public class IndexController {
 
     private static final Logger LOGGER = LogManager.getLogger(IndexController.class);
-
     private final ActivityService activityService;
     private final ActivityMapper activityMapper;
     private final UserEntityRepository userEntityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
 
     @GetMapping(path = {"/", "welcome", "index"})
@@ -65,9 +66,10 @@ public class IndexController {
                     .map(error -> error.getDefaultMessage()).reduce("", (a, b) -> a + ", " + b));
             return new RedirectView("/signup");
         } else {
-            UserEntity userEntity = new UserEntity(user.getFirstName(), passwordEncoder.encode(user.getPassword()), "USER", "");
-            userEntity.setEmail(user.getEmail());
-            userEntityRepository.save(userEntity);
+            userService.addUser(user);
+//            UserEntity userEntity = new UserEntity(user.getFirstName(), passwordEncoder.encode(user.getPassword()), "USER", "");
+//            userEntity.setEmail(user.getEmail());
+//            userEntityRepository.save(userEntity);
             return new RedirectView("/login?registration=true");
         }
     }

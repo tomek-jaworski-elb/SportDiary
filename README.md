@@ -1,4 +1,11 @@
-### uruchomienie kontenera mySql
+### Uruchomienie aplikacji
+
+http://localhost:8080/
+
+Dane logowania:</br>
+`user:user`
+
+### Uruchomienie kontenera mySql
 
 Uruchomienie kontenera mySql 
 

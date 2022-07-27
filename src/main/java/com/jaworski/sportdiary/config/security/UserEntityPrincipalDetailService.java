@@ -1,20 +1,18 @@
 package com.jaworski.sportdiary.config.security;
 
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserEntityPrincipalDetailService implements UserDetailsService {
 
     private UserEntityRepository userEntityRepository;
-
-    public UserEntityPrincipalDetailService(UserEntityRepository userEntityRepository) {
-        this.userEntityRepository = userEntityRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -22,7 +20,6 @@ public class UserEntityPrincipalDetailService implements UserDetailsService {
         if (userEntity == null) {
             throw new UsernameNotFoundException(username);
         }
-        UserPrincipal userPrincipal = new UserPrincipal(userEntity);
-        return userPrincipal;
+        return new UserPrincipal(userEntity);
     }
 }

@@ -2,11 +2,10 @@ package com.jaworski.sportdiary.controller.rest;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
-import com.jaworski.sportdiary.domain.enums.Role;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.repository.ActivityEntityRepository;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

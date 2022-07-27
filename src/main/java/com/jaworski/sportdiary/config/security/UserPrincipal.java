@@ -2,6 +2,7 @@ package com.jaworski.sportdiary.config.security;
 
 import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,13 +12,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
 
     private final UserEntity userEntity;
-
-    public UserPrincipal(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -4,7 +4,7 @@ import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;

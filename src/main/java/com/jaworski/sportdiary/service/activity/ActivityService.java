@@ -101,7 +101,7 @@ public class ActivityService {
                 .toList();
     }
 
-    public List<Activity> getUserActivityList(UserPrincipal userPrincipal) {
+    public List<Activity> getUserActivityList(UserPrincipal userPrincipal, boolean showIsDeleted) {
         return activityEntityRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).stream()
                 .filter(activityEntity -> {
                     if (userPrincipal == null) {
@@ -110,7 +110,13 @@ public class ActivityService {
                         return activityEntity.getUserEntity().getId().equals(userPrincipal.getId());
                     }
                 })
-                .filter(activityEntity -> !activityEntity.isDeleted())
+                .filter(activityEntity -> {
+                    if (showIsDeleted) {
+                        return true;
+                    } else {
+                        return !activityEntity.isDeleted();
+                    }
+                })
                 .map(activityMapper::EntityToActivity)
                 .toList();
     }

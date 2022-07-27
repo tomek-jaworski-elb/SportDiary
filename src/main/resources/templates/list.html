@@ -85,7 +85,7 @@
         </thead>
         <tbody>
         <tr th:each="activity : ${activities}">
-            <th class="text-center" scope="row" th:text="${activityStat.index}">1</th>
+            <th class="text-center" scope="row" th:text="${activityStat.index + 1}">1</th>
             <td class="text-center" th:text="${#temporals.format(activity.getDateTime(),'dd/MM/yyyy HH:mm')}">Mark</td>
             <td class="text-center"
                 th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).RUNNING}">

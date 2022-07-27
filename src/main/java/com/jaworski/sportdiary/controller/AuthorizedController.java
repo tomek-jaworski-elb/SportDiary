@@ -75,7 +75,7 @@ public class AuthorizedController {
                 comparator = Comparator.comparing(Objects::nonNull);
             }
         }
-        List<Activity> list = activityService.getUserActivityList(userPrincipal);
+        List<Activity> list = activityService.getUserActivityList(userPrincipal, false);
         model.addAttribute("activities", list);
         model.addAttribute("listParam", listParam);
         model.addAttribute("save", save);
@@ -83,6 +83,16 @@ public class AuthorizedController {
         return "list";
     }
 
+    @GetMapping(path = "/list/all")
+    @Secured("ROLE_ADMIN")
+    public String listAll(Model model) {
+        List<Activity> list = activityService.getUserActivityList(null, true);
+        model.addAttribute("activities", list);
+        model.addAttribute("listParam", new ListParam());
+        model.addAttribute("save", null);
+        model.addAttribute("error", null);
+        return "list";
+    }
 
     @GetMapping(value = "/edit", params = "id")
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})

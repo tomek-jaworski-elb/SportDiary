@@ -1,6 +1,5 @@
 package com.jaworski.sportdiary.domain;
 
-import com.jaworski.sportdiary.domain.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

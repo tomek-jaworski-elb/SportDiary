@@ -86,7 +86,9 @@ public class AuthorizedController {
     @GetMapping(path = "/list/all")
     @Secured("ROLE_ADMIN")
     public String listAll(Model model) {
-        List<Activity> list = activityService.getUserActivityList(null, true);
+//        List<Activity> list = activityService.getUserActivityList(null, true);
+        List<Activity> list = activityService.getPage();
+
         model.addAttribute("activities", list);
         model.addAttribute("listParam", new ListParam());
         model.addAttribute("save", null);
@@ -119,16 +121,21 @@ public class AuthorizedController {
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping(value = "/delete", params = "id")
-    public String delete(@RequestParam(required = true, name = "id") UUID id) {
+    public String delete(@RequestParam(required = true, name = "id") UUID id,
+                         @AuthenticationPrincipal UserPrincipal userPrincipal) {
         activityService.delete(id);
-        return "redirect:/user/list";
+        if (userPrincipal.getAuthorities().contains("ADMIN")) {
+            return "redirect:/user/list/all";
+        } else {
+            return "redirect:/user/list";
+        }
     }
 
-    @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping(value = "/restore", params = "id")
     public String restore(@RequestParam(required = true, name = "id") UUID id) {
         activityService.restore(id);
-        return "redirect:/user/list";
+        return "redirect:/user/list/all";
     }
 
     @Secured(value = {"ROLE_ADMIN", "ROLE_USER"})

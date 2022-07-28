@@ -26,6 +26,26 @@
 
 </div>
 <div class="container">
+    <div class="container text-center" sec:authorize="hasRole('ADMIN')">
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item active">
+      <span class="page-link">
+        2
+        <span class="sr-only">(current)</span>
+      </span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -146,10 +166,12 @@
                 <a sec:authorize="isAuthenticated()" class="btn btn-secondary mx-2" href="#"
                    th:href="@{'/user/edit?id=' + ${activity.getId()}}"
                    role="button">Edit</a>
-                <a sec:authorize="isAuthenticated()"  th:if="${!activity.isDeleted()}" class="btn btn-warning mx-2" href="#"
+                <a sec:authorize="isAuthenticated()" th:if="${!activity.isDeleted()}" class="btn btn-warning mx-2"
+                   href="#"
                    th:href="@{'/user/delete?id=' + ${activity.getId()}}"
                    role="button">Delete</a>
-                <a sec:authorize="isAuthenticated()" th:if="${activity.isDeleted()}" class="btn btn-success mx-2" href="#"
+                <a sec:authorize="isAuthenticated()" th:if="${activity.isDeleted()}" class="btn btn-success mx-2"
+                   href="#"
                    th:href="@{'/user/restore?id=' + ${activity.getId()}}"
                    role="button">Restore</a>
             </td>

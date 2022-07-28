@@ -11,6 +11,9 @@ import com.jaworski.sportdiary.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,5 +131,11 @@ public class ActivityService {
             activityEntityRepository.save(activityEntity);
             LOGGER.info("Deleted activity with id: " + id);
         });
+    }
+
+    public List<Activity> getPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by( "duration").descending());
+        Page<ActivityEntity> allOrderByDuration = activityEntityRepository.findAll(pageable);
+        return allOrderByDuration.getContent().stream().map(activityMapper::EntityToActivity).toList();
     }
 }

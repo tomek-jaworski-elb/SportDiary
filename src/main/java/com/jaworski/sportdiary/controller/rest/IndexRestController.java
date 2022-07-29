@@ -4,8 +4,8 @@ import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.repository.ActivityEntityRepository;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -36,6 +36,7 @@ public class IndexRestController {
             user.setEmail(userEntity.getEmail());
             user.setId(userEntity.getId());
             user.setFirstName(userEntity.getFirstName());
+            user.setRoles(userEntity.getRoles().stream().reduce((s, s2) -> s + "," + s2).get());
             return user;
         }).toList();
         return ResponseEntity.ok(users);

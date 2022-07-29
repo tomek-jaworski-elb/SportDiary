@@ -1,8 +1,7 @@
 package com.jaworski.sportdiary.service;
 
 import com.jaworski.sportdiary.domain.User;
-import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

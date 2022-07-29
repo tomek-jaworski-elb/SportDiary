@@ -5,7 +5,7 @@ import com.jaworski.sportdiary.domain.Distance;
 import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -35,8 +35,9 @@ public class ActivityMapper {
         result.setUnit(activity.getDistance().getUnits());
         result.setLastModifiedAt(activity.getLastModifiedAt());
         result.setDistanceOf(activity.getDistance().getDistanceOf());
+        result.setDeleted(activity.isDeleted());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null)  {
+        if (authentication != null) {
             result.setUserEntity(getCurrentUser());
         } else {
             result.setUserEntity(getAdminUser());
@@ -53,6 +54,7 @@ public class ActivityMapper {
         result.setDuration(activityEntity.getDuration());
         result.setLastModifiedAt(activityEntity.getLastModifiedAt());
         result.setDistance(new Distance(activityEntity.getDistanceOf(), activityEntity.getUnit()));
+        result.setDeleted(activityEntity.isDeleted());
         UserEntity userEntity = activityEntity.getUserEntity();
         User user = new User();
         user.setId(userEntity.getId());

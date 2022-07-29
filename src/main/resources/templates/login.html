@@ -18,6 +18,9 @@
             <div class="alert-info" th:if="${param.logout}">
                 You have been logged out.
             </div>
+            <div class="alert-info text-center" th:if="${registration}">
+                Account created! Please log in!
+            </div>
             <form class="form-control rounded-2 m-1" th:action="@{/login}" method="post">
                 <div class="text-center">
                     <label> User Name :

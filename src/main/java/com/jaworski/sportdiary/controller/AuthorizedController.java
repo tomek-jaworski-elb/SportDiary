@@ -8,6 +8,8 @@ import com.jaworski.sportdiary.service.activity.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.result.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping(path = "/user")
@@ -85,11 +86,26 @@ public class AuthorizedController {
 
     @GetMapping(path = "/list/all")
     @Secured("ROLE_ADMIN")
-    public String listAll(Model model) {
+    public String listAll(Model model,
+                          @RequestParam("page") Optional<Integer> page,
+                          @RequestParam("size") Optional<Integer> size) {
 //        List<Activity> list = activityService.getUserActivityList(null, true);
-        List<Activity> list = activityService.getPage();
 
-        model.addAttribute("activities", list);
+        // TODO: implement pagination
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize));
+        System.out.println("content: " + activityPage.getContent());
+        System.out.println("size: " + activityPage.getContent().size());
+        model.addAttribute("activitiesPage", activityPage);
+        model.addAttribute("activities", activityPage.getContent());
+        int totalPages = activityPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         model.addAttribute("listParam", new ListParam());
         model.addAttribute("save", null);
         model.addAttribute("error", null);

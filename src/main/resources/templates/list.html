@@ -23,29 +23,21 @@
         <strong><span class="my-4" th:text="#{html.list.error.ok}"></span></strong>
     </div>
     <div class="col-4"></div>
-
 </div>
 <div class="container">
-    <div class="container text-center" sec:authorize="hasRole('ADMIN')">
-        <nav aria-label="...">
-            <ul class="pagination">
-                <li class="page-item disabled">
-                    <span class="page-link">Previous</span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-      <span class="page-link">
-        2
-        <span class="sr-only">(current)</span>
-      </span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+    <nav aria-label="Page navigation example" th:unless="${activitiesPage eq null}">
+        <div th:if="${activitiesPage.totalPages > 0}"
+             class=" d-flex justify-content-center" sec:authorize="hasRole('ADMIN')">
+            <ul class="pagination text-center">
+                <li class="page-item btn btn-light m-2" th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/user/list/all(size=${activitiesPage.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}"
+                       th:class="${'page-item ' + pageNumber==activitiesPage.number + 1} ? active">
+                    </a>
                 </li>
             </ul>
-        </nav>
-    </div>
+        </div>
+    </nav>
     <table class="table table-hover">
         <thead>
         <tr>

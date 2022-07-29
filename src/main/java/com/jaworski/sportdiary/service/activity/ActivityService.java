@@ -11,10 +11,7 @@ import com.jaworski.sportdiary.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -133,9 +130,21 @@ public class ActivityService {
         });
     }
 
-    public List<Activity> getPage() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by( "duration").descending());
-        Page<ActivityEntity> allOrderByDuration = activityEntityRepository.findAll(pageable);
-        return allOrderByDuration.getContent().stream().map(activityMapper::EntityToActivity).toList();
+    public Page<Activity> getPage(Pageable pageable) {
+//        Pageable pageable = PageRequest.of(0, 10, Sort.by( "duration").descending());
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<ActivityEntity> all = activityEntityRepository.findAll();
+        List<Activity> activities = all.stream().map(activityMapper::EntityToActivity).toList();
+        List<Activity> list;
+        if (activities.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, activities.size());
+            list = activities.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize,Sort.by( "duration").descending()), activities.size());
     }
 }

@@ -28,11 +28,25 @@
     <nav aria-label="Page navigation example" th:unless="${activitiesPage eq null}">
         <div th:if="${activitiesPage.totalPages > 0}"
              class=" d-flex justify-content-center" sec:authorize="hasRole('ADMIN')">
-            <ul class="pagination text-center">
-                <li class="page-item btn btn-light m-2" th:each="pageNumber : ${pageNumbers}">
-                    <a th:href="@{/user/list/all(size=${activitiesPage.size}, page=${pageNumber})}"
-                       th:text="${pageNumber}"
-                       th:class="${'page-item ' + pageNumber==activitiesPage.number + 1} ? active">
+            <ul class="pagination">
+                <li th:if="${currentPage > 1}">
+                    <a th:href="@{/user/list/all(size=${activitiesPage.size}, page=${currentPage}-1)}"
+                       class="page-item btn btn-outline-dark m-2">&laquo;
+                    </a>
+                </li>
+                <li th:each="pageNumber : ${pageNumbers}">
+                    <a th:if="${activitiesPage.number + 1 eq pageNumber}"
+                       th:href="@{/user/list/all(size=${activitiesPage.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}" class="page-item btn btn-outline-dark active m-2">
+                    </a>
+                    <a th:unless="${activitiesPage.number + 1 eq pageNumber}"
+                       th:href="@{/user/list/all(size=${activitiesPage.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}" class="page-item btn btn-outline-dark m-2">
+                    </a>
+                </li>
+                <li th:if="${ pageNumbers.size() > currentPage }">
+                    <a th:href="@{/user/list/all(size=${activitiesPage.size}, page=${currentPage}+1)}"
+                       class="page-item btn btn-outline-dark m-2">&raquo;
                     </a>
                 </li>
             </ul>

@@ -4,9 +4,9 @@ import com.jaworski.sportdiary.config.security.UserPrincipal;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
+import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
-import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -131,11 +131,10 @@ public class ActivityService {
     }
 
     public Page<Activity> getPage(Pageable pageable) {
-//        Pageable pageable = PageRequest.of(0, 10, Sort.by( "duration").descending());
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
-        List<ActivityEntity> all = activityEntityRepository.findAll();
+        List<ActivityEntity> all = activityEntityRepository.findAll(Sort.by("duration").descending());
         List<Activity> activities = all.stream().map(activityMapper::EntityToActivity).toList();
         List<Activity> list;
         if (activities.size() < startItem) {
@@ -144,7 +143,6 @@ public class ActivityService {
             int toIndex = Math.min(startItem + pageSize, activities.size());
             list = activities.subList(startItem, toIndex);
         }
-
-        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize,Sort.by( "duration").descending()), activities.size());
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), activities.size());
     }
 }

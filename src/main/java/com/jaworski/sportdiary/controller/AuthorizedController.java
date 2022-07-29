@@ -20,7 +20,6 @@ import org.springframework.web.reactive.result.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
@@ -89,22 +88,18 @@ public class AuthorizedController {
     public String listAll(Model model,
                           @RequestParam("page") Optional<Integer> page,
                           @RequestParam("size") Optional<Integer> size) {
-//        List<Activity> list = activityService.getUserActivityList(null, true);
-
-        // TODO: implement pagination
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
+        int pageSize = size.orElse(10);
         Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize));
-        System.out.println("content: " + activityPage.getContent());
-        System.out.println("size: " + activityPage.getContent().size());
         model.addAttribute("activitiesPage", activityPage);
         model.addAttribute("activities", activityPage.getContent());
         int totalPages = activityPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
-                    .collect(Collectors.toList());
+                    .toList();
             model.addAttribute("pageNumbers", pageNumbers);
+            model.addAttribute("currentPage", activityPage.getPageable().getPageNumber() + 1);
         }
         model.addAttribute("listParam", new ListParam());
         model.addAttribute("save", null);
@@ -140,7 +135,8 @@ public class AuthorizedController {
     public String delete(@RequestParam(required = true, name = "id") UUID id,
                          @AuthenticationPrincipal UserPrincipal userPrincipal) {
         activityService.delete(id);
-        if (userPrincipal.getAuthorities().contains("ADMIN")) {
+        if (userPrincipal.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equalsIgnoreCase("ADMIN"))) {
             return "redirect:/user/list/all";
         } else {
             return "redirect:/user/list";

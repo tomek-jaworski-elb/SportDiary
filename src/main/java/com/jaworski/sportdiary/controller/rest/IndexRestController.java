@@ -36,7 +36,7 @@ public class IndexRestController {
             user.setEmail(userEntity.getEmail());
             user.setId(userEntity.getId());
             user.setFirstName(userEntity.getFirstName());
-            user.setRoles(userEntity.getRoles().stream().reduce((s, s2) -> s + "," + s2).get());
+            user.setRoles(userEntity.getRoles().stream().reduce((s, s2) -> s + "," + s2).orElse("USER"));
             return user;
         }).toList();
         return ResponseEntity.ok(users);

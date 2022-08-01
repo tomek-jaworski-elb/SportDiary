@@ -5,6 +5,7 @@ import com.jaworski.sportdiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,20 +14,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Properties;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration  {
 
     private final UserEntityPrincipalDetailService userEntityPrincipalDetailService;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authenticationProvider());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) {
+//        auth.authenticationProvider(authenticationProvider());
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,19 +52,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/js/**").permitAll()
                 .antMatchers("/welcome", "/", "/test", "/signup", "/login").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").permitAll()
-                .antMatchers("/api/**").permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/api/**").permitAll()
                 .antMatchers("/public/**").permitAll()
-                .antMatchers("/test").permitAll()
                 .antMatchers("/users").permitAll()
-                .antMatchers("/acts", "/acts/**").permitAll()
                 .antMatchers("/add").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -78,5 +78,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
+        return http.build();
     }
 }

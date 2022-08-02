@@ -1,5 +1,6 @@
 package com.jaworski.sportdiary.controller.rest;
 
+import com.jaworski.sportdiary.rest.IndexRestController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +38,7 @@ class IndexRestControllerTestIT {
 
     @Test
     void getAllActivity() throws Exception {
-        given(indexRestController.getAllActivities()).willReturn(ResponseEntity.ok(new ArrayList<>()));
+        given(indexRestController.getAllActivities(any())).willReturn(ResponseEntity.ok(new ArrayList<>()));
 
         mockMvc.perform(get(BASE_URL + "/acts").accept(MediaType.APPLICATION_JSON))
                 .andDo(print())

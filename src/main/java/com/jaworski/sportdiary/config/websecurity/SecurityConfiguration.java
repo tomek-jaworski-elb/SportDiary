@@ -1,16 +1,14 @@
 package com.jaworski.sportdiary.config.websecurity;
 
 import com.jaworski.sportdiary.config.security.UserEntityPrincipalDetailService;
-import com.jaworski.sportdiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -21,7 +19,7 @@ import java.util.Properties;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfiguration  {
+public class SecurityConfiguration {
 
     private final UserEntityPrincipalDetailService userEntityPrincipalDetailService;
 
@@ -29,6 +27,9 @@ public class SecurityConfiguration  {
 //    protected void configure(AuthenticationManagerBuilder auth) {
 //        auth.authenticationProvider(authenticationProvider());
 //    }
+
+    @Autowired
+    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -59,7 +60,8 @@ public class SecurityConfiguration  {
                 .antMatchers("/welcome", "/", "/test", "/signup", "/login").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").permitAll()
-                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/api/users").hasRole("ADMIN")
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/users").permitAll()
@@ -77,7 +79,8 @@ public class SecurityConfiguration  {
                 .and()
                 .csrf()
                 .and()
-                .exceptionHandling().accessDeniedPage("/403");
+                .exceptionHandling().accessDeniedPage("/403")
+                .authenticationEntryPoint(authenticationEntryPoint);
         return http.build();
     }
 }

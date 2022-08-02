@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.controller.rest;
+package com.jaworski.sportdiary.rest;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
@@ -9,20 +9,25 @@ import com.jaworski.sportdiary.mapper.UserMapper;
 import com.jaworski.sportdiary.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController()
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
+@Validated
 public class IndexRestController {
 
     private final UserEntityRepository userEntityRepository;
@@ -31,7 +36,10 @@ public class IndexRestController {
     private final ActivityMapper activityMapper;
 
     @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> getUserEntityList() {
+    public ResponseEntity<List<User>> getUserEntityList(@RequestHeader(HttpHeaders.AUTHORIZATION) String auth, @AuthenticationPrincipal Principal principal) {
+        // TODO: check if user is admin
+        System.out.println(auth);
+//        System.out.println(principal.getName());
         List<UserEntity> all = userEntityRepository.findAll();
         List<User> users = all.stream().map(userEntity -> {
             User user = new User();
@@ -45,7 +53,13 @@ public class IndexRestController {
     }
 
     @GetMapping(path = "/acts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Activity>> getAllActivities() {
+    public ResponseEntity<List<Activity>> getAllActivities(@RequestHeader(HttpHeaders.AUTHORIZATION) HttpHeaders auth) {
+        if (auth.get(HttpHeaders.AUTHORIZATION) == null) {
+            return ResponseEntity.status(401).build();
+        }
+        // TODO: check if user is admin
+        List<String> strings = auth.get(HttpHeaders.AUTHORIZATION);
+        strings.forEach(System.out::println);
         List<ActivityEntity> all = activityEntityRepository.findAll();
         List<Activity> activities = new ArrayList<>();
         all.forEach(activityEntity -> {

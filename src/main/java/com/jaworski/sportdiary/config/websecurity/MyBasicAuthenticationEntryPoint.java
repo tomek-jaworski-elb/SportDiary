@@ -27,6 +27,20 @@ public class MyBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoi
         setRealmName("admin");
         super.afterPropertiesSet();
     }
+
+    public MyBasicAuthenticationEntryPoint() {
+        super();
+    }
+
+    @Override
+    public String getRealmName() {
+        return super.getRealmName();
+    }
+
+    @Override
+    public void setRealmName(String realmName) {
+        super.setRealmName(realmName);
+    }
 }
 
 

@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary;
+package com.jaworski.sportdiary.beans;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

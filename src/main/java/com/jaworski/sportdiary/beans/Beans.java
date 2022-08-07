@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary;
+package com.jaworski.sportdiary.beans;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

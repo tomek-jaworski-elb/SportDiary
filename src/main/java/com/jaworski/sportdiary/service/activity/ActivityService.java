@@ -9,26 +9,22 @@ import com.jaworski.sportdiary.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Slf4j
 public class ActivityService {
 
-    private static final Logger LOGGER = LogManager.getLogger(ActivityService.class);
     private final List<Activity> activityList;
     private final ActivityMapper activityMapper;
     private final UserEntityRepository userEntityRepository;
     private final AuthenticationService authenticationService;
-
     private final ActivityEntityRepository activityEntityRepository;
 
     private UserEntity getCurrentUser() {
@@ -47,7 +43,7 @@ public class ActivityService {
             activityEntity.setDeleted(true);
             activityEntity.setLastModifiedAt(LocalDateTime.now());
             activityEntityRepository.save(activityEntity);
-            LOGGER.info("Deleted activity with id: " + id);
+            log.info("Deleted activity with id: {}", id);
         });
     }
 
@@ -126,7 +122,7 @@ public class ActivityService {
             activityEntity.setDeleted(false);
             activityEntity.setLastModifiedAt(LocalDateTime.now());
             activityEntityRepository.save(activityEntity);
-            LOGGER.info("Deleted activity with id: " + id);
+            log.info("Deleted activity with id: {}", id);
         });
     }
 
@@ -144,5 +140,19 @@ public class ActivityService {
             list = activities.subList(startItem, toIndex);
         }
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), activities.size());
+    }
+
+    public List<Activity> getUserActivities(UUID id) {
+        List<ActivityEntity> activitiesByUserId = activityEntityRepository.findActivitiesByUserId(id);
+        return activitiesByUserId.stream()
+                .map(activityMapper::EntityToActivity)
+                .toList();
+    }
+
+    public List<Activity> getAllActivities() {
+        activityEntityRepository.findAll();
+        return activityEntityRepository.findAll().stream()
+                .map(activityMapper::EntityToActivity)
+                .toList();
     }
 }

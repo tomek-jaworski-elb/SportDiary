@@ -3,11 +3,8 @@ package com.jaworski.sportdiary.rest;
 import com.jaworski.sportdiary.config.websecurity.MyBasicAuthenticationConverter;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
-import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.mapper.UserMapper;
-import com.jaworski.sportdiary.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.service.activity.ActivityService;
 import com.jaworski.sportdiary.service.user.UserService;
@@ -17,12 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,12 +31,9 @@ import java.util.UUID;
 public class IndexRestController {
 
     private final UserEntityRepository userEntityRepository;
-    private final ActivityEntityRepository activityEntityRepository;
     private final UserMapper userMapper;
-    private final ActivityMapper activityMapper;
     private final UserService userService;
     private final ActivityService activityService;
-
     private final MyBasicAuthenticationConverter basicAuthenticationConverter;
 
     @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,14 +56,13 @@ public class IndexRestController {
             }
             return ResponseEntity.ok(userList);
         } else {
-            log.info("auth 2 {}",  auth.get(HttpHeaders.AUTHORIZATION).stream().toList());
+            log.info("auth 2 {}", auth.get(HttpHeaders.AUTHORIZATION).stream().toList());
             return ResponseEntity.status(401).build();
         }
     }
 
     @GetMapping(path = "/acts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Activity>> getAllActivities(@RequestHeader(HttpHeaders.AUTHORIZATION) HttpHeaders auth) {
-        // TODO: implement Service
         if (auth.get(HttpHeaders.AUTHORIZATION) == null) {
             return ResponseEntity.status(401).build();
         }
@@ -88,32 +79,17 @@ public class IndexRestController {
         }
         List<String> strings = auth.get(HttpHeaders.AUTHORIZATION);
         strings.forEach(System.out::println);
-        List<ActivityEntity> all = activityEntityRepository.findAll();
-        List<Activity> activities = new ArrayList<>();
-        all.forEach(activityEntity -> {
-            Activity activity = activityMapper.EntityToActivity(activityEntity);
-            activities.add(activity);
-        });
-        return ResponseEntity.ok(activities);
+        return ResponseEntity.ok(activityService.getAllActivities());
     }
 
     @GetMapping("/acts/{id}")
     public ResponseEntity<Activity> getActivity(@PathVariable UUID id) {
-        // TODO: implement Service
-        return ResponseEntity.of(activityEntityRepository.findById(id)
-                .map(activityMapper::EntityToActivity));
+        return ResponseEntity.of(Optional.ofNullable(activityService.getActivity(id)));
     }
 
     @GetMapping("/users/{id}/acts")
     public ResponseEntity<List<Activity>> getUserActivities(@PathVariable UUID id) {
-        // TODO: implement Service
-        List<ActivityEntity> activitiesByUserId = activityEntityRepository.findActivitiesByUserId(id);
-        List<Activity> activities = new ArrayList<>();
-        activitiesByUserId.forEach(activityEntity -> {
-            Activity activity = activityMapper.EntityToActivity(activityEntity);
-            activities.add(activity);
-        });
-        return ResponseEntity.ok(activities);
+        return ResponseEntity.ok(activityService.getUserActivities(id));
     }
 
 }

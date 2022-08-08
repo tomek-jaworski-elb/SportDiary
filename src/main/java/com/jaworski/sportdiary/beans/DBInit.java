@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary;
+package com.jaworski.sportdiary.beans;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;

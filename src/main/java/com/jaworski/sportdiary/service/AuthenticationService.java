@@ -22,10 +22,6 @@ public class AuthenticationService {
         return (User) authentication.getPrincipal();
     }
 
-    public UUID getCurrentUserId() {
-        return userEntityRepository.findByFirstName(getCurrentUser().getFirstName()).getId();
-    }
-
     public String getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getPrincipal().toString();

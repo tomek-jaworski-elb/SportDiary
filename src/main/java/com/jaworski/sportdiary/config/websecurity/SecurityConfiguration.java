@@ -80,9 +80,13 @@ public class SecurityConfiguration {
                 .logoutSuccessUrl("/login?logout=true")
                 .and()
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "BAD REQ");
                 });
+//                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+//                    authenticationEntryPoint.commence(request, response, authException);
+//                }).accessDeniedPage("/error");
 //                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         return http.build();
     }

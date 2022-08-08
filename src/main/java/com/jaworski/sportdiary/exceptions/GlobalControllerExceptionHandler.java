@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestClientResponseException;
 
 @ControllerAdvice
@@ -14,7 +13,6 @@ class GlobalControllerExceptionHandler {
     private static final Logger LOGGER = LogManager.getLogger(GlobalControllerExceptionHandler.class);
     public static final String MESSAGE = "Exception: {}";
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)  // 409
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleConflict(Exception e) {
         LOGGER.error("Exception: {} ", e.getMessage());

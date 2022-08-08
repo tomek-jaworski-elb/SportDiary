@@ -2,6 +2,7 @@ package com.jaworski.sportdiary.service.activity;
 
 import com.jaworski.sportdiary.config.security.UserPrincipal;
 import com.jaworski.sportdiary.domain.Activity;
+import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
@@ -59,6 +60,17 @@ public class ActivityService {
         ActivityEntity entity = new ActivityEntity(activity.getDateTime(), activity.getAddedAt(), activity.getLastModifiedAt(),
                 activity.getDuration(), activity.getDistance().getDistanceOf(), activity.getDistance().getUnits(),
                 activity.getSport(), getCurrentUser());
+        ActivityEntity save = activityEntityRepository.save(entity);
+        return activityMapper.EntityToActivity(save);
+    }
+
+    public Activity addActivity(Activity activity, UUID userId) {
+        UserEntity userEntity = userEntityRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found"));
+        activity.setAddedAt(LocalDateTime.now());
+        activity.setLastModifiedAt(LocalDateTime.now());
+        ActivityEntity entity = new ActivityEntity(activity.getDateTime(), activity.getAddedAt(), activity.getLastModifiedAt(),
+                activity.getDuration(), activity.getDistance().getDistanceOf(), activity.getDistance().getUnits(),
+                activity.getSport(), userEntity);
         ActivityEntity save = activityEntityRepository.save(entity);
         return activityMapper.EntityToActivity(save);
     }

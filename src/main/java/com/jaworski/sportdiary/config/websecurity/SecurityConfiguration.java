@@ -57,15 +57,16 @@ public class SecurityConfiguration {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/js/**").permitAll()
-                .antMatchers("/welcome", "/", "/test", "/signup", "/login").permitAll()
+                .antMatchers("/welcome", "/", "/test", "/signup").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").permitAll()
-                .antMatchers( "/admin/**").hasAnyAuthority("ROLE_ADMIN")
-//                .antMatchers(HttpMethod.GET,"/api/users").hasRole("ADMIN")
                 .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/activities").permitAll()
+                .antMatchers(HttpMethod.POST, "/api1/activities").permitAll()
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/users").permitAll()
                 .antMatchers("/add").permitAll()
+                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
@@ -77,10 +78,11 @@ public class SecurityConfiguration {
                 .logout().permitAll()
                 .logoutSuccessUrl("/login?logout=true")
                 .and()
-                .csrf()
-                .and()
-                .exceptionHandling().accessDeniedPage("/403")
-                .authenticationEntryPoint(authenticationEntryPoint);
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+                    authenticationEntryPoint.commence(request, response, authException);
+                });
+//                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         return http.build();
     }
 }

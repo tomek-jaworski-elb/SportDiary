@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Properties;
 
 @Configuration
@@ -80,7 +81,7 @@ public class SecurityConfiguration {
                 .and()
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-                    authenticationEntryPoint.commence(request, response, authException);
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
                 });
 //                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         return http.build();

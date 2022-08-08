@@ -51,21 +51,20 @@ public class IndexRestController {
 
     @GetMapping(value = "/activities", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Activity>> getAllActivities(HttpServletRequest request) {
-        String requestHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (requestHeader == null || !requestHeader.startsWith("Basic ")) {
-            throw new IllegalArgumentException("Basic authorization is required");
-        }
-        log.info("request: {}", request);
-        UsernamePasswordAuthenticationToken convert = basicAuthenticationConverter.convert(request);
-
-        User userCredentials = userService.getUserCredentials(convert);
-        log.info("userCredentials: id: {}, name: {}", userCredentials.getId(), userCredentials.getFirstName());
-        return ResponseEntity.ok(activityService.getUserActivities(userCredentials.getId()));
+        User user = getUser(request);
+        return ResponseEntity.ok(activityService.getUserActivities(user.getId()));
     }
 
     @PostMapping(value = "/activities", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Activity> createActivity(@Valid @RequestBody Activity activity, HttpServletRequest request) {
         log.info("activity: {}", activity);
+        User userCredentials = getUser(request);
+        activity.setUser(userCredentials);
+        Activity activity1 = activityService.addActivity(activity, userCredentials.getId());
+        return ResponseEntity.ok(activity1);
+    }
+
+    private User getUser(HttpServletRequest request) {
         String requestHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (requestHeader == null || !requestHeader.startsWith("Basic ")) {
             throw new IllegalArgumentException("Basic authorization is required");
@@ -74,10 +73,8 @@ public class IndexRestController {
         UsernamePasswordAuthenticationToken convert = basicAuthenticationConverter.convert(request);
 
         User userCredentials = userService.getUserCredentials(convert);
-        activity.setUser(userCredentials);
         log.info("userCredentials: id: {}, name: {}", userCredentials.getId(), userCredentials.getFirstName());
-        Activity activity1 = activityService.addActivity(activity, userCredentials.getId());
-        return ResponseEntity.ok(activity1);
+        return userCredentials;
     }
 
 

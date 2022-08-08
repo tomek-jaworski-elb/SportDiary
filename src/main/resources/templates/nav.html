@@ -34,7 +34,7 @@
             <a class="btn btn-link mx-2 bg-light" href="#" th:href="@{/user}" role="button" th:text="#{html.nav.home}">Home</a>
             <a sec:authorize="isAuthenticated()" class="btn link-info bg-light mx-2" href="#" th:href="@{/user/add}"
                role="button" th:text="#{html.nav.add}">Add</a>
-            <a sec:authorize="isAuthenticated()" class="btn btn-warning mx-2" href="#" th:href="@{/user/save}"
+            <a sec:authorize="isAuthenticated()" class="btn btn-warning mx-2 disabled" href="#" th:href="@{/user/save}"
                role="button" th:text="#{html.nav.save}">Save</a>
             <a sec:authorize="hasRole('ADMIN')" class="btn btn-warning mx-2" href="#" th:href="@{/user/list/all}"
                role="button">All</a>

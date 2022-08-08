@@ -7,14 +7,14 @@ import com.jaworski.sportdiary.service.activity.ActivityService;
 import com.jaworski.sportdiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.annotation.HttpConstraint;
-import javax.servlet.annotation.HttpMethodConstraint;
-import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -72,5 +72,11 @@ public class IndexRestController {
     @GetMapping("/users/{id}/acts")
     public ResponseEntity<List<Activity>> getUserActivities(@PathVariable UUID id) {
         return ResponseEntity.ok(activityService.getUserActivities(id));
+    }
+
+    @PostMapping(path = "/acts")
+    public ResponseEntity<Activity> addActivity(@RequestBody Activity activity, HttpServletRequest request) {
+        log.info("activity: {}", activity);
+        return ResponseEntity.ok(activityService.addActivity(activity));
     }
 }

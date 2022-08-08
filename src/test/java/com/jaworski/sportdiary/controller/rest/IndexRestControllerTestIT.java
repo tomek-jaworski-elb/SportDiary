@@ -38,7 +38,7 @@ class IndexRestControllerTestIT {
 
     @Test
     void getAllActivity() throws Exception {
-        given(indexRestController.getAllActivities()).willReturn(ResponseEntity.ok(new ArrayList<>()));
+        given(indexRestController.getAllActivities(any())).willReturn(ResponseEntity.ok(new ArrayList<>()));
 
         mockMvc.perform(get(BASE_URL + "/acts").accept(MediaType.APPLICATION_JSON))
                 .andDo(print())

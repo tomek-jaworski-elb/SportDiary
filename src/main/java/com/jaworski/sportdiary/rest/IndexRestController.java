@@ -7,14 +7,14 @@ import com.jaworski.sportdiary.service.activity.ActivityService;
 import com.jaworski.sportdiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.HttpMethodConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -51,8 +51,17 @@ public class IndexRestController {
     }
 
     @GetMapping(path = "/acts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Activity>> getAllActivities() {
-        return ResponseEntity.ok(activityService.getAllActivities());
+    public ResponseEntity<List<Activity>> getAllActivities(HttpServletRequest request) {
+        String requestHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (requestHeader == null || !requestHeader.startsWith("Basic ")) {
+            throw new IllegalArgumentException("Basic authorization is required");
+        }
+        log.info("request: {}", request);
+        UsernamePasswordAuthenticationToken convert = basicAuthenticationConverter.convert(request);
+
+        User userCredentials = userService.getUserCredentials(convert);
+        log.info("userCredentials: id: {}, name: {}", userCredentials.getId(), userCredentials.getFirstName());
+        return ResponseEntity.ok(activityService.getUserActivities(userCredentials.getId()));
     }
 
     @GetMapping("/acts/{id}")

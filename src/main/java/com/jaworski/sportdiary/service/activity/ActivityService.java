@@ -28,7 +28,8 @@ public class ActivityService {
     private final ActivityEntityRepository activityEntityRepository;
 
     private UserEntity getCurrentUser() {
-        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName());
+        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName())
+                .orElseThrow(() -> new IllegalStateException("User not found"));
     }
 
     public List<Activity> getActivityList() {

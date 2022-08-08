@@ -23,7 +23,7 @@ public class ActivityMapper {
     private final UserEntityRepository userEntityRepository;
 
     private UserEntity getCurrentUser() {
-        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName());
+        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName()).get();
     }
 
     public ActivityEntity ActivityToEntity(Activity activity) {

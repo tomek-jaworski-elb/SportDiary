@@ -23,10 +23,11 @@ public class ActivityMapper {
     private final UserEntityRepository userEntityRepository;
 
     private UserEntity getCurrentUser() {
-        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName()).get();
+        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public ActivityEntity ActivityToEntity(Activity activity) {
+    public ActivityEntity activityToEntity(Activity activity) {
         ActivityEntity result = new ActivityEntity();
         result.setDateTime(activity.getDateTime());
         result.setSport(activity.getSport());
@@ -45,7 +46,7 @@ public class ActivityMapper {
         return result;
     }
 
-    public Activity EntityToActivity(ActivityEntity activityEntity) {
+    public Activity entityToActivity(ActivityEntity activityEntity) {
         Activity result = new Activity();
         result.setId(activityEntity.getId().toString());
         result.setDateTime(activityEntity.getDateTime());
@@ -64,10 +65,10 @@ public class ActivityMapper {
         return result;
     }
 
-    public List<ActivityEntity> ActivityListToEntityList(List<Activity> activityList) {
+    public List<ActivityEntity> activityListToEntityList(List<Activity> activityList) {
         List<ActivityEntity> result = new ArrayList<>();
         for (Activity activity : activityList) {
-            result.add(ActivityToEntity(activity));
+            result.add(activityToEntity(activity));
         }
         return result;
     }

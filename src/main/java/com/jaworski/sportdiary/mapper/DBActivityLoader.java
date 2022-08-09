@@ -17,6 +17,6 @@ public class DBActivityLoader {
 
     public void loadDB() {
         List<Activity> activityList = activityService.getActivityList();
-        List<ActivityEntity> activitiesDB = activityMapper.ActivityListToEntityList(activityList);
+        List<ActivityEntity> activitiesDB = activityMapper.activityListToEntityList(activityList);
     }
 }

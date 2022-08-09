@@ -40,7 +40,7 @@ public class DBInit implements CommandLineRunner {
         for (Activity act : activities) {
             act.setAddedAt(LocalDateTime.now());
             act.setLastModifiedAt(LocalDateTime.now());
-            ActivityEntity activityEntity = activityMapper.ActivityToEntity(act);
+            ActivityEntity activityEntity = activityMapper.activityToEntity(act);
 //            activityEntityRepository.save(activityEntity);
         }
     }

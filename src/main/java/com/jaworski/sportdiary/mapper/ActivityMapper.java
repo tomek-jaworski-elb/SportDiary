@@ -6,7 +6,7 @@ import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
-import com.jaworski.sportdiary.service.AuthenticationService;
+import com.jaworski.sportdiary.service.authentication.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

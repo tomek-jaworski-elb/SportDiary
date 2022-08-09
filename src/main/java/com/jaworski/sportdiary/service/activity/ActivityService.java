@@ -27,7 +27,6 @@ public class ActivityService {
     private final ActivityEntityRepository activityEntityRepository;
     private final UserService userService;
     private final UserMapper userMapper;
-
     private final UserEntityRepository userEntityRepository;
 
     public List<Activity> getActivityList() {

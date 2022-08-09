@@ -55,7 +55,7 @@ public class IndexRestController {
         return ResponseEntity.ok(activityService.getUserActivities(user.getId()));
     }
 
-    @PostMapping(value = "/activities", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/activities", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Activity> createActivity(@Valid @RequestBody Activity activity, HttpServletRequest request) {
         log.info("activity: {}", activity);
         User userCredentials = getUser(request);
@@ -71,7 +71,6 @@ public class IndexRestController {
         }
         log.info("request: {}", request);
         UsernamePasswordAuthenticationToken convert = basicAuthenticationConverter.convert(request);
-
         User userCredentials = userService.getUserCredentials(convert);
         log.info("userCredentials: id: {}, name: {}", userCredentials.getId(), userCredentials.getFirstName());
         return userCredentials;

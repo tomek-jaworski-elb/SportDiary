@@ -1,5 +1,6 @@
 package com.jaworski.sportdiary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Setter
 @Getter
+@JsonIgnoreProperties("password")
 public class User {
 
     private UUID id;
@@ -40,11 +42,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private String roles;
 
-    public User(UUID id, String firstName, String lastName, String email, String roles) {
+    public User(UUID id, String firstName, String lastName, String email, String roles, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.roles = roles;
+        this.password = password;
     }
 }

@@ -72,7 +72,7 @@ public class UserPrincipal implements UserDetails {
 
     public User getUser() {
         return new User(userEntity.getId(), userEntity.getFirstName(), userEntity.getFirstName(), userEntity.getEmail(),
-                userEntity.getRoles().stream().reduce("", (a, b) -> a + "," + b));
+                userEntity.getRoles().stream().reduce("", (a, b) -> a + "," + b), userEntity.getPassword());
     }
 
     public UUID getId() {

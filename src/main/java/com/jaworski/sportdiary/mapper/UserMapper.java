@@ -21,7 +21,7 @@ public class UserMapper {
 
     public User toUser(UserEntity userEntity) {
         return new User(userEntity.getId(), userEntity.getFirstName(), "", userEntity.getEmail(),
-                userEntity.getRoles().stream().reduce("", (s, r) -> s + "," + r));
+                userEntity.getRoles().stream().reduce("", (s, r) -> s + "," + r), userEntity.getPassword());
     }
 
 }

@@ -13,7 +13,8 @@ public class UserMapper {
     private final PasswordEncoder passwordEncoder;
 
     public UserEntity toUserEntity(User user) {
-        UserEntity userEntity = new UserEntity(user.getFirstName(), passwordEncoder.encode(user.getPassword()), "USER", "");
+        UserEntity userEntity = new UserEntity(user.getFirstName(), passwordEncoder.encode(user.getPassword()),
+                "USER", "");
         userEntity.setEmail(user.getEmail());
         return userEntity;
     }

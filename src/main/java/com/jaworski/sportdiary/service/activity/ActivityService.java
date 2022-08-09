@@ -5,9 +5,10 @@ import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
+import com.jaworski.sportdiary.mapper.UserMapper;
 import com.jaworski.sportdiary.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
-import com.jaworski.sportdiary.service.AuthenticationService;
+import com.jaworski.sportdiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
@@ -23,14 +24,10 @@ public class ActivityService {
 
     private final List<Activity> activityList;
     private final ActivityMapper activityMapper;
-    private final UserEntityRepository userEntityRepository;
-    private final AuthenticationService authenticationService;
     private final ActivityEntityRepository activityEntityRepository;
-
-    private UserEntity getCurrentUser() {
-        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName())
-                .orElseThrow(() -> new IllegalStateException("User not found"));
-    }
+    private final UserService userService;
+    private final UserMapper userMapper;
+    private final UserEntityRepository userEntityRepository;
 
     public List<Activity> getActivityList() {
         List<Activity> result = new ArrayList<>();
@@ -58,11 +55,22 @@ public class ActivityService {
         activity.setLastModifiedAt(LocalDateTime.now());
         ActivityEntity entity = new ActivityEntity(activity.getDateTime(), activity.getAddedAt(), activity.getLastModifiedAt(),
                 activity.getDuration(), activity.getDistance().getDistanceOf(), activity.getDistance().getUnits(),
-                activity.getSport(), getCurrentUser());
+                activity.getSport(), userMapper.toUserEntity(userService.getCurrentUser()));
         ActivityEntity save = activityEntityRepository.save(entity);
         return activityMapper.EntityToActivity(save);
     }
 
+    public Activity addActivity(Activity activity, UUID userId) {
+        UserEntity userEntity = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User with id: " + userId + " not found"));
+        activity.setAddedAt(LocalDateTime.now());
+        activity.setLastModifiedAt(LocalDateTime.now());
+        ActivityEntity entity = new ActivityEntity(activity.getDateTime(), activity.getAddedAt(), activity.getLastModifiedAt(),
+                activity.getDuration(), activity.getDistance().getDistanceOf(), activity.getDistance().getUnits(),
+                activity.getSport(), userEntity);
+        ActivityEntity save = activityEntityRepository.save(entity);
+        return activityMapper.EntityToActivity(save);
+    }
 
     public List<Activity> sort(Comparator<Activity> comparator) {
         return activityList.stream()

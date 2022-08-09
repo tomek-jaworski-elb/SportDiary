@@ -4,6 +4,7 @@ import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.mapper.UserMapper;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
+import com.jaworski.sportdiary.service.authentication.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,9 +23,12 @@ public class UserService {
     private final UserEntityRepository userEntityRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationService authenticationService;
+
 
     public User getUserById(UUID id) {
-        UserEntity userEntity = userEntityRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        UserEntity userEntity = userEntityRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return userMapper.toUser(userEntity);
     }
 
@@ -45,5 +49,10 @@ public class UserService {
             throw new IllegalArgumentException("User not found or password is incorrect");
         }
         return userMapper.toUser(byFirstName.get());
+    }
+
+    public User getCurrentUser() {
+        return userMapper.toUser(userEntityRepository.findByFirstName(authenticationService.getCurrentUserName())
+                .orElseThrow(() -> new IllegalStateException("User not found")));
     }
 }

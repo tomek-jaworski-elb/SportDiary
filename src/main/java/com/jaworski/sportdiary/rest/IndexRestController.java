@@ -7,31 +7,30 @@ import com.jaworski.sportdiary.service.activity.ActivityService;
 import com.jaworski.sportdiary.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.annotation.HttpConstraint;
-import javax.servlet.annotation.HttpMethodConstraint;
-import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RestController()
-@RequestMapping("/api")
+@RestController
+@RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Slf4j
-@Validated
 public class IndexRestController {
 
     private final UserService userService;
     private final ActivityService activityService;
     private final MyBasicAuthenticationConverter basicAuthenticationConverter;
 
-    @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> getUserEntityList(HttpServletRequest request,
                                                         @RequestHeader(HttpHeaders.AUTHORIZATION) HttpHeaders auth) {
         String requestHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -50,19 +49,33 @@ public class IndexRestController {
         return ResponseEntity.ok(userService.getUserList());
     }
 
-    @GetMapping(path = "/acts", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/activities", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Activity>> getAllActivities(HttpServletRequest request) {
+        User user = getUser(request);
+        return ResponseEntity.ok(activityService.getUserActivities(user.getId()));
+    }
+
+    @PostMapping(value = "/activities", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Activity> createActivity(@Valid @RequestBody Activity activity, HttpServletRequest request) {
+        log.info("activity: {}", activity);
+        User userCredentials = getUser(request);
+        activity.setUser(userCredentials);
+        Activity activity1 = activityService.addActivity(activity, userCredentials.getId());
+        return ResponseEntity.ok(activity1);
+    }
+
+    private User getUser(HttpServletRequest request) {
         String requestHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (requestHeader == null || !requestHeader.startsWith("Basic ")) {
             throw new IllegalArgumentException("Basic authorization is required");
         }
         log.info("request: {}", request);
         UsernamePasswordAuthenticationToken convert = basicAuthenticationConverter.convert(request);
-
         User userCredentials = userService.getUserCredentials(convert);
         log.info("userCredentials: id: {}, name: {}", userCredentials.getId(), userCredentials.getFirstName());
-        return ResponseEntity.ok(activityService.getUserActivities(userCredentials.getId()));
+        return userCredentials;
     }
+
 
     @GetMapping("/acts/{id}")
     public ResponseEntity<Activity> getActivity(@PathVariable UUID id) {

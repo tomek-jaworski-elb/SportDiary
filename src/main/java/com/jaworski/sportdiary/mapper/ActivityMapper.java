@@ -41,7 +41,8 @@ public class ActivityMapper {
         if (authentication != null) {
             result.setUserEntity(getCurrentUser());
         } else {
-            result.setUserEntity(getAdminUser());
+            result.setUserEntity(new UserEntity());
+//            result.setUserEntity(getAdminUser());
         }
         return result;
     }

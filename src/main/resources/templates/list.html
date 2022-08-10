@@ -101,7 +101,7 @@
             <th scope="col" class="text-center">
                 <input type="submit" value="Owner" class="btn btn-link text-black"/>
             </th>
-            <th sec:authorize="hasRole('ADMIN')" scope="col" class="text-center">
+            <th sec:authorize="hasRole('ADMIN')" th:if="${all}" scope="col" class="text-center">
                 <input type="submit" value="isDeleted" class="btn btn-link text-black"/>
             </th>
             <th scope="col" class="text-center">
@@ -116,7 +116,7 @@
             <td class="text-center"
                 th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).RUNNING}">
                 <small>Run<br></small>
-                <img width="24px" height="24px" th:src="@{/img/run.svg}" th:alt="${'Run'}"></td>
+                <img width="24px" height="24px" th:src="@{/img/run.svg}" th:alt="${'Run'}" src="" alt="run"></td>
             <td class="text-center"
                 th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).ULTRA_RUNNING}">
                 <small>Ultra<br/></small><img
@@ -164,7 +164,12 @@
             </td>
             <td class="text-center" th:text="${activity.getDuration()} + ' [minutes]'">Otto</td>
             <td class="text-center" th:text="${activity.getUser().getFirstName()}">Otto</td>
-            <td sec:authorize="hasRole('ADMIN')" class="text-center" th:text="${activity.isDeleted()}">Otto</td>
+            <td sec:authorize="hasRole('ADMIN')" th:if="${all}" class="text-center">
+                <img th:if="${activity.isDeleted()}" th:src="@{/img/checked.svg}" src="" alt="checked" th:width="32"
+                     th:height="auto"/>
+                <img th:unless="${activity.isDeleted()}" th:src="@{/img/unchecked.svg}" src="" alt="unchecked"
+                     width="32" height="auto"/>
+            </td>
             <td class="text-center">
                 <a sec:authorize="isAnonymous() || isAuthenticated()" class="btn btn-primary mx-2" href="#"
                    th:href="@{'/user/more?id=' + ${activity.getId()}}"

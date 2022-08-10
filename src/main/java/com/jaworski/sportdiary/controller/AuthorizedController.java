@@ -80,6 +80,7 @@ public class AuthorizedController {
         model.addAttribute("listParam", listParam);
         model.addAttribute("save", save);
         model.addAttribute("error", error);
+        model.addAttribute("all", false);
         return "list";
     }
 
@@ -87,7 +88,8 @@ public class AuthorizedController {
     @Secured("ROLE_ADMIN")
     public String listAll(Model model,
                           @RequestParam("page") Optional<Integer> page,
-                          @RequestParam("size") Optional<Integer> size) {
+                          @RequestParam("size") Optional<Integer> size
+                      ) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
         Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize));
@@ -104,6 +106,7 @@ public class AuthorizedController {
         model.addAttribute("listParam", new ListParam());
         model.addAttribute("save", null);
         model.addAttribute("error", null);
+        model.addAttribute("all", true);
         return "list";
     }
 

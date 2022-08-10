@@ -49,7 +49,14 @@ public class ActivityMapper {
 
     public Activity entityToActivity(ActivityEntity activityEntity) {
         Activity result = new Activity();
-        result.setId(activityEntity.getId().toString());
+        if (activityEntity==null) {
+            return result;
+        }
+        if (activityEntity.getId() != null) {
+            result.setId(activityEntity.getId().toString());
+        } else {
+            result.setId("");
+        }
         result.setDateTime(activityEntity.getDateTime());
         result.setSport(activityEntity.getSport());
         result.setAddedAt(activityEntity.getAddedAt());
@@ -57,12 +64,16 @@ public class ActivityMapper {
         result.setLastModifiedAt(activityEntity.getLastModifiedAt());
         result.setDistance(new Distance(activityEntity.getDistanceOf(), activityEntity.getUnit()));
         result.setDeleted(activityEntity.isDeleted());
-        UserEntity userEntity = activityEntity.getUserEntity();
-        User user = new User();
-        user.setId(userEntity.getId());
-        user.setFirstName(userEntity.getFirstName());
-        user.setEmail(userEntity.getEmail());
-        result.setUser(user);
+        if (activityEntity.getUserEntity() != null) {
+            UserEntity userEntity = activityEntity.getUserEntity();
+            User user = new User();
+            user.setId(userEntity.getId());
+            user.setFirstName(userEntity.getFirstName());
+            user.setEmail(userEntity.getEmail());
+            result.setUser(user);
+        } else {
+            result.setUser(new User());
+        }
         return result;
     }
 

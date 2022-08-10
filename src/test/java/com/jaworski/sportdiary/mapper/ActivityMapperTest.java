@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ActivityMapperTest {
@@ -44,7 +43,7 @@ class ActivityMapperTest {
     }
 
     @Test
-    void entityToActivity() {
+    void entityToActivity_returnsActivity_givenActualActivityEntity() {
         ActivityEntity activityEntity = new ActivityEntity();
         activityEntity.setId(UUID.randomUUID());
         activityEntity.setSport(Sport.GYM);
@@ -66,6 +65,28 @@ class ActivityMapperTest {
     }
 
     @Test
-    void activityListToEntityList() {
+    void entityToActivity_returnsActivity_givenEmptyActivityEntity() {
+        ActivityEntity activityEntity = new ActivityEntity();
+        Activity activity = activityMapper.entityToActivity(activityEntity);
+        assertThat(activity).isNotNull();
+        assertThat(activity.getId()).isEmpty();
+        assertThat(activity.getSport()).isNull();
+        assertThat(activity.getDuration()).isNull();
+        assertThat(activity.getDateTime()).isNull();
+        assertThat(activity.getDistance().getDistanceOf()).isNull();
+        assertThat(activity.getDistance().getUnits()).isNull();
+        assertThat(activity.getUser()).isNotNull();
+    }
+
+    @Test
+    void entityToActivity_returnsActivity_givenNullActivityEntity() {
+        Activity activity = activityMapper.entityToActivity(null);
+        assertThat(activity).isNotNull();
+        assertThat(activity.getId()).isNull();
+        assertThat(activity.getSport()).isNull();
+        assertThat(activity.getDuration()).isNull();
+        assertThat(activity.getDateTime()).isNull();
+        assertThat(activity.getDistance()).isNull();
+        assertThat(activity.getUser()).isNull();
     }
 }

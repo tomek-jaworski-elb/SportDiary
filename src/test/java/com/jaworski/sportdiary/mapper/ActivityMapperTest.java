@@ -6,12 +6,14 @@ import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.domain.enums.Sport;
 import com.jaworski.sportdiary.domain.enums.Unit;
 import com.jaworski.sportdiary.entity.ActivityEntity;
+import com.jaworski.sportdiary.entity.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,6 +45,24 @@ class ActivityMapperTest {
 
     @Test
     void entityToActivity() {
+        ActivityEntity activityEntity = new ActivityEntity();
+        activityEntity.setId(UUID.randomUUID());
+        activityEntity.setSport(Sport.GYM);
+        activityEntity.setDuration(10L);
+        activityEntity.setDateTime(LocalDateTime.of(2020, 1, 1, 1, 1));
+        activityEntity.setDistanceOf(10.0);
+        activityEntity.setUnit(Unit.KM);
+        activityEntity.setUserEntity(new UserEntity());
+        Activity activity = activityMapper.entityToActivity(activityEntity);
+        assertThat(activity).isNotNull();
+        assertThat(activity.getId()).isEqualTo(activityEntity.getId().toString());
+        assertThat(activity.getSport()).isEqualTo(Sport.GYM);
+        assertThat(activity.getDuration()).isEqualTo(10L);
+        assertThat(activity.getDateTime()).isEqualTo(LocalDateTime.of(2020, 1, 1, 1, 1));
+        assertThat(activity.getDistance()).isNotNull();
+        assertThat(activity.getDistance().getDistanceOf()).isEqualTo(10.0);
+        assertThat(activity.getDistance().getUnits()).isEqualTo(Unit.KM);
+        assertThat(activity.getUser()).isNotNull();
     }
 
     @Test

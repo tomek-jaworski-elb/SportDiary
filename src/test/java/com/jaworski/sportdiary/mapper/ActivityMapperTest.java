@@ -75,7 +75,7 @@ class ActivityMapperTest {
         assertThat(activity.getDateTime()).isNull();
         assertThat(activity.getDistance().getDistanceOf()).isNull();
         assertThat(activity.getDistance().getUnits()).isNull();
-        assertThat(activity.getUser()).isNotNull();
+        assertThat(activity.getUser()).isNull();
     }
 
     @Test
@@ -89,4 +89,17 @@ class ActivityMapperTest {
         assertThat(activity.getDistance()).isNull();
         assertThat(activity.getUser()).isNull();
     }
+
+    @Test
+    void entityToActivity_returnsActivityEntity_givenNullActivity() {
+        Activity activity = activityMapper.entityToActivity(null);
+        assertThat(activity).isNotNull();
+        assertThat(activity.getId()).isNull();
+        assertThat(activity.getSport()).isNull();
+        assertThat(activity.getDuration()).isNull();
+        assertThat(activity.getDateTime()).isNull();
+        assertThat(activity.getDistance()).isNull();
+        assertThat(activity.getUser()).isNull();
+    }
+
 }

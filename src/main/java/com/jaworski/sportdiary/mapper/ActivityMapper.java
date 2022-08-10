@@ -72,7 +72,7 @@ public class ActivityMapper {
             user.setEmail(userEntity.getEmail());
             result.setUser(user);
         } else {
-            result.setUser(new User());
+            result.setUser(null);
         }
         return result;
     }

@@ -32,7 +32,7 @@ public class ActivityService {
     public List<Activity> getActivityList() {
         List<Activity> result = new ArrayList<>();
         Iterable<ActivityEntity> all = activityEntityRepository.findAll();
-        all.forEach(activityEntity -> result.add(activityMapper.EntityToActivity(activityEntity)));
+        all.forEach(activityEntity -> result.add(activityMapper.entityToActivity(activityEntity)));
         return result;
     }
 
@@ -47,7 +47,7 @@ public class ActivityService {
 
     public void setActivityList() {
         activityList.clear();
-        activityEntityRepository.findAll().forEach(activityEntity -> activityList.add(activityMapper.EntityToActivity(activityEntity)));
+        activityEntityRepository.findAll().forEach(activityEntity -> activityList.add(activityMapper.entityToActivity(activityEntity)));
     }
 
     public Activity addActivity(Activity activity) {
@@ -57,7 +57,7 @@ public class ActivityService {
                 activity.getDuration(), activity.getDistance().getDistanceOf(), activity.getDistance().getUnits(),
                 activity.getSport(), userMapper.toUserEntity(userService.getCurrentUser()));
         ActivityEntity save = activityEntityRepository.save(entity);
-        return activityMapper.EntityToActivity(save);
+        return activityMapper.entityToActivity(save);
     }
 
     public Activity addActivity(Activity activity, UUID userId) {
@@ -69,7 +69,7 @@ public class ActivityService {
                 activity.getDuration(), activity.getDistance().getDistanceOf(), activity.getDistance().getUnits(),
                 activity.getSport(), userEntity);
         ActivityEntity save = activityEntityRepository.save(entity);
-        return activityMapper.EntityToActivity(save);
+        return activityMapper.entityToActivity(save);
     }
 
     public List<Activity> sort(Comparator<Activity> comparator) {
@@ -80,7 +80,7 @@ public class ActivityService {
 
     public Activity getActivity(UUID id) {
         Optional<ActivityEntity> byId = activityEntityRepository.findById(id);
-        return byId.map(activityMapper::EntityToActivity).orElse(new Activity());
+        return byId.map(activityMapper::entityToActivity).orElse(new Activity());
     }
 
     public Activity update(Activity activity) {
@@ -94,7 +94,7 @@ public class ActivityService {
                     activityEntity.setAddedAt(activity.getAddedAt());
                     activityEntity.setLastModifiedAt(LocalDateTime.now());
                     activityEntityRepository.save(activityEntity);
-                    return activityMapper.EntityToActivity(activityEntity);
+                    return activityMapper.entityToActivity(activityEntity);
                 })
                 .orElse(new Activity());
     }
@@ -102,7 +102,7 @@ public class ActivityService {
     public List<Activity> getActivitiesByDate(LocalDateTime date) {
         return activityEntityRepository.findAll(Sort.by(Sort.Direction.ASC, "dateTime")).stream()
                 .filter(activityEntity -> activityEntity.getDateTime().toLocalDate().isEqual(date.toLocalDate()))
-                .map(activityMapper::EntityToActivity)
+                .map(activityMapper::entityToActivity)
                 .toList();
     }
 
@@ -122,7 +122,7 @@ public class ActivityService {
                         return !activityEntity.isDeleted();
                     }
                 })
-                .map(activityMapper::EntityToActivity)
+                .map(activityMapper::entityToActivity)
                 .toList();
     }
 
@@ -140,7 +140,7 @@ public class ActivityService {
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
         List<ActivityEntity> all = activityEntityRepository.findAll(Sort.by("duration").descending());
-        List<Activity> activities = all.stream().map(activityMapper::EntityToActivity).toList();
+        List<Activity> activities = all.stream().map(activityMapper::entityToActivity).toList();
         List<Activity> list;
         if (activities.size() < startItem) {
             list = Collections.emptyList();
@@ -154,14 +154,14 @@ public class ActivityService {
     public List<Activity> getUserActivities(UUID id) {
         List<ActivityEntity> activitiesByUserId = activityEntityRepository.findActivitiesByUserId(id);
         return activitiesByUserId.stream()
-                .map(activityMapper::EntityToActivity)
+                .map(activityMapper::entityToActivity)
                 .toList();
     }
 
     public List<Activity> getAllActivities() {
         activityEntityRepository.findAll();
         return activityEntityRepository.findAll().stream()
-                .map(activityMapper::EntityToActivity)
+                .map(activityMapper::entityToActivity)
                 .toList();
     }
 }

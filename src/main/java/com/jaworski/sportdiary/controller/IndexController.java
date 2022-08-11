@@ -3,7 +3,6 @@ package com.jaworski.sportdiary.controller;
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
-import com.jaworski.sportdiary.entity.UserEntity;
 import com.jaworski.sportdiary.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
 import com.jaworski.sportdiary.service.activity.ActivityService;
@@ -95,7 +94,7 @@ public class IndexController {
     @PostMapping("/add")
     public String add_Activity(@ModelAttribute Activity activity) {
         System.out.println(activity);
-        ActivityEntity activityEntity = activityMapper.ActivityToEntity(activity);
+        ActivityEntity activityEntity = activityMapper.activityToEntity(activity);
         System.out.println(activityEntity);
         return "redirect:/add";
     }

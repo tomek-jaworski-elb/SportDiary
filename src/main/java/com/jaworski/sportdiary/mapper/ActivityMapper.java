@@ -23,10 +23,11 @@ public class ActivityMapper {
     private final UserEntityRepository userEntityRepository;
 
     private UserEntity getCurrentUser() {
-        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName()).get();
+        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public ActivityEntity ActivityToEntity(Activity activity) {
+    public ActivityEntity activityToEntity(Activity activity) {
         ActivityEntity result = new ActivityEntity();
         result.setDateTime(activity.getDateTime());
         result.setSport(activity.getSport());
@@ -40,14 +41,22 @@ public class ActivityMapper {
         if (authentication != null) {
             result.setUserEntity(getCurrentUser());
         } else {
-            result.setUserEntity(getAdminUser());
+            result.setUserEntity(new UserEntity());
+//            result.setUserEntity(getAdminUser());
         }
         return result;
     }
 
-    public Activity EntityToActivity(ActivityEntity activityEntity) {
+    public Activity entityToActivity(ActivityEntity activityEntity) {
         Activity result = new Activity();
-        result.setId(activityEntity.getId().toString());
+        if (activityEntity==null) {
+            return result;
+        }
+        if (activityEntity.getId() != null) {
+            result.setId(activityEntity.getId().toString());
+        } else {
+            result.setId("");
+        }
         result.setDateTime(activityEntity.getDateTime());
         result.setSport(activityEntity.getSport());
         result.setAddedAt(activityEntity.getAddedAt());
@@ -55,19 +64,23 @@ public class ActivityMapper {
         result.setLastModifiedAt(activityEntity.getLastModifiedAt());
         result.setDistance(new Distance(activityEntity.getDistanceOf(), activityEntity.getUnit()));
         result.setDeleted(activityEntity.isDeleted());
-        UserEntity userEntity = activityEntity.getUserEntity();
-        User user = new User();
-        user.setId(userEntity.getId());
-        user.setFirstName(userEntity.getFirstName());
-        user.setEmail(userEntity.getEmail());
-        result.setUser(user);
+        if (activityEntity.getUserEntity() != null) {
+            UserEntity userEntity = activityEntity.getUserEntity();
+            User user = new User();
+            user.setId(userEntity.getId());
+            user.setFirstName(userEntity.getFirstName());
+            user.setEmail(userEntity.getEmail());
+            result.setUser(user);
+        } else {
+            result.setUser(null);
+        }
         return result;
     }
 
-    public List<ActivityEntity> ActivityListToEntityList(List<Activity> activityList) {
+    public List<ActivityEntity> activityListToEntityList(List<Activity> activityList) {
         List<ActivityEntity> result = new ArrayList<>();
         for (Activity activity : activityList) {
-            result.add(ActivityToEntity(activity));
+            result.add(activityToEntity(activity));
         }
         return result;
     }

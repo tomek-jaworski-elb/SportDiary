@@ -58,7 +58,7 @@ public class SecurityConfiguration {
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/js/**").permitAll()
-                .antMatchers("/welcome", "/", "/test", "/signup").permitAll()
+                .antMatchers("/welcome", "/index", "/", "/test", "/signup").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").permitAll()
                 .antMatchers("/api/**").permitAll()

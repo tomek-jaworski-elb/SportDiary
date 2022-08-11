@@ -50,6 +50,50 @@ public class AuthorizedController {
             Model model) {
         LOGGER.info("sort: {}", sort);
         LOGGER.info("direction: {}", direction);
+        Sort sortParam = getSortParam(sort, direction);
+        activityService.setActivityList();
+        List<Activity> list = activityService.getAll(userPrincipal, sortParam);
+        model.addAttribute("activities", list);
+        model.addAttribute("listParam", null);
+        model.addAttribute("save", save);
+        model.addAttribute("error", error);
+        model.addAttribute("all", false);
+        model.addAttribute("direction", direction.orElse(""));
+        model.addAttribute("sort", sort.orElse(""));
+        return "list";
+    }
+
+    @GetMapping(path = "/list/all")
+    @Secured("ROLE_ADMIN")
+    public String listAll(Model model,
+                          @RequestParam("page") Optional<Integer> page,
+                          @RequestParam("size") Optional<Integer> size,
+                          @RequestParam(required = false) Optional<String> sort,
+                          @RequestParam(required = false) Optional<String> direction) {
+        Sort sortParam = getSortParam(sort, direction);
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+        Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize), sortParam);
+        model.addAttribute("activitiesPage", activityPage);
+        model.addAttribute("activities", activityPage.getContent());
+        int totalPages = activityPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .toList();
+            model.addAttribute("pageNumbers", pageNumbers);
+            model.addAttribute("currentPage", activityPage.getPageable().getPageNumber() + 1);
+        }
+        model.addAttribute("listParam", new ListParam());
+        model.addAttribute("save", null);
+        model.addAttribute("error", null);
+        model.addAttribute("all", true);
+        model.addAttribute("sort", sort.orElse(""));
+        model.addAttribute("direction", direction.orElse(""));
+        return "list";
+    }
+
+    private Sort getSortParam(Optional<String> sort, Optional<String> direction) {
         Sort sortParam;
         Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
         switch (sort.orElse("DATE")) {
@@ -72,63 +116,7 @@ public class AuthorizedController {
                 sortParam = Sort.by(sortDirection, "dateTime");
                 break;
         }
-        activityService.setActivityList();
-        List<Activity> list = activityService.getAll(userPrincipal, sortParam);
-        model.addAttribute("activities", list);
-        model.addAttribute("listParam", null);
-        model.addAttribute("save", save);
-        model.addAttribute("error", error);
-        model.addAttribute("all", false);
-        model.addAttribute("direction", direction.orElse(""));
-        return "list";
-    }
-
-    @GetMapping(path = "/list/all")
-    @Secured("ROLE_ADMIN")
-    public String listAll(Model model,
-                          @RequestParam("page") Optional<Integer> page,
-                          @RequestParam("size") Optional<Integer> size,
-                          @RequestParam(required = false) Optional<String> sort
-    ) {
-        Sort sortParam;
-        switch (sort.orElse("")) {
-            case "DISTANCE":
-                sortParam = Sort.by(Sort.Direction.DESC, "distanceOf");
-                break;
-            case "DURATION":
-                sortParam = Sort.by(Sort.Direction.DESC, "duration");
-                break;
-            case "OWNER":
-                sortParam = Sort.by(Sort.Direction.DESC, "userEntity.firstName");
-                break;
-            case "DELETED":
-                sortParam = Sort.by(Sort.Direction.DESC, "isDeleted");
-                break;
-            case "SPORT":
-                sortParam = Sort.by(Sort.Direction.DESC, "sport");
-                break;
-            default:
-                sortParam = Sort.by(Sort.Direction.DESC, "dateTime");
-                break;
-        }
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
-        Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize), sortParam);
-        model.addAttribute("activitiesPage", activityPage);
-        model.addAttribute("activities", activityPage.getContent());
-        int totalPages = activityPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .toList();
-            model.addAttribute("pageNumbers", pageNumbers);
-            model.addAttribute("currentPage", activityPage.getPageable().getPageNumber() + 1);
-        }
-        model.addAttribute("listParam", new ListParam());
-        model.addAttribute("save", null);
-        model.addAttribute("error", null);
-        model.addAttribute("all", true);
-        return "list";
+        return sortParam;
     }
 
     @GetMapping(value = "/edit", params = "id")

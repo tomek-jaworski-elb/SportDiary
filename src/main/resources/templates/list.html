@@ -36,16 +36,16 @@
                 </li>
                 <li th:each="pageNumber : ${pageNumbers}">
                     <a th:if="${activitiesPage.number + 1 eq pageNumber}"
-                       th:href="@{/user/list/all(size=${activitiesPage.size}, page=${pageNumber})}"
+                       th:href="@{/user/list/all(sort=${sort},size=${activitiesPage.size}, page=${pageNumber})}"
                        th:text="${pageNumber}" class="page-item btn btn-outline-dark active m-2">
                     </a>
                     <a th:unless="${activitiesPage.number + 1 eq pageNumber}"
-                       th:href="@{/user/list/all(size=${activitiesPage.size}, page=${pageNumber})}"
+                       th:href="@{/user/list/all(sort=${sort},size=${activitiesPage.size}, page=${pageNumber})}"
                        th:text="${pageNumber}" class="page-item btn btn-outline-dark m-2">
                     </a>
                 </li>
                 <li th:if="${ pageNumbers.size() > currentPage }">
-                    <a th:href="@{/user/list/all(size=${activitiesPage.size}, page=${currentPage}+1)}"
+                    <a th:href="@{/user/list/all(sort=${sort},size=${activitiesPage.size}, page=${currentPage}+1)}"
                        class="page-item btn btn-outline-dark m-2">&raquo;
                     </a>
                 </li>
@@ -61,39 +61,39 @@
                    th:href="@{/user(sort=${'DATE'},direction=${'DESC'})}">DATE</a>
                 <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
                    th:href="@{/user(sort=${'DATE'})}">DATE</a>
-                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all('sort'=${'DATE'})}">DATE</a>
+                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all(sort=${'DATE'})}">DATE</a>
             </th>
             <th scope="col" class="text-center" name="sport">
                 <a th:if="${!all} and ${direction.isEmpty()}" class="link link-dark"
                    th:href="@{/user(sort=${'SPORT'},direction=${'DESC'})}">SPORT</a>
                 <a th:if="${!all}  and ${direction.equals('DESC')}" class="link link-dark"
                    th:href="@{/user(sort=${'SPORT'})}">SPORT</a>
-                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all('sort'=${'SPORT'})}">SPORT</a>
+                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all(sort=${'SPORT'})}">SPORT</a>
             </th>
             <th scope="col" class="text-center">
                 <a th:if="${!all} and ${direction.isEmpty()}" class="link link-dark"
                    th:href="@{/user(sort=${'DISTANCE'},direction=${'DESC'})}">DISTANCE</a>
                 <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
                    th:href="@{/user(sort=${'DISTANCE'})}">DISTANCE</a>
-                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all('sort'=${'DISTANCE'})}">DISTANCE</a>
+                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all(sort=${'DISTANCE'})}">DISTANCE</a>
             </th>
             <th scope="col" class="text-center">
                 <a th:if="${!all} and ${direction.isEmpty()}" class="link link-dark"
                    th:href="@{/user(sort=${'DURATION'},direction=${'DESC'})}">DURATION</a>
                 <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
                    th:href="@{/user(sort=${'DURATION'})}">DURATION</a>
-                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all('sort'=${'DURATION'})}">DURATION</a>
+                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all(sort=${'DURATION'})}">DURATION</a>
             </th>
             <th scope="col" class="text-center">
                 <a th:if="${!all} and ${direction.isEmpty()}" class="link link-dark"
                    th:href="@{/user(sort=${'OWNER'},direction=${'DESC'})}">OWNER</a>
                 <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
                    th:href="@{/user(sort=${'OWNER'})}">OWNER</a>
-                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all('sort'=${'OWNER'})}">OWNER</a>
+                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all(sort=${'OWNER'})}">OWNER</a>
             </th>
             <th sec:authorize="hasRole('ADMIN')" scope="col" class="text-center">
-                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all('sort'=${'DELETED'})}">DELETED</a>
-                <a th:unless="${all}" class="link link-dark" th:href="@{/user('sort'=${'DELETED'})}">DELETED</a>
+                <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all(sort=${'DELETED'})}">DELETED</a>
+                <a th:unless="${all}" class="link link-dark" th:href="@{/user(sort=${'DELETED'})}">DELETED</a>
             </th>
             <th scope="col" class="text-center">
                 <a class="link link-dark">Action</a>

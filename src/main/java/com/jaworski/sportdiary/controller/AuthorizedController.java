@@ -44,8 +44,8 @@ public class AuthorizedController {
     public String list(
             @RequestParam(required = false) boolean save,
             @RequestParam(required = false) boolean error,
-            @RequestParam(required = false) Optional<String> sort,
-            @RequestParam(required = false) Optional<String> direction,
+            @RequestParam(required = false, defaultValue = "DATE") Optional<String> sort,
+            @RequestParam(required = false, defaultValue = "ASC") Optional<String> direction,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
         LOGGER.info("sort: {}", sort);
@@ -68,8 +68,8 @@ public class AuthorizedController {
     public String listAll(Model model,
                           @RequestParam("page") Optional<Integer> page,
                           @RequestParam("size") Optional<Integer> size,
-                          @RequestParam(required = false) Optional<String> sort,
-                          @RequestParam(required = false) Optional<String> direction) {
+                          @RequestParam(required = false, defaultValue = "DATE") Optional<String> sort,
+                          @RequestParam(required = false, defaultValue = "ASC") Optional<String> direction) {
         Sort sortParam = getSortParam(sort, direction);
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
@@ -96,6 +96,10 @@ public class AuthorizedController {
     private Sort getSortParam(Optional<String> sort, Optional<String> direction) {
         Sort sortParam;
         Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
+        if(sortDirection != Sort.Direction.ASC) {
+            sortDirection = Sort.Direction.DESC;
+        }
+
         switch (sort.orElse("DATE")) {
             case "DISTANCE":
                 sortParam = Sort.by(sortDirection, "distanceOf");

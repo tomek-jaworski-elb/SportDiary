@@ -57,7 +57,10 @@
         <tr>
             <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center" name="date">
-                <a th:unless="${all}" class="link link-dark" th:href="@{/user('sort'=${'DATE'})}">DATE</a>
+                <a th:if="${!all} and ${direction.isEmpty()}" class="link link-dark"
+                   th:href="@{/user(sort=${'DATE'},direction=${'DESC'})}">DATE</a>
+                <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'DATE'})}">DATE</a>
                 <a th:if="${all}" class="link link-dark" th:href="@{/user/list/all('sort'=${'DATE'})}">DATE</a>
             </th>
             <th scope="col" class="text-center" name="sport">

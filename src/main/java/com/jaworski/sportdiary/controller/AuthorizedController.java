@@ -45,40 +45,41 @@ public class AuthorizedController {
             @RequestParam(required = false) boolean save,
             @RequestParam(required = false) boolean error,
             @RequestParam(required = false) Optional<String> sort,
+            @RequestParam(required = false) Optional<String> direction,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
         LOGGER.info("sort: {}", sort);
+        LOGGER.info("direction: {}", direction);
         Sort sortParam;
-        switch (sort.orElse("")) {
+        Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
+        switch (sort.orElse("DATE")) {
             case "DISTANCE":
-                sortParam = Sort.by(Sort.Direction.DESC, "distanceOf");
+                sortParam = Sort.by(sortDirection, "distanceOf");
                 break;
             case "DURATION":
-                sortParam = Sort.by(Sort.Direction.DESC, "duration");
+                sortParam = Sort.by(sortDirection, "duration");
                 break;
             case "OWNER":
-                sortParam = Sort.by(Sort.Direction.DESC, "userEntity.firstName");
+                sortParam = Sort.by(sortDirection, "userEntity.firstName");
                 break;
             case "DELETED":
-                sortParam = Sort.by(Sort.Direction.DESC, "isDeleted");
+                sortParam = Sort.by(sortDirection, "isDeleted");
                 break;
             case "SPORT":
-                sortParam = Sort.by(Sort.Direction.DESC, "sport");
+                sortParam = Sort.by(sortDirection, "sport");
                 break;
             default:
-                sortParam = Sort.by(Sort.Direction.DESC, "dateTime");
+                sortParam = Sort.by(sortDirection, "dateTime");
                 break;
         }
-
-//        LOGGER.info(listParam);
         activityService.setActivityList();
-
         List<Activity> list = activityService.getAll(userPrincipal, sortParam);
         model.addAttribute("activities", list);
         model.addAttribute("listParam", null);
         model.addAttribute("save", save);
         model.addAttribute("error", error);
         model.addAttribute("all", false);
+        model.addAttribute("direction", direction.orElse(""));
         return "list";
     }
 

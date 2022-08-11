@@ -96,7 +96,7 @@ public class AuthorizedController {
     private Sort createSort(Optional<String> sort, Optional<String> direction) {
         Sort result;
         Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
-        if(sortDirection != Sort.Direction.ASC) {
+        if (sortDirection != Sort.Direction.ASC) {
             sortDirection = Sort.Direction.DESC;
         }
 

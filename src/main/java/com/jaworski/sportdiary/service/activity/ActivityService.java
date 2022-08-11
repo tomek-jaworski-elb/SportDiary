@@ -135,11 +135,11 @@ public class ActivityService {
         });
     }
 
-    public Page<Activity> getPage(Pageable pageable) {
+    public Page<Activity> getPage(Pageable pageable, Sort sort) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
-        List<ActivityEntity> all = activityEntityRepository.findAll(Sort.by("duration").descending());
+        List<ActivityEntity> all = activityEntityRepository.findAll(sort);
         List<Activity> activities = all.stream().map(activityMapper::entityToActivity).toList();
         List<Activity> list;
         if (activities.size() < startItem) {
@@ -161,6 +161,20 @@ public class ActivityService {
     public List<Activity> getAllActivities() {
         activityEntityRepository.findAll();
         return activityEntityRepository.findAll().stream()
+                .map(activityMapper::entityToActivity)
+                .toList();
+    }
+
+    public List<Activity> getAll(UserPrincipal userPrincipal, Sort sortParam) {
+        return activityEntityRepository.findAll(sortParam).stream()
+                .filter(
+                        activityEntity -> {
+                            if (userPrincipal == null) {
+                                return true;
+                            } else {
+                                return activityEntity.getUserEntity().getId().equals(userPrincipal.getId());
+                            }
+                        })
                 .map(activityMapper::entityToActivity)
                 .toList();
     }

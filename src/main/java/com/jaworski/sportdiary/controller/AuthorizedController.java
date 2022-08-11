@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.result.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 @Controller
@@ -38,46 +41,41 @@ public class AuthorizedController {
     }
 
     @GetMapping(path = {"/list", "/", ""})
-    public String list(@ModelAttribute(name = "listParam", value = "") ListParam listParam,
-                       @RequestParam(required = false) boolean save,
-                       @RequestParam(required = false) boolean error,
-                       @AuthenticationPrincipal UserPrincipal userPrincipal,
-                       Model model) {
-        LOGGER.info(listParam);
-        activityService.setActivityList();
-        Comparator<Activity> comparator;
-        switch (listParam.getSort()) {
-            case "DISTANCE": {
-                comparator = Comparator.comparingDouble(activity -> activity.getDistance().getDistanceKM());
+    public String list(
+            @RequestParam(required = false) boolean save,
+            @RequestParam(required = false) boolean error,
+            @RequestParam(required = false) Optional<String> sort,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model) {
+        LOGGER.info("sort: {}", sort);
+        Sort sortParam;
+        switch (sort.orElse("")) {
+            case "DISTANCE":
+                sortParam = Sort.by(Sort.Direction.DESC, "distanceOf");
                 break;
-            }
-            case "DATE": {
-                if (Boolean.FALSE.equals(listParam.getIsAscending())) {
-                    comparator = Comparator.comparing(Activity::getDateTime).reversed();
-                    break;
-                }
-                comparator = Comparator.comparing(Activity::getDateTime);
+            case "DURATION":
+                sortParam = Sort.by(Sort.Direction.DESC, "duration");
                 break;
-            }
-            case "SPORT": {
-                if (Boolean.FALSE.equals(listParam.getIsAscending())) {
-                    comparator = Comparator.comparing((Activity a) -> a.getSport().getName()).reversed();
-                    break;
-                }
-                comparator = Comparator.comparing((Activity a) -> a.getSport().getName());
+            case "OWNER":
+                sortParam = Sort.by(Sort.Direction.DESC, "userEntity.firstName");
                 break;
-            }
-            case "DURATION": {
-                comparator = Comparator.comparing(Activity::getDuration);
+            case "DELETED":
+                sortParam = Sort.by(Sort.Direction.DESC, "isDeleted");
                 break;
-            }
-            default: {
-                comparator = Comparator.comparing(Objects::nonNull);
-            }
+            case "SPORT":
+                sortParam = Sort.by(Sort.Direction.DESC, "sport");
+                break;
+            default:
+                sortParam = Sort.by(Sort.Direction.DESC, "dateTime");
+                break;
         }
-        List<Activity> list = activityService.getUserActivityList(userPrincipal, false);
+
+//        LOGGER.info(listParam);
+        activityService.setActivityList();
+
+        List<Activity> list = activityService.getAll(userPrincipal, sortParam);
         model.addAttribute("activities", list);
-        model.addAttribute("listParam", listParam);
+        model.addAttribute("listParam", null);
         model.addAttribute("save", save);
         model.addAttribute("error", error);
         model.addAttribute("all", false);
@@ -88,11 +86,33 @@ public class AuthorizedController {
     @Secured("ROLE_ADMIN")
     public String listAll(Model model,
                           @RequestParam("page") Optional<Integer> page,
-                          @RequestParam("size") Optional<Integer> size
-                      ) {
+                          @RequestParam("size") Optional<Integer> size,
+                          @RequestParam(required = false) Optional<String> sort
+    ) {
+        Sort sortParam;
+        switch (sort.orElse("")) {
+            case "DISTANCE":
+                sortParam = Sort.by(Sort.Direction.DESC, "distanceOf");
+                break;
+            case "DURATION":
+                sortParam = Sort.by(Sort.Direction.DESC, "duration");
+                break;
+            case "OWNER":
+                sortParam = Sort.by(Sort.Direction.DESC, "userEntity.firstName");
+                break;
+            case "DELETED":
+                sortParam = Sort.by(Sort.Direction.DESC, "isDeleted");
+                break;
+            case "SPORT":
+                sortParam = Sort.by(Sort.Direction.DESC, "sport");
+                break;
+            default:
+                sortParam = Sort.by(Sort.Direction.DESC, "dateTime");
+                break;
+        }
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize));
+        Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize), sortParam);
         model.addAttribute("activitiesPage", activityPage);
         model.addAttribute("activities", activityPage.getContent());
         int totalPages = activityPage.getTotalPages();

@@ -50,7 +50,7 @@ public class AuthorizedController {
             Model model) {
         LOGGER.info("sort: {}", sort);
         LOGGER.info("direction: {}", direction);
-        Sort sortParam = getSortParam(sort, direction);
+        Sort sortParam = createSort(sort, direction);
         activityService.setActivityList();
         List<Activity> list = activityService.getAll(userPrincipal, sortParam);
         model.addAttribute("activities", list);
@@ -70,7 +70,7 @@ public class AuthorizedController {
                           @RequestParam("size") Optional<Integer> size,
                           @RequestParam(required = false, defaultValue = "DATE") Optional<String> sort,
                           @RequestParam(required = false, defaultValue = "ASC") Optional<String> direction) {
-        Sort sortParam = getSortParam(sort, direction);
+        Sort sortParam = createSort(sort, direction);
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
         Page<Activity> activityPage = activityService.getPage(PageRequest.of(currentPage - 1, pageSize), sortParam);
@@ -93,8 +93,8 @@ public class AuthorizedController {
         return "list";
     }
 
-    private Sort getSortParam(Optional<String> sort, Optional<String> direction) {
-        Sort sortParam;
+    private Sort createSort(Optional<String> sort, Optional<String> direction) {
+        Sort result;
         Sort.Direction sortDirection = direction.map(Sort.Direction::fromString).orElse(Sort.Direction.ASC);
         if(sortDirection != Sort.Direction.ASC) {
             sortDirection = Sort.Direction.DESC;
@@ -102,25 +102,25 @@ public class AuthorizedController {
 
         switch (sort.orElse("DATE")) {
             case "DISTANCE":
-                sortParam = Sort.by(sortDirection, "distanceOf");
+                result = Sort.by(sortDirection, "distanceOf");
                 break;
             case "DURATION":
-                sortParam = Sort.by(sortDirection, "duration");
+                result = Sort.by(sortDirection, "duration");
                 break;
             case "OWNER":
-                sortParam = Sort.by(sortDirection, "userEntity.firstName");
+                result = Sort.by(sortDirection, "userEntity.firstName");
                 break;
             case "DELETED":
-                sortParam = Sort.by(sortDirection, "isDeleted");
+                result = Sort.by(sortDirection, "isDeleted");
                 break;
             case "SPORT":
-                sortParam = Sort.by(sortDirection, "sport");
+                result = Sort.by(sortDirection, "sport");
                 break;
             default:
-                sortParam = Sort.by(sortDirection, "dateTime");
+                result = Sort.by(sortDirection, "dateTime");
                 break;
         }
-        return sortParam;
+        return result;
     }
 
     @GetMapping(value = "/edit", params = "id")

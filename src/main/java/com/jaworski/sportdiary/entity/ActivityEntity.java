@@ -70,7 +70,7 @@ public class ActivityEntity {
     @Column(name = COLUMN_PREFIX + "sport")
     private Sport sport;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = UserEntity.COLUMN_PREFIX + "id")
     private UserEntity userEntity;
 

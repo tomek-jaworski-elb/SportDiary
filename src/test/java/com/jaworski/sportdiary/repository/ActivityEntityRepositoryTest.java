@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -30,34 +31,51 @@ class ActivityEntityRepositoryTest {
     private ActivityEntityRepository activityEntityRepository;
     @Autowired
     private UserEntityRepository userEntityRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void injectedComponentsAreNotNull() {
         assertThat(activityEntityRepository).isNotNull();
+        assertThat(userEntityRepository).isNotNull();
     }
+
+    @Test
+    void saveUserEntity() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setFirstName("John");
+        userEntity.setPassword(passwordEncoder.encode("password"));
+        userEntity.setRoles("USER");
+        userEntity.setEmail("test@wp.pl");
+        UserEntity save = userEntityRepository.save(userEntity);
+        assertThat(save).isNotNull();
+        assertThat(save.getId()).isNotNull();
+        assertThat(save.getFirstName()).isEqualTo("John");
+        assertThat(passwordEncoder.matches("password", save.getPassword())).isTrue();
+        assertThat(save.getEmail()).isEqualTo("test@wp.pl");
+    }
+
 
     @Test
     void findById_whenActivityExists_thenReturnActivity() {
         // given
-        UserEntity userEntity = new UserEntity("test", "testtestes", "test", "test");
-        UserEntity save = userEntityRepository.save(userEntity);
-        assertThat(save).isNotNull();
-        LocalDateTime now = LocalDateTime.now();
-        ActivityEntity activityEntity = new ActivityEntity(now, now, now, 10L, 1D, Unit.KM, Sport.GYM, save);
-
-        ActivityEntity save1 = activityEntityRepository.save(activityEntity);
+        UserEntity userEntity = new UserEntity("test", passwordEncoder.encode("test"), "USER", "");
+        UserEntity user = userEntityRepository.save(userEntity);
+        ActivityEntity activityEntity = new ActivityEntity(LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
+                5L, 5D, Unit.KM, Sport.RUNNING, user);
         // when
-        ActivityEntity foundActivity = activityEntityRepository.findById(save1.getId()).orElse(null);
-        // then
-        assertThat(save1).isNotNull();
+        ActivityEntity activity = activityEntityRepository.save(activityEntity);
+        ActivityEntity foundActivity = activityEntityRepository.findById(activity.getId()).orElse(null);
+//        // then
+        assertThat(activity).isNotNull();
         assertThat(foundActivity).isNotNull();
         assertNotNull(foundActivity);
-        assertThat(foundActivity.getDateTime().truncatedTo(ChronoUnit.MILLIS)).isEqualTo(activityEntity.getDateTime().truncatedTo(ChronoUnit.MILLIS));
+        assertThat(foundActivity.getDateTime().truncatedTo(ChronoUnit.MILLIS))
+                .isEqualTo(activityEntity.getDateTime().truncatedTo(ChronoUnit.MILLIS));
         assertThat(foundActivity.getDuration()).isEqualTo(activityEntity.getDuration());
         assertThat(foundActivity.getDistanceOf()).isEqualTo(activityEntity.getDistanceOf());
         assertThat(foundActivity.getUnit()).isEqualTo(activityEntity.getUnit());
         assertThat(foundActivity.getSport()).isEqualTo(activityEntity.getSport());
-        assertThat(foundActivity.getUserEntity().getId()).isEqualTo(activityEntity.getUserEntity().getId());
     }
 
     @Test

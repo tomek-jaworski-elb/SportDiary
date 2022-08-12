@@ -205,6 +205,7 @@ public class AuthorizedController {
         } else {
             activity.setUser(userPrincipal.getUser());
             activityService.addActivity(activity);
+            activityService.addActivity(activity, userPrincipal.getId());
             model.addAttribute("activity", activity);
             return "new";
         }

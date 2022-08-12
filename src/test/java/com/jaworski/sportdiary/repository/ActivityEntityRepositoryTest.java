@@ -61,7 +61,13 @@ class ActivityEntityRepositoryTest {
     }
 
     @Test
-    void shouldFindActivityById() {
+    void findById_whenActivityNotExists_thenReturnNull() {
+        // given
+        UUID id = UUID.randomUUID();
+        // when
+        Optional<ActivityEntity> foundActivity = activityEntityRepository.findById(id);
+        // then
+        assertThat(foundActivity).isEmpty();
 
     }
 

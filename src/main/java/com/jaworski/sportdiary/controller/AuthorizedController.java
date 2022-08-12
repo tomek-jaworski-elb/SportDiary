@@ -203,8 +203,7 @@ public class AuthorizedController {
             LOGGER.info(result);
             return "add";
         } else {
-            activity.setUser(userPrincipal.getUser());
-            activityService.addActivity(activity);
+            activityService.addActivity(activity, userPrincipal.getId());
             model.addAttribute("activity", activity);
             return "new";
         }

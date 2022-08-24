@@ -41,13 +41,16 @@ class ActivityEntityRepositoryTest {
     }
 
     @Test
-    void saveUserEntity() {
+    void saveUserEntity_givenUserEntity_returnsSameUserEntity() {
+        // given
         UserEntity userEntity = new UserEntity();
         userEntity.setFirstName("John");
         userEntity.setPassword(passwordEncoder.encode("password"));
         userEntity.setRoles("USER");
         userEntity.setEmail("test@wp.pl");
+        // when
         UserEntity save = userEntityRepository.save(userEntity);
+        // then
         assertThat(save).isNotNull();
         assertThat(save.getId()).isNotNull();
         assertThat(save.getFirstName()).isEqualTo("John");

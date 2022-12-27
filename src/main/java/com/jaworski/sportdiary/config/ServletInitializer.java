@@ -1,5 +1,6 @@
-package com.jaworski.sportdiary;
+package com.jaworski.sportdiary.config;
 
+import com.jaworski.sportdiary.SportDiaryApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

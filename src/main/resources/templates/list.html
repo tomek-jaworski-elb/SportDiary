@@ -23,79 +23,120 @@
         <strong><span class="my-4" th:text="#{html.list.error.ok}"></span></strong>
     </div>
     <div class="col-4"></div>
-
 </div>
 <div class="container">
+    <nav aria-label="Page navigation example" th:unless="${activitiesPage eq null}">
+        <div th:if="${activitiesPage.totalPages > 0}"
+             class=" d-flex justify-content-center" sec:authorize="hasRole('ADMIN')">
+            <ul class="pagination">
+                <li th:if="${currentPage > 1}">
+                    <a th:href="@{/user/list/all(sort=${sort}, direction=${direction},size=${activitiesPage.size}, page=${currentPage}-1)}"
+                       class="page-item btn btn-outline-dark m-2">&laquo;
+                    </a>
+                </li>
+                <li th:each="pageNumber : ${pageNumbers}">
+                    <a th:if="${activitiesPage.number + 1 eq pageNumber}"
+                       th:href="@{/user/list/all(sort=${sort}, direction=${direction},size=${activitiesPage.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}" class="page-item btn btn-outline-dark active m-2">
+                    </a>
+                    <a th:unless="${activitiesPage.number + 1 eq pageNumber}"
+                       th:href="@{/user/list/all(sort=${sort}, direction=${direction},size=${activitiesPage.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}" class="page-item btn btn-outline-dark m-2">
+                    </a>
+                </li>
+                <li th:if="${ pageNumbers.size() > currentPage }">
+                    <a th:href="@{/user/list/all(sort=${sort}, direction=${direction},size=${activitiesPage.size}, page=${currentPage}+1)}"
+                       class="page-item btn btn-outline-dark m-2">&raquo;
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <table class="table table-hover">
         <thead>
         <tr>
             <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center" name="date">
-                <form th:action="@{/user/list}" method="get" th:object="${listParam}" name="date">
-                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DATE')}">
-                    <input hidden th:if="${listParam.isAscending}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('false')}"/>
-                    <input hidden th:unless="${listParam.isAscending}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('true')}"/>
-                    <input type="submit" value="Date" class="btn btn-link text-black">
-                </form>
+                <a th:if="${!all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'DATE'},direction=${'DESC'})}">DATE</a>
+                <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'DATE'})}">DATE</a>
+                <a th:if="${all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DATE'},direction=${'DESC'})}">DATE</a>
+                <a th:if="${all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DATE'})}">DATE</a>
             </th>
             <th scope="col" class="text-center" name="sport">
-                <form th:action="@{/user/list}" method="get" th:object="${listParam}" name="sport">
-                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('SPORT')}">
-                    <input hidden th:if="${listParam.isAscending}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('false')}"/>
-                    <input hidden th:unless="${listParam.isAscending}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('true')}"/>
-                    <input type="submit" value="Sport" class="btn btn-link text-black">
-                </form>
+                <a th:if="${!all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'SPORT'},direction=${'DESC'})}">SPORT</a>
+                <a th:if="${!all}  and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'SPORT'})}">SPORT</a>
+                <a th:if="${all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'SPORT'},direction=${'DESC'})}">SPORT</a>
+                <a th:if="${all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'SPORT'})}">SPORT</a>
             </th>
             <th scope="col" class="text-center">
-                <form th:action="@{/user/list}" method="get" th:object="${listParam}">
-                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DISTANCE')}">
-                    <input hidden th:if="${listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('false')}"/>
-                    <input hidden th:unless="${!listParam.isAscending.booleanValue()}" type="text"
-                           th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('true')}"/>
-                    <input type="submit" value="DISTANCE" class="btn btn-link text-black">
-                </form>
+                <a th:if="${!all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'DISTANCE'},direction=${'DESC'})}">DISTANCE</a>
+                <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'DISTANCE'})}">DISTANCE</a>
+                <a th:if="${all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DISTANCE'},direction=${'DESC'})}">DISTANCE</a>
+                <a th:if="${all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DISTANCE'})}">DISTANCE</a>
             </th>
             <th scope="col" class="text-center">
-                <form th:action="@{/user/list}" method="get" th:object="${listParam}">
-                    <input hidden type="text" th:field="*{sort}" th:value="${listParam.setSort('DURATION')}">
-                    <input hidden th:if="${listParam.isAscending.booleanValue()}" type="text" th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('false')}"/>
-                    <input hidden th:unless="${!listParam.isAscending.booleanValue()}" type="text"
-                           th:field="*{isAscending}"
-                           th:value="${listParam.setIsAscending('true')}"/>
-                    <input type="submit" value="Duration" class="btn btn-link text-black"/>
-                </form>
+                <a th:if="${!all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'DURATION'},direction=${'DESC'})}">DURATION</a>
+                <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'DURATION'})}">DURATION</a>
+                <a th:if="${all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DURATION'},direction=${'DESC'})}">DURATION</a>
+                <a th:if="${all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DURATION'})}">DURATION</a>
             </th>
             <th scope="col" class="text-center">
-                <input type="submit" value="Owner" class="btn btn-link text-black"/>
+                <a th:if="${!all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'OWNER'},direction=${'DESC'})}">OWNER</a>
+                <a th:if="${!all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user(sort=${'OWNER'})}">OWNER</a>
+                <a th:if="${all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'OWNER'},direction=${'DESC'})}">OWNER</a>
+                <a th:if="${all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'OWNER'})}">OWNER</a>
+            </th>
+            <th sec:authorize="hasRole('ADMIN')" scope="col" class="text-center">
+                <a th:if="${all} and ${direction.equals('ASC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DELETED'},direction=${'DESC'})}">DELETED</a>
+                <a th:if="${all} and ${direction.equals('DESC')}" class="link link-dark"
+                   th:href="@{/user/list/all(sort=${'DELETED'})}">DELETED</a>
+                <a th:unless="${all}" class="link link-dark" th:href="@{/user(sort=${'DELETED'})}">DELETED</a>
             </th>
             <th scope="col" class="text-center">
-                <input type="submit" value="Action" class="btn btn-link text-black"/>
+                <a class="link link-dark">Action</a>
             </th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="activity : ${activities}">
-            <th class="text-center" scope="row" th:text="${activityStat.index}">1</th>
+            <th class="text-center" scope="row" th:text="${activityStat.index + 1}">1</th>
             <td class="text-center" th:text="${#temporals.format(activity.getDateTime(),'dd/MM/yyyy HH:mm')}">Mark</td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).RUNNING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).RUNNING}">
                 <small>Run<br></small>
-                <img width="24px" height="24px" th:src="@{/img/run.svg}" th:alt="${'Run'}"></td>
+                <img width="24px" height="24px" th:src="@{/img/run.svg}" th:alt="${'Run'}" src="" alt="run"></td>
             <td class="text-center"
                 th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).ULTRA_RUNNING}">
                 <small>Ultra<br/></small><img
                     width="24px" height="24px"
                     th:src="@{/img/ultra.svg}" th:alt="${'Run'}"></td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).JOGA}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).JOGA}">
                 <small>Joga<br/></small><img width="24px" height="24px" th:src="@{/img/joga.svg}" th:alt="${'Joga'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).CYCLING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).CYCLING}">
                 <small>Cycling<br></small><img
                     width="24px" height="24px"
                     th:src="@{/img/bicycle.svg}" th:alt="${'Bicycle'}"></td>
@@ -106,29 +147,38 @@
                     th:src="@{/img/gym.svg}"
                     th:alt="${'Gym'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).SWIMMING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).SWIMMING}">
                 <small>Pool<br/></small><img width="24px"
                                              height="24px"
                                              th:src="@{/img/pool.svg}"
                                              th:alt="${'Swim'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).OTHER}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).OTHER}">
                 <small>Other<br/></small><img width="24px"
-                                             height="24px"
-                                             th:src="@{/img/question.svg}"
-                                             th:alt="${'other'}">
+                                              height="24px"
+                                              th:src="@{/img/question.svg}"
+                                              th:alt="${'other'}">
             </td>
-            <td class="text-center" th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).HIKING}">
+            <td class="text-center"
+                th:if="${activity.getSport() == T(com.jaworski.sportdiary.domain.enums.Sport).HIKING}">
                 <small>Hiking<br/></small><img width="24px"
-                                             height="24px"
-                                             th:src="@{/img/question.svg}"
-                                             th:alt="${'hikinig'}">
+                                               height="24px"
+                                               th:src="@{/img/hikking.svg}"
+                                               th:alt="${'hikinig'}">
             </td>
             <td class="text-center"
                 th:text="${activity.getDistance().distanceOf + ' - ' + activity.getDistance().getUnits()}">Otto
             </td>
             <td class="text-center" th:text="${activity.getDuration()} + ' [minutes]'">Otto</td>
             <td class="text-center" th:text="${activity.getUser().getFirstName()}">Otto</td>
+            <td sec:authorize="hasRole('ADMIN')" th:if="${all}" class="text-center">
+                <img th:if="${activity.isDeleted()}" th:src="@{/img/checked.svg}" src="" alt="checked" th:width="32"
+                     th:height="auto"/>
+                <img th:unless="${activity.isDeleted()}" th:src="@{/img/unchecked.svg}" src="" alt="unchecked"
+                     width="32" height="auto"/>
+            </td>
             <td class="text-center">
                 <a sec:authorize="isAnonymous() || isAuthenticated()" class="btn btn-primary mx-2" href="#"
                    th:href="@{'/user/more?id=' + ${activity.getId()}}"
@@ -136,9 +186,14 @@
                 <a sec:authorize="isAuthenticated()" class="btn btn-secondary mx-2" href="#"
                    th:href="@{'/user/edit?id=' + ${activity.getId()}}"
                    role="button">Edit</a>
-                <a sec:authorize="isAuthenticated()" class="btn btn-warning mx-2" href="#"
+                <a sec:authorize="isAuthenticated()" th:if="${!activity.isDeleted()}" class="btn btn-warning mx-2"
+                   href="#"
                    th:href="@{'/user/delete?id=' + ${activity.getId()}}"
                    role="button">Delete</a>
+                <a sec:authorize="isAuthenticated()" th:if="${activity.isDeleted()}" class="btn btn-success mx-2"
+                   href="#"
+                   th:href="@{'/user/restore?id=' + ${activity.getId()}}"
+                   role="button">Restore</a>
             </td>
         </tr>
         </tbody>

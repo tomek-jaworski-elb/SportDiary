@@ -1,34 +1,36 @@
 package com.jaworski.sportdiary.config.websecurity;
 
 import com.jaworski.sportdiary.config.security.UserEntityPrincipalDetailService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Properties;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@RequiredArgsConstructor
+public class SecurityConfiguration {
 
     private final UserEntityPrincipalDetailService userEntityPrincipalDetailService;
 
-    public SecurityConfiguration(UserEntityPrincipalDetailService userEntityPrincipalDetailService) {
-        this.userEntityPrincipalDetailService = userEntityPrincipalDetailService;
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) {
+//        auth.authenticationProvider(authenticationProvider());
+//    }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-//        auth.userDetailsService(inMemoryUserDetailsManager());
-        auth.authenticationProvider(authenticationProvider());
-    }
+    @Autowired
+    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,53 +54,40 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/img/**", "/bootstrap/**", "/js/**").permitAll()
-                .antMatchers("/welcome", "/", "/test","/signup").permitAll()
+                .antMatchers("/welcome", "/index", "/", "/test", "/signup").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/anonymous/**").permitAll()
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/activities").permitAll()
+                .antMatchers(HttpMethod.POST, "/api1/activities").permitAll()
                 .antMatchers("/public/**").permitAll()
-                .antMatchers("/test").permitAll()
                 .antMatchers("/users").permitAll()
-                .antMatchers("/acts","/acts/**").permitAll()
                 .antMatchers("/add").permitAll()
+                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/user/list", false)
+                .defaultSuccessUrl("/user/list", true)
                 .failureUrl("/login?error=true")
                 .and()
                 .logout().permitAll()
-                .logoutSuccessUrl("/user")
+                .logoutSuccessUrl("/login?logout=true")
                 .and()
-                .exceptionHandling().accessDeniedPage("/403");
-
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-//                .antMatchers("/index", "/", "/login*").permitAll()
-//                .antMatchers("/img/**", "/bootstrap/**", "/webjars/**").permitAll()
-//                .antMatchers("/anonymous*").anonymous()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/index", true)
-//                .failureUrl("/login?error=true")
-////                .failureHandler(authenticationFailureHandler())
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .logoutUrl("/logout")
-//                .deleteCookies("JSESSIONID");
-////                .getLogoutSuccessHandler(logoutSuccessHandler());
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "BAD REQ");
+                });
+//                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+//                    authenticationEntryPoint.commence(request, response, authException);
+//                }).accessDeniedPage("/error");
+//                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+        return http.build();
     }
 }

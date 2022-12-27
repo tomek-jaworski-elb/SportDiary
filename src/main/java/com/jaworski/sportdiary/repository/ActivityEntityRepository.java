@@ -1,4 +1,4 @@
-package com.jaworski.sportdiary.entity.repository;
+package com.jaworski.sportdiary.repository;
 
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

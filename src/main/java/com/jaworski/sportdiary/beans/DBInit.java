@@ -1,12 +1,12 @@
-package com.jaworski.sportdiary;
+package com.jaworski.sportdiary.beans;
 
 import com.jaworski.sportdiary.domain.Activity;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.ActivityEntityRepository;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
 import com.jaworski.sportdiary.mapper.ActivityMapper;
+import com.jaworski.sportdiary.repository.ActivityEntityRepository;
 import com.jaworski.sportdiary.repository.ActivityRepository;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,15 +33,15 @@ public class DBInit implements CommandLineRunner {
         UserEntity user = new UserEntity("user", passwordEncoder.encode("user"), "USER", "");
 
         List<UserEntity> userEntities = List.of(dan, admin, user);
-        userEntityRepository.saveAll(userEntities);
+//        userEntityRepository.saveAll(userEntities);
 
         List<Activity> activities = activityRepository.getActivities();
         System.out.println(activities);
         for (Activity act : activities) {
             act.setAddedAt(LocalDateTime.now());
             act.setLastModifiedAt(LocalDateTime.now());
-            ActivityEntity activityEntity = activityMapper.ActivityToEntity(act);
-            activityEntityRepository.save(activityEntity);
+            ActivityEntity activityEntity = activityMapper.activityToEntity(act);
+//            activityEntityRepository.save(activityEntity);
         }
     }
 }

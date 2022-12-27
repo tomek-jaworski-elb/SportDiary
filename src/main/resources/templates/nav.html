@@ -19,7 +19,7 @@
                 <option value="en" th:text="#{lang.eng}"></option>
                 <option value="pl" th:text="#{lang.pl}"></option>
             </select>
-        </div >
+        </div>
         <div class="col-2 text-dark text-right">
             <a onclick="changeLanguagePL()" class="text-muted btn btn-warning" type="button">
                 <i class="flag flag-pl"></i>PL
@@ -34,8 +34,10 @@
             <a class="btn btn-link mx-2 bg-light" href="#" th:href="@{/user}" role="button" th:text="#{html.nav.home}">Home</a>
             <a sec:authorize="isAuthenticated()" class="btn link-info bg-light mx-2" href="#" th:href="@{/user/add}"
                role="button" th:text="#{html.nav.add}">Add</a>
-            <a sec:authorize="isAuthenticated()" class="btn btn-warning mx-2" href="#" th:href="@{/user/save}"
+            <a sec:authorize="isAuthenticated()" class="btn btn-warning mx-2 disabled" href="#" th:href="@{/user/save}"
                role="button" th:text="#{html.nav.save}">Save</a>
+            <a sec:authorize="hasRole('ADMIN')" class="btn btn-warning mx-2" href="#" th:href="@{/user/list/all}"
+               role="button">All</a>
             <input sec:authorize="isAuthenticated()" class="btn btn-warning mx-2 my-2" type="submit"
                    th:value="#{html.nav.logout}">
             <a sec:authorize="isAnonymous()" class="btn btn-link mx-2 bg-light" href="#" th:href="@{/login}"

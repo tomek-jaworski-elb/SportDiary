@@ -5,8 +5,8 @@ import com.jaworski.sportdiary.domain.Distance;
 import com.jaworski.sportdiary.domain.User;
 import com.jaworski.sportdiary.entity.ActivityEntity;
 import com.jaworski.sportdiary.entity.UserEntity;
-import com.jaworski.sportdiary.entity.repository.UserEntityRepository;
-import com.jaworski.sportdiary.service.AuthenticationService;
+import com.jaworski.sportdiary.repository.UserEntityRepository;
+import com.jaworski.sportdiary.service.authentication.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,10 +23,11 @@ public class ActivityMapper {
     private final UserEntityRepository userEntityRepository;
 
     private UserEntity getCurrentUser() {
-        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName());
+        return userEntityRepository.findByFirstName(authenticationService.getCurrentUserName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public ActivityEntity ActivityToEntity(Activity activity) {
+    public ActivityEntity activityToEntity(Activity activity) {
         ActivityEntity result = new ActivityEntity();
         result.setDateTime(activity.getDateTime());
         result.setSport(activity.getSport());
@@ -35,37 +36,51 @@ public class ActivityMapper {
         result.setUnit(activity.getDistance().getUnits());
         result.setLastModifiedAt(activity.getLastModifiedAt());
         result.setDistanceOf(activity.getDistance().getDistanceOf());
+        result.setDeleted(activity.isDeleted());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null)  {
+        if (authentication != null) {
             result.setUserEntity(getCurrentUser());
         } else {
-            result.setUserEntity(getAdminUser());
+            result.setUserEntity(new UserEntity());
+//            result.setUserEntity(getAdminUser());
         }
         return result;
     }
 
-    public Activity EntityToActivity(ActivityEntity activityEntity) {
+    public Activity entityToActivity(ActivityEntity activityEntity) {
         Activity result = new Activity();
-        result.setId(activityEntity.getId().toString());
+        if (activityEntity==null) {
+            return result;
+        }
+        if (activityEntity.getId() != null) {
+            result.setId(activityEntity.getId().toString());
+        } else {
+            result.setId("");
+        }
         result.setDateTime(activityEntity.getDateTime());
         result.setSport(activityEntity.getSport());
         result.setAddedAt(activityEntity.getAddedAt());
         result.setDuration(activityEntity.getDuration());
         result.setLastModifiedAt(activityEntity.getLastModifiedAt());
         result.setDistance(new Distance(activityEntity.getDistanceOf(), activityEntity.getUnit()));
-        UserEntity userEntity = activityEntity.getUserEntity();
-        User user = new User();
-        user.setId(userEntity.getId());
-        user.setFirstName(userEntity.getFirstName());
-        user.setEmail(userEntity.getEmail());
-        result.setUser(user);
+        result.setDeleted(activityEntity.isDeleted());
+        if (activityEntity.getUserEntity() != null) {
+            UserEntity userEntity = activityEntity.getUserEntity();
+            User user = new User();
+            user.setId(userEntity.getId());
+            user.setFirstName(userEntity.getFirstName());
+            user.setEmail(userEntity.getEmail());
+            result.setUser(user);
+        } else {
+            result.setUser(null);
+        }
         return result;
     }
 
-    public List<ActivityEntity> ActivityListToEntityList(List<Activity> activityList) {
+    public List<ActivityEntity> activityListToEntityList(List<Activity> activityList) {
         List<ActivityEntity> result = new ArrayList<>();
         for (Activity activity : activityList) {
-            result.add(ActivityToEntity(activity));
+            result.add(activityToEntity(activity));
         }
         return result;
     }
